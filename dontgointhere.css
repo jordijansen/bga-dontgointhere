@@ -51,3 +51,7 @@
 html {
     background-image:url('img/dgit_background.png');
 }
+
+div.player-board {
+    background-color: #4f6670;
+}

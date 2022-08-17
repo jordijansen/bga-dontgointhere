@@ -15,6 +15,8 @@
  *
  */
 
+ var isDebug = window.location.host == 'studio.boardgamearena.com';
+ var debug = isDebug ? console.info.bind(window.console) : function(){};
 define([
     "dojo","dojo/_base/declare",
     "ebg/core/gamegui",
@@ -46,15 +48,16 @@ function (dojo, declare) {
         
         setup: function( gamedatas )
         {
-            console.log( "Starting game setup" );
+            debug('Beginning SETUP');
+            debug('SETUP', gamedatas);
             
             // Setting up player boards
-            for( var player_id in gamedatas.players )
-            {
-                var player = gamedatas.players[player_id];
+            // for( var player_id in gamedatas.players )
+            // {
+            //     var player = gamedatas.players[player_id];
                          
-                // TODO: Setting up players boards if needed
-            }
+            //     // TODO: Setting up players boards if needed
+            // }
             
             // TODO: Set up your game interface here, according to "gamedatas"
             

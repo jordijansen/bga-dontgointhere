@@ -18,6 +18,7 @@
 
 
 require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
+require_once("modules/DontGoInTherePlayerManager.class.php");
 
 
 class DontGoInThere extends Table
@@ -39,7 +40,9 @@ class DontGoInThere extends Table
             //    "my_first_game_variant" => 100,
             //    "my_second_game_variant" => 101,
             //      ...
-        ) );        
+        ) );
+
+        $this->playerManager = new DontGoInTherePlayerManager($this);
 	}
 	
     protected function getGameName( )
@@ -56,26 +59,9 @@ class DontGoInThere extends Table
         the game is ready to be played.
     */
     protected function setupNewGame( $players, $options = array() )
-    {    
-        // Set the colors of the players with HTML color code
-        // The default below is red/green/blue/orange/brown
-        // The number of colors defined here must correspond to the maximum number of players allowed for the gams
-        $gameinfos = self::getGameinfos();
-        $default_colors = $gameinfos['player_colors'];
- 
-        // Create players
-        // Note: if you added some extra field on "player" table in the database (dbmodel.sql), you can initialize it there.
-        $sql = "INSERT INTO player (player_id, player_color, player_canal, player_name, player_avatar) VALUES ";
-        $values = array();
-        foreach( $players as $player_id => $player )
-        {
-            $color = array_shift( $default_colors );
-            $values[] = "('".$player_id."','$color','".$player['player_canal']."','".addslashes( $player['player_name'] )."','".addslashes( $player['player_avatar'] )."')";
-        }
-        $sql .= implode( $values, ',' );
-        self::DbQuery( $sql );
-        self::reattributeColorsBasedOnPreferences( $players, $gameinfos['player_colors'] );
-        self::reloadPlayersBasicInfos();
+    {
+        // Initialize players
+        $this->playerManager->setupNewGame($players);
         
         /************ Start the game initialization *****/
 
@@ -107,18 +93,11 @@ class DontGoInThere extends Table
     */
     protected function getAllDatas()
     {
-        $result = array();
-    
-        $current_player_id = self::getCurrentPlayerId();    // !! We must only return informations visible by this player !!
-    
-        // Get information about players
-        // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
-        $sql = "SELECT player_id id, player_score score FROM player ";
-        $result['players'] = self::getCollectionFromDb( $sql );
-  
-        // TODO: Gather all information about current game situation (visible by player $current_player_id).
-  
-        return $result;
+        $currentPlayerId = self::getCurrentPlayerId();
+        $data = [
+            'playerUiData' => $this->playerManager->getUiData($currentPlayerId),
+        ];
+        return $data;
     }
 
     /*
