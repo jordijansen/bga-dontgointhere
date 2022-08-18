@@ -46,11 +46,8 @@ class DontGoInTherePlayer extends APP_GameClass
             'id' => $this->id,
             'naturalOrder' => $this->naturalOrder,
             'name' => $this->name,
-            'avatar' => $this->avatar,
             'curses' => $this->curses,
-            'ghostTokens' => $this->ghostTokens,
-            'eliminated' => $this->eliminated,
-            'zombie' => $this->zombie,
+            'ghostTokens' => ($this->id == $currentPlayerId) ? $this->ghostTokens : '?',
         ];
     }
 }

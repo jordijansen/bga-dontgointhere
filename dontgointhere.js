@@ -25,7 +25,7 @@ define([
 function (dojo, declare) {
     return declare("bgagame.dontgointhere", ebg.core.gamegui, {
         constructor: function(){
-            console.log('dontgointhere constructor');
+            debug('constructor', 'starting constructor');
               
             // Here, you can init the global variables of your user interface
             // Example:
@@ -48,8 +48,8 @@ function (dojo, declare) {
         
         setup: function( gamedatas )
         {
-            debug('Beginning SETUP');
-            debug('SETUP', gamedatas);
+            debug('setup', 'Beginning game setup');
+            debug('setup::gamedatas', gamedatas);
             
             // Setting up player boards
             // for( var player_id in gamedatas.players )
@@ -65,7 +65,7 @@ function (dojo, declare) {
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
 
-            console.log( "Ending game setup" );
+            debug('setup', 'Ending game setup');
         },
        
 
@@ -77,7 +77,9 @@ function (dojo, declare) {
         //
         onEnteringState: function( stateName, args )
         {
-            console.log( 'Entering state: '+stateName );
+            debug('onEnteringState', 'Entering a new state');
+            debug('onEnteringState::stateName', stateName);
+            debug('onEnteringState::args', args);
             
             switch( stateName )
             {
@@ -103,7 +105,8 @@ function (dojo, declare) {
         //
         onLeavingState: function( stateName )
         {
-            console.log( 'Leaving state: '+stateName );
+            debug('onLeavingState', 'Leaving a state');
+            debug('onLeavingState::stateName', stateName);
             
             switch( stateName )
             {
@@ -129,7 +132,9 @@ function (dojo, declare) {
         //        
         onUpdateActionButtons: function( stateName, args )
         {
-            console.log( 'onUpdateActionButtons: '+stateName );
+            debug('onUpdateActionButtons', 'Updating action buttons');
+            debug('onUpdateActionButtons::stateName', stateName);
+            debug('onUpdateActionButtons::args', args);
                       
             if( this.isCurrentPlayerActive() )
             {            
@@ -225,7 +230,7 @@ function (dojo, declare) {
         */
         setupNotifications: function()
         {
-            console.log( 'notifications subscriptions setup' );
+            debug('setupNotifications', 'Setting up notification subscriptions');
             
             // TODO: here, associate your game notifications with local methods
             
