@@ -54,6 +54,15 @@ class DontGoInThereCardManager extends APP_GameClass
         // Remove cards from deck based on player count
         $numberOfCardsToRemove = self::$playerCountVariables[$playerCount]['cardsToRemove'];
         $this->cards->pickCardsForLocation($numberOfCardsToRemove, 'deck', 'trash');
+
+        // Deal 3 cards cards to each room
+        for($roomPosition = 1; $roomPosition <= 3; $roomPosition++)
+        {
+            for($cardSlot = 1; $cardSlot <= 3; $cardSlot++)
+            {
+                $this->cards->pickCardForLocation('deck', 'room_'.$roomPosition, $cardSlot);
+            }
+        }
     }
 
     // Map of card type to object class

@@ -106,6 +106,9 @@ class DontGoInThere extends Table
             'playerUiData' => $this->playerManager->getUiData($currentPlayerId),
             'faceupRooms' => $this->roomManager->getUiData('faceup'),
             'facedownRooms' => $this->roomManager->getUiData('facedown'),
+            'roomOneCards' => $this->cardManager->getUiData('room_1'),
+            'roomTwoCards' => $this->cardManager->getUiData('room_2'),
+            'roomThreeCards' => $this->cardManager->getUiData('room_3'),
         ];
         return $data;
     }

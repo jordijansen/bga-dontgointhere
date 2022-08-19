@@ -43,7 +43,7 @@ class DontGoInThereRoomManager extends APP_GameClass
         $this->rooms->shuffle('deck');
 
         // Deal 3 opening rooms
-        for($uiPosition = 0; $uiPosition < 3; $uiPosition++)
+        for($uiPosition = 1; $uiPosition <= 3; $uiPosition++)
         {
             self::dealOpeningRoom($uiPosition);
         }
