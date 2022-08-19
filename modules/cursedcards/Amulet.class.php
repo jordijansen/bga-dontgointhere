@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Amulet: an Amulet Cursed Card object
+ * Amulet: An Amulet Cursed Card object
  */
 class Amulet extends DontGoInThereCursedCard
 {
@@ -19,7 +19,7 @@ class Amulet extends DontGoInThereCursedCard
     }
 
     /**
-     * Build tooltip text for Amulet
+     * buildTooltipText: Build tooltip text for Amulet
      */
     private function buildTooltipText($typeArg)
     {
@@ -30,6 +30,6 @@ class Amulet extends DontGoInThereCursedCard
 
         $dispelStrength = $typeArg + 1;
 
-        return clienttranslate('Dispel an amulet with '.$dispelStrength.' curses');
+        return clienttranslate('At game end, dispel an amulet card with a Curse value of '.$dispelStrength.'.');
     }
 }

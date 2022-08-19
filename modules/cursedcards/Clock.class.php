@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Clock: a Clock Cursed Card object
+ * Clock: A Clock Cursed Card object
  */
 class Clock extends DontGoInThereCursedCard
 {
@@ -12,17 +12,17 @@ class Clock extends DontGoInThereCursedCard
         $this->name = clienttranslate('Clock');
         $this->type = CLOCK;
         $this->cssClass = "dgit-card-clock-".$typeArg;
-        $this->tooltipText = self::buildTooltipText($typeArg);
+        $this->tooltipText = self::buildTooltipText();
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = false;
     }
 
     /**
-     * Build tooltip text for Clock
+     * buildTooltipText: Build tooltip text for Clock
      */
-    private function buildTooltipText($typeArg)
+    private function buildTooltipText()
     {
-        return clienttranslate('1st to 8 or more curse value on clocks dispels 2 clocks');
+        return clienttranslate('If you are the 1st player to collect a set of Clock cards whose Curse values add up to 8 or more, immediately dispel 2 Clock cards of your choice. After that, collecting a set of clocks has no effect.');
     }
 }

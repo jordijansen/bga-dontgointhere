@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ring: a Ring Cursed Card object
+ * Ring: A Ring Cursed Card object
  */
 class Ring extends DontGoInThereCursedCard
 {
@@ -12,17 +12,17 @@ class Ring extends DontGoInThereCursedCard
         $this->name = clienttranslate('Ring');
         $this->type = RING;
         $this->cssClass = "dgit-card-ring-".$typeArg;
-        $this->tooltipText = self::buildTooltipText($typeArg);
+        $this->tooltipText = self::buildTooltipText();
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = false;
     }
 
     /**
-     * Build tooltip text for Ring
+     * buildTooltipText: Build tooltip text for Ring
      */
-    private function buildTooltipText($typeArg)
+    private function buildTooltipText()
     {
-        return clienttranslate('For every 4 rings: Dispel 4 rings');
+        return clienttranslate('When you collect 4 Ring cards, immediately dispel those 4 Ring cards.');
     }
 }

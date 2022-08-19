@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Portrair: a Portrait Cursed Card object
+ * Portrair: A Portrait Cursed Card object
  */
 class Portrait extends DontGoInThereCursedCard
 {
@@ -12,17 +12,17 @@ class Portrait extends DontGoInThereCursedCard
         $this->name = clienttranslate('Portrait');
         $this->type = PORTRAIT;
         $this->cssClass = "dgit-card-portrait-".$typeArg;
-        $this->tooltipText = self::buildTooltipText($typeArg);
+        $this->tooltipText = self::buildTooltipText();
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = true;
     }
 
     /**
-     * Build tooltip text for Portrait
+     * buildTooltipText: Build tooltip text for Portrait
      */
-    private function buildTooltipText($typeArg)
+    private function buildTooltipText()
     {
-        return clienttranslate('For every 2 portraits: Dispel 1 portrait');
+        return clienttranslate('At game end, dispel half of your Portrait cards (of your choice), rounded down.');
     }
 }

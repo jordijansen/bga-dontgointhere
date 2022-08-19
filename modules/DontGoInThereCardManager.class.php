@@ -15,7 +15,7 @@ require_once('cursedcards/Tome.class.php');
 require_once('cursedcards/Twin.class.php');
 
 /**
- * DontGoInThereCardManager: functions to manage cards
+ * DontGoInThereCardManager: Functions to manage cards
  */
 class DontGoInThereCardManager extends APP_GameClass
 {

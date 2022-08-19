@@ -1,7 +1,7 @@
 <?php
 
 /**
- * HolyWater: a Holy Water Cursed Card object
+ * HolyWater: A Holy Water Cursed Card object
  */
 class HolyWater extends DontGoInThereCursedCard
 {
@@ -12,17 +12,17 @@ class HolyWater extends DontGoInThereCursedCard
         $this->name = clienttranslate('Holy Water');
         $this->type = HOLY_WATER;
         $this->cssClass = "dgit-card-holy-water-".$typeArg;
-        $this->tooltipText = self::buildTooltipText($typeArg);
+        $this->tooltipText = self::buildTooltipText();
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = false;
     }
 
     /**
-     * Build tooltip text for Holy Water
+     * buildTooltipText: Build tooltip text for Holy Water
      */
-    private function buildTooltipText($typeArg)
+    private function buildTooltipText()
     {
-        return clienttranslate('When you collect 2 holy water cards: Discard half of your ghosts (rounded down}');
+        return clienttranslate('When you collect 2 Holy Water cards, immediately discard half of your Ghost tokens, rounded down.');
     }
 }

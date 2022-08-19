@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DontGoInThereCursedCard: abstract object for a Cursed Card object
+ * DontGoInThereCursedCard: Abstract object for a Cursed Card object
  */
 abstract class DontGoInThereCursedCard extends APP_GameClass
 {
@@ -14,7 +14,7 @@ abstract class DontGoInThereCursedCard extends APP_GameClass
 
     protected $id = 0;
     protected $name = '';
-    protected $type = '';
+    protected $type = 0;
     protected $cssClass = '';
     protected $tooltipText = '';
     protected $curses = 0;
@@ -36,6 +36,7 @@ abstract class DontGoInThereCursedCard extends APP_GameClass
             'id' => $this->id,
             'name' => $this->name,
             'type' => $this->type,
+            'cssClass' => $this->cssClass,
             'tooltipText' => $this->tooltipText,
             'curses' => $this->curses,
             'diceIcons' => $this->diceIcons,

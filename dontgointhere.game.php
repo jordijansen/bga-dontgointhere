@@ -21,6 +21,7 @@ require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 require_once("modules/constants.inc.php");
 require_once("modules/DontGoInThereCardManager.class.php");
 require_once("modules/DontGoInTherePlayerManager.class.php");
+require_once("modules/DontGoInThereRoomManager.class.php");
 
 class DontGoInThere extends Table
 {
@@ -45,6 +46,7 @@ class DontGoInThere extends Table
 
         $this->cardManager = new DontGoInThereCardManager($this);
         $this->playerManager = new DontGoInTherePlayerManager($this);
+        $this->roomManager = new DontGoInThereRoomManager($this);
 	}
 	
     protected function getGameName( )
@@ -64,6 +66,8 @@ class DontGoInThere extends Table
     {
         // Setup players
         $this->playerManager->setupNewGame($players);
+        // Setup rooms
+        $this->roomManager->setupNewGame();
         // Setup cards
         $this->cardManager->setupNewGame($this->playerManager->getPlayerCount());
         
@@ -100,6 +104,8 @@ class DontGoInThere extends Table
         $currentPlayerId = self::getCurrentPlayerId();
         $data = [
             'playerUiData' => $this->playerManager->getUiData($currentPlayerId),
+            'faceupRooms' => $this->roomManager->getUiData('faceup'),
+            'facedownRooms' => $this->roomManager->getUiData('facedown'),
         ];
         return $data;
     }

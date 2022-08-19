@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Tome: a Tome Cursed Card object
+ * Tome: A Tome Cursed Card object
  */
 class Tome extends DontGoInThereCursedCard
 {
@@ -12,17 +12,17 @@ class Tome extends DontGoInThereCursedCard
         $this->name = clienttranslate('Tome');
         $this->type = TOME;
         $this->cssClass = "dgit-card-tome-".$typeArg;
-        $this->tooltipText = self::buildTooltipText($typeArg);
+        $this->tooltipText = self::buildTooltipText();
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = false;
     }
 
     /**
-     * Build tooltip text for Tome
+     * buildTooltipText: Build tooltip text for Tome
      */
-    private function buildTooltipText($typeArg)
+    private function buildTooltipText()
     {
-        return clienttranslate('For every 2 tomes: Dispel all cards of 1 type (not tomes)');
+        return clienttranslate('When you collect 2 Tome cards, choose a type (not Tomes) and immediately dispel all your cards of that type.');
     }
 }

@@ -3,7 +3,7 @@
 require_once('DontGoInTherePlayer.class.php');
 
 /**
- * DontGoInTherePlayerManager: functions to manager players
+ * DontGoInTherePlayerManager: Functions to manager players
  */
 class DontGoInTherePlayerManager extends APP_GameClass
 {

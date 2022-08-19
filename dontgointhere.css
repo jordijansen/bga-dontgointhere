@@ -13,44 +13,6 @@
  *
  */
 
-/*
-    This is the CSS stylesheet of your game User Interface.
-    
-    Styles defined on this file will be applied to the HTML elements you define in your
-    HTML template (dontgointhere_dontgointhere.tpl), and to HTML elements you create dynamically
-    (in dontgointhere.js).
-    
-    Usually, you are using CSS to:
-    
-    1°) define the overall layout of your game
-        (ex: place the board on the top left, place player's hand beside, place the deck on the right, ...).
-
-    2°) create your CSS-sprites:
-        All images of your games should be gathered into a small number of image files. Then, using
-        background-image and background-position CSS properties, you create HTML blocks that can 
-        display these images correctly (see example below).
-    
-    3°) ... anything else:
-        It is really easy to add and remove CSS classes dynamically from your Javascript with
-        dojo.addClass and dojo.removeClass. It is also easy to check if an element has a class
-        (dojo.hasClass) or to get all elements with a specific class (dojo.query). This is why,
-        very often, using CSS classes for the logic of your user interface allow you to do complex
-        thing easily.
-        
-        
-     Note: on the production platform, this file will be compressed and comments will be removed.
-           Consequently, don't hesitate to put as many comments as necessary.
-*/
-
-
-/* Note: you must not use any @import directive */
-
-
-/********* You can start writing your CSS below this line: **********/
-
-
-@import url("modules/dontgointherecardcoordinates.css");
-
 /***** GENERAL *****/
 html {
     background-image:url('img/dgit_background.png');
@@ -70,3 +32,89 @@ div.player-board {
     box-shadow: 1px 1px 1px 0 #000000a0;
     background-image: url('img/dgit_cards.png');
 }
+
+/***** ROOMS *****/
+.dgit-room {
+    display: inline-block;
+    position: relative;
+    width: 700px;
+    height: 403.67px;
+    box-shadow: 1px 1px 1px 0 #000000a0;
+    background-image: url('img/dgit_rooms.png');
+}
+
+
+
+
+
+
+/********** POSITION CLASSES FOR CARDS SPRITE **********/
+.dgit-card-back { background-position: 0 0; }
+
+.dgit-card-amulet-1 { background-position: 12.5% 0; }
+.dgit-card-amulet-2 { background-position: 37.5% 40%; }
+.dgit-card-amulet-3 { background-position: 75% 20%; }
+.dgit-card-amulet-4 { background-position: 87.5% 40%; }
+
+.dgit-card-cat-1 { background-position: 25% 0; }
+.dgit-card-cat-2 { background-position: 50% 40%; }
+.dgit-card-cat-3 { background-position: 75% 40%; }
+.dgit-card-cat-4 { background-position: 87.5% 60%; }
+
+.dgit-card-clock-1 { background-position: 0 20%; }
+.dgit-card-clock-2 { background-position: 62.5% 0; }
+.dgit-card-clock-3 { background-position: 75% 60%; }
+.dgit-card-clock-4 { background-position: 87.5% 80%; }
+
+.dgit-card-doll-1 { background-position: 12.5% 20%; }
+.dgit-card-doll-2 { background-position: 62.5% 20%;}
+.dgit-card-doll-3 { background-position: 0 80%; }
+.dgit-card-doll-4 { background-position: 100% 0; }
+
+.dgit-card-holy-water-1 { background-position: 25% 20%; }
+.dgit-card-holy-water-2 { background-position: 62.5% 40%; }
+.dgit-card-holy-water-3 { background-position: 12.5% 80%; }
+.dgit-card-holy-water-4 { background-position: 100% 20%;}
+
+.dgit-card-mask-1 { background-position: 37.5% 0; }
+.dgit-card-mask-2 { background-position: 0 60%; }
+.dgit-card-mask-3 { background-position: 25% 80%; }
+.dgit-card-mask-4 { background-position: 100% 0; }
+
+.dgit-card-mirror-1 { background-position: 37.5% 20%; }
+.dgit-card-mirror-2 { background-position: 12.5% 60%; }
+.dgit-card-mirror-3 { background-position: 37.5% 80%; }
+.dgit-card-mirror-4 { background-position: 100% 60%;}
+
+.dgit-card-music-box-1 { background-position: 50% 0; }
+.dgit-card-music-box-2 { background-position: 25% 60%; }
+.dgit-card-music-box-3 { background-position: 50% 80%; }
+.dgit-card-music-box-4 { background-position: 100% 80%; }
+
+.dgit-card-portrait-1 { background-position: 50% 20%; }
+.dgit-card-portrait-2 { background-position: 37.5% 60%; }
+.dgit-card-portrait-3 { background-position: 62.5% 80%; }
+.dgit-card-portrait-4 { background-position: 0 100%; }
+
+.dgit-card-ring-1 { background-position: 0 40%; }
+.dgit-card-ring-2 { background-position: 50% 60%; }
+.dgit-card-ring-3 { background-position: 75% 80%; }
+.dgit-card-ring-4 { background-position: 12.5% 100%; }
+
+.dgit-card-tome-1 { background-position: 12.5% 40%; }
+.dgit-card-tome-2 { background-position: 62.5% 60%; }
+.dgit-card-tome-3 { background-position: 87.5% 0; }
+.dgit-card-tome-4 { background-position: 25% 100%; }
+
+.dgit-card-twin-1 { background-position: 25% 40%; }
+.dgit-card-twin-2 { background-position: 75% 0; }
+.dgit-card-twin-3 { background-position: 87.5% 20%; }
+.dgit-card-twin-4 { background-position: 37.5% 100%; }
+
+/********** POSITION CLASSES FOR ROOMS SPRITE **********/
+.dgit-room-attic          { background-position: 100% 0;}
+.dgit-room-basement       { background-position: 100% 100%; }
+.dgit-room-hallway        { background-position: 0 100%; }
+.dgit-room-library        { background-position: 0 50%; }
+.dgit-room-nursery        { background-position: 0 0; }
+.dgit-room-secret-passage { background-position: 100% 50%; }
