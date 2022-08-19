@@ -18,8 +18,9 @@
 
 
 require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
+require_once("modules/constants.inc.php");
+require_once("modules/DontGoInThereCardManager.class.php");
 require_once("modules/DontGoInTherePlayerManager.class.php");
-
 
 class DontGoInThere extends Table
 {
@@ -42,6 +43,7 @@ class DontGoInThere extends Table
             //      ...
         ) );
 
+        $this->cardManager = new DontGoInThereCardManager($this);
         $this->playerManager = new DontGoInTherePlayerManager($this);
 	}
 	
@@ -60,8 +62,10 @@ class DontGoInThere extends Table
     */
     protected function setupNewGame( $players, $options = array() )
     {
-        // Initialize players
+        // Setup players
         $this->playerManager->setupNewGame($players);
+        // Setup cards
+        $this->cardManager->setupNewGame($this->playerManager->getPlayerCount());
         
         /************ Start the game initialization *****/
 

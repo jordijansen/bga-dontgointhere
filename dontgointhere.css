@@ -48,10 +48,25 @@
 
 /********* You can start writing your CSS below this line: **********/
 
+
+@import url("modules/dontgointherecardcoordinates.css");
+
+/***** GENERAL *****/
 html {
     background-image:url('img/dgit_background.png');
 }
 
 div.player-board {
     background-color: #4f6670;
+}
+
+/***** CARDS *****/
+.dgit-card {
+    display: inline-block;
+    position: relative;
+    width: 200px;
+    height: 280px;
+    border-radius: 5%;
+    box-shadow: 1px 1px 1px 0 #000000a0;
+    background-image: url('img/dgit_cards.png');
 }

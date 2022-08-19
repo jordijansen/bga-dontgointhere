@@ -1,13 +1,12 @@
 <?php
 
+require_once('DontGoInTherePlayer.class.php');
+
 /**
  * DontGoInTherePlayerManager: functions to manager players
  */
-
- require_once('DontGoInTherePlayer.class.php');
-
- class DontGoInTherePlayerManager extends APP_GameClass
- {
+class DontGoInTherePlayerManager extends APP_GameClass
+{
     public $game;
 
     public function __construct($game)
@@ -52,7 +51,7 @@
      */
     public function getPlayers($playerIds = null)
     {
-        $sql = "SELECT player_id id, player_no naturalOrder, player_name name, player_avatar avatar, player_color color, player_score curses, player_score_aux ghostTokens, player_eliminated eliminated, player_zombie zombie FROM player";
+        $sql = "SELECT player_id id, player_no naturalOrder, player_name name, player_avatar avatar, player_color color, player_score curses, player_score_aux ghostTokens, player_cards_dispeled cardsDispeled, player_eliminated eliminated, player_zombie zombie FROM player";
         if(is_array($playerIds))
         {
             $sql .= " WHERE player_id IN ('".implode("','", $playerIds)."')";
@@ -89,4 +88,4 @@
 
         return $uiData;
     }
- }
+}

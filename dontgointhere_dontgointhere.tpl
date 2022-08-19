@@ -25,6 +25,7 @@
     Please REMOVE this comment before publishing your game on BGA
 -->
 
+<div class="dgit-card dgit-card-clock-1"></div>
 
 <script type="text/javascript">
 
