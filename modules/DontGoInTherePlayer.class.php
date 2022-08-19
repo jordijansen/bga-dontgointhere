@@ -43,6 +43,9 @@ class DontGoInTherePlayer extends APP_GameClass
     public function isEliminated(){ return $this->eliminated; }
     public function isZombie(){ return $this->zombie; }
 
+    /**
+     * getUiData: Get player ui data visible by current player
+     */
     public function getUiData($currentPlayerId = null)
     {
         return[
