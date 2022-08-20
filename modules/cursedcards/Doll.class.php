@@ -5,7 +5,7 @@
  */
 class Doll extends DontGoInThereCursedCard
 {
-    public function __construct($game, $id, $typeArg)
+    public function __construct($game, $id, $typeArg, $locationArg)
     {
         parent::__construct($game);
         $this->id = $id;
@@ -16,10 +16,12 @@ class Doll extends DontGoInThereCursedCard
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = false;
+        $this->uiPosition = $locationArg;
     }
 
     /**
-     * buildTooltipText: Build tooltip text for Doll
+     * Build tooltip text for Doll
+     * @return string Tooltip text
      */
     private function buildTooltipText()
     {

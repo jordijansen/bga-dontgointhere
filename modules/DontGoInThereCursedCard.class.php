@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DontGoInThereCursedCard: Abstract object for a Cursed Card object
+ * Abstract object for a Cursed Card object
  */
 abstract class DontGoInThereCursedCard extends APP_GameClass
 {
@@ -20,6 +20,7 @@ abstract class DontGoInThereCursedCard extends APP_GameClass
     protected $curses = 0;
     protected $diceIcons = 0;
     protected $endGameTrigger = false;
+    protected $uiPosition = 0;
 
     public function getId() { return $this->id; }
     public function getName() { return $this->name; }
@@ -29,7 +30,12 @@ abstract class DontGoInThereCursedCard extends APP_GameClass
     public function getCurses() { return $this->curses; }
     public function getDiceIcons() { return $this->diceIcons; }
     public function isEndGameTrigger() { return $this->endGameTrigger; }
+    public function getUiPosition() { return $this->uiPosition; }
 
+    /**
+     * Get ui data of CursedCard visible by current player
+     * @return array An array of uiData for a CursedCard object
+     */
     public function getUiData()
     {
         return[
@@ -41,6 +47,7 @@ abstract class DontGoInThereCursedCard extends APP_GameClass
             'curses' => $this->curses,
             'diceIcons' => $this->diceIcons,
             'endGameTrigger' => $this->endGameTrigger,
+            'uiPosition' => $this->uiPosition,
         ];
     }
 
@@ -53,7 +60,10 @@ abstract class DontGoInThereCursedCard extends APP_GameClass
     ];
 
     /**
-     * determineDiceIcons: Get the appropriate count of dice icons based on curse value of card
+     * Get the appropriate count of dice icons based on curse value of card
+     * @param int $curses Curse value of a card
+     * @throws BgaVisibleSystemException 
+     * @return int THe number of dice icons on a card
      */
     protected function determineDiceIcons($curses)
     {

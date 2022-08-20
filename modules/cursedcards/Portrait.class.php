@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Portrair: A Portrait Cursed Card object
+ * A Portrait Cursed Card object
  */
 class Portrait extends DontGoInThereCursedCard
 {
-    public function __construct($game, $id, $typeArg)
+    public function __construct($game, $id, $typeArg, $locationArg)
     {
         parent::__construct($game);
         $this->id = $id;
@@ -16,10 +16,12 @@ class Portrait extends DontGoInThereCursedCard
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = true;
+        $this->uiPosition = $locationArg;
     }
 
     /**
-     * buildTooltipText: Build tooltip text for Portrait
+     * Build tooltip text for Portrait
+     * @return string Tooltip text
      */
     private function buildTooltipText()
     {

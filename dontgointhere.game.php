@@ -10,38 +10,23 @@
   * 
   * dontgointhere.game.php
   *
-  * This is the main file for your game logic.
-  *
-  * In this PHP file, you are going to defines the rules of the game.
+  * The main file for the game logic.
   *
   */
-
 
 require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 require_once("modules/constants.inc.php");
 require_once("modules/DontGoInThereCardManager.class.php");
 require_once("modules/DontGoInTherePlayerManager.class.php");
 require_once("modules/DontGoInThereRoomManager.class.php");
-
 class DontGoInThere extends Table
 {
 	function __construct( )
 	{
-        // Your global variables labels:
-        //  Here, you can assign labels to global variables you are using for this game.
-        //  You can use any number of global variables with IDs between 10 and 99.
-        //  If your game has options (variants), you also have to associate here a label to
-        //  the corresponding ID in gameoptions.inc.php.
-        // Note: afterwards, you can get/set the global variables with getGameStateValue/setGameStateInitialValue/setGameStateValue
         parent::__construct();
         
-        self::initGameStateLabels( array( 
-            //    "my_first_global_variable" => 10,
-            //    "my_second_global_variable" => 11,
-            //      ...
-            //    "my_first_game_variant" => 100,
-            //    "my_second_game_variant" => 101,
-            //      ...
+        self::initGameStateLabels( array(
+            "clocks_collected" => 10,
         ) );
 
         $this->cardManager = new DontGoInThereCardManager($this);
@@ -49,19 +34,22 @@ class DontGoInThere extends Table
         $this->roomManager = new DontGoInThereRoomManager($this);
 	}
 	
+    /**
+     * Get name of game
+     * @return string Name value of the game
+     */
     protected function getGameName( )
     {
 		// Used for translations and stuff. Please do not modify.
         return "dontgointhere";
     }	
 
-    /*
-        setupNewGame:
-        
-        This method is called only once, when a new game is launched.
-        In this method, you must setup the game according to the game rules, so that
-        the game is ready to be played.
-    */
+    /**
+     * Initial setup of the game
+     * @param array $players An array of players
+     * @param array $options An array of game options
+     * @return void
+     */
     protected function setupNewGame( $players, $options = array() )
     {
         // Setup players
@@ -90,39 +78,31 @@ class DontGoInThere extends Table
         /************ End of the game initialization *****/
     }
 
-    /*
-        getAllDatas: 
-        
-        Gather all informations about current game situation (visible by the current player).
-        
-        The method is called each time the game interface is displayed to a player, ie:
-        _ when the game starts
-        _ when a player refreshes the game page (F5)
-    */
+    /**
+     * Gather all informations about current game situation (visible by the current player)
+     * @return array An array of game data
+     */
     protected function getAllDatas()
     {
         $currentPlayerId = self::getCurrentPlayerId();
         $data = [
+            'constants' => get_defined_constants(true)['user'],
             'playerUiData' => $this->playerManager->getUiData($currentPlayerId),
             'faceupRooms' => $this->roomManager->getUiData('faceup'),
             'facedownRooms' => $this->roomManager->getUiData('facedown'),
-            'roomOneCards' => $this->cardManager->getUiData('room_1'),
-            'roomTwoCards' => $this->cardManager->getUiData('room_2'),
-            'roomThreeCards' => $this->cardManager->getUiData('room_3'),
+            'roomCards' => [
+                1 => $this->cardManager->getUiData('room_1'),
+                2 => $this->cardManager->getUiData('room_2'),
+                3 => $this->cardManager->getUiData('room_3'),
+            ],
         ];
         return $data;
     }
 
-    /*
-        getGameProgression:
-        
-        Compute and return the current game progression.
-        The number returned must be an integer beween 0 (=the game just started) and
-        100 (= the game is finished or almost finished).
-    
-        This method is called each time we are in a game state with the "updateGameProgression" property set to true 
-        (see states.inc.php)
-    */
+    /**
+     * Compute and return the current game progression.
+     * @return int Percentage of game completed (between 0 and 100)
+     */
     function getGameProgression()
     {
         // TODO: compute and return the game progression
@@ -131,9 +111,9 @@ class DontGoInThere extends Table
     }
 
 
-//////////////////////////////////////////////////////////////////////////////
-//////////// Utility functions
-////////////    
+    /***********************************************************************************************
+    *    UTILITY FUNCTIONS::Generic utility methods                                                *
+    ************************************************************************************************/
 
     /*
         In this space, you can put any utility methods useful for your game logic
@@ -141,14 +121,9 @@ class DontGoInThere extends Table
 
 
 
-//////////////////////////////////////////////////////////////////////////////
-//////////// Player actions
-//////////// 
-
-    /*
-        Each time a player is doing some game action, one of the methods below is called.
-        (note: each method below must match an input method in dontgointhere.action.php)
-    */
+    /***********************************************************************************************
+    *    PLAYER ACTIONS::Methods when players trigger actions                                      *
+    ************************************************************************************************/
 
     /*
     
@@ -177,15 +152,9 @@ class DontGoInThere extends Table
     */
 
     
-//////////////////////////////////////////////////////////////////////////////
-//////////// Game state arguments
-////////////
-
-    /*
-        Here, you can create methods defined as "game state arguments" (see "args" property in states.inc.php).
-        These methods function is to return some additional information that is specific to the current
-        game state.
-    */
+    /***********************************************************************************************
+    *    GAME STATE ARGUMENTS::Methods to pass arguments required for a game state                 *
+    ************************************************************************************************/
 
     /*
     
@@ -204,14 +173,10 @@ class DontGoInThere extends Table
     }    
     */
 
-//////////////////////////////////////////////////////////////////////////////
-//////////// Game state actions
-////////////
 
-    /*
-        Here, you can create methods defined as "game state actions" (see "action" property in states.inc.php).
-        The action method of state X is called everytime the current game state is set to X.
-    */
+    /***********************************************************************************************
+    *    GAME STATE::Global game state actions                                                     *
+    ************************************************************************************************/
     
     /*
     
@@ -226,23 +191,18 @@ class DontGoInThere extends Table
     }    
     */
 
-//////////////////////////////////////////////////////////////////////////////
-//////////// Zombie
-////////////
 
-    /*
-        zombieTurn:
-        
-        This method is called each time it is the turn of a player who has quit the game (= "zombie" player).
-        You can do whatever you want in order to make sure the turn of this player ends appropriately
-        (ex: pass).
-        
-        Important: your zombie code will be called when the player leaves the game. This action is triggered
-        from the main site and propagated to the gameserver from a server, not from a browser.
-        As a consequence, there is no current player associated to this action. In your zombieTurn function,
-        you must _never_ use getCurrentPlayerId() or getCurrentPlayerName(), otherwise it will fail with a "Not logged" error message. 
-    */
+    /***********************************************************************************************
+    *    ZOMBIE::Functions to handle players in a zombie state                                     *
+    ************************************************************************************************/
 
+    /**
+     * called each time it is the turn of a player who has quit the game (= "zombie" player)
+     * @param object $state A game state ovhect
+     * @param int $active_player Database ID of a player
+     * @throws feException 
+     * @return void
+     */
     function zombieTurn( $state, $active_player )
     {
     	$statename = $state['name'];
@@ -266,22 +226,17 @@ class DontGoInThere extends Table
 
         throw new feException( "Zombie mode not supported at this game state: ".$statename );
     }
-    
-///////////////////////////////////////////////////////////////////////////////////:
-////////// DB upgrade
-//////////
 
-    /*
-        upgradeTableDb:
-        
-        You don't have to care about this until your game has been published on BGA.
-        Once your game is on BGA, this method is called everytime the system detects a game running with your old
-        Database scheme.
-        In this case, if you change your Database scheme, you just have to apply the needed changes in order to
-        update the game database and allow the game to continue to run with your new version.
     
-    */
-    
+    /***********************************************************************************************
+    *    DB UPGRADE::Functions to handle games with old DB schema                                  *
+    ************************************************************************************************/
+
+    /**
+     * If database schema changes, apply changes to currently running games with old schema
+     * @param int $from_version The version of the schema in the current game
+     * @return void
+     */
     function upgradeTableDb( $from_version )
     {
         // $from_version is the current version of this game database, in numerical form.
@@ -306,7 +261,5 @@ class DontGoInThere extends Table
 //        // Please add your future database scheme changes here
 //
 //
-
-
     }    
 }

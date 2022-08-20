@@ -3,7 +3,7 @@
 require_once('DontGoInTherePlayer.class.php');
 
 /**
- * DontGoInTherePlayerManager: Functions to manager players
+ * Functions to manager players
  */
 class DontGoInTherePlayerManager extends APP_GameClass
 {
@@ -15,7 +15,9 @@ class DontGoInTherePlayerManager extends APP_GameClass
     }
 
     /**
-     * setupNewGame: Setup players for a new game
+     * Setup players for a new game
+     * @param array $players An array of players
+     * @return void
      */
     public function setupNewGame($players)
     {
@@ -37,7 +39,9 @@ class DontGoInTherePlayerManager extends APP_GameClass
     }
 
     /**
-     * getPlayer: Returns a DontGoInTherePlayer object for active/specified player ID
+     * Returns a DontGoInTherePlayer object for active/specified player ID
+     * @param int $playerId Database ID of a plyer
+     * @return DontGoInTherePlayer
      */
     public function getPlayer($playerId = null)
     {
@@ -47,7 +51,9 @@ class DontGoInTherePlayerManager extends APP_GameClass
     }
 
     /**
-     * getPlayers: Returns an array of DontGoInTherePlayer objects for all/specified player IDs
+     * Returns an array of DontGoInTherePlayer objects for all/specified player IDs
+     * @param array $playerIds An array of player IDs from database
+     * @return array<DontGoInTherePlayer>
      */
     public function getPlayers($playerIds = null)
     {
@@ -67,16 +73,21 @@ class DontGoInTherePlayerManager extends APP_GameClass
         return $players;
     }
 
+
     /**
-     * getPlayerCount: Returns the number of players
+     * Returns the number of players
+     * @return int Number of players in the game
      */
     public function getPlayerCount()
     {
         return intval(self::getUniqueValueFromDB("SELECT COUNT(*) FROM player"));
     }
 
+
     /**
-     * getUiData: Get all ui data visible by player id
+     * Get all ui data visible by player id
+     * @param int $playerId Database ID of a player
+     * @return array Array of uiData for a player
      */
     public function getUiData($playerId)
     {

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Tome: A Tome Cursed Card object
+ * A Tome Cursed Card object
  */
 class Tome extends DontGoInThereCursedCard
 {
-    public function __construct($game, $id, $typeArg)
+    public function __construct($game, $id, $typeArg, $locationArg)
     {
         parent::__construct($game);
         $this->id = $id;
@@ -16,10 +16,12 @@ class Tome extends DontGoInThereCursedCard
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = false;
+        $this->uiPosition = $locationArg;
     }
 
     /**
-     * buildTooltipText: Build tooltip text for Tome
+     * Build tooltip text for Tome
+     * @return string Tooltip text
      */
     private function buildTooltipText()
     {

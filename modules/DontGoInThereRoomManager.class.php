@@ -9,7 +9,7 @@ require_once('rooms/Nursery.class.php');
 require_once('rooms/SecretPassage.class.php');
 
 /**
- * DontGoInThereRoomManager: Functions to manage rooms
+ * Functions to manage rooms
  */
 class DontGoInThereRoomManager extends APP_GameClass
 {
@@ -24,7 +24,8 @@ class DontGoInThereRoomManager extends APP_GameClass
     }
 
     /**
-     * setupNewGame: Setup rooms for a new game
+     * Setup rooms for a new game
+     * @return void
      */
     public function setupNewGame()
     {
@@ -70,31 +71,40 @@ class DontGoInThereRoomManager extends APP_GameClass
     ];
 
     /**
-     * getRoom: Factory to create a room object
+     * Factory to create a DontGoInThereRoom object
+     * @param int $roomType Room type
+     * @param int $id Database id of room
+     * @param int $locationArg Database location_arg Used to denote ui position of room within its location
+     * @throws BgaVisibleException 
+     * @return DontGoInThereRoom A DontGoInThereRoom object
      */
-    public function getRoom($roomType, $id)
+    public function getRoom($roomType, $id, $locationArg)
     {
         if(!isset(self::$roomClasses[$roomType]))
         {
             throw new BgaVisibleException("getRoom: Unknown room type $roomType");
         }
         $className = self::$roomClasses[$roomType];
-        return new $className($this->game, $id);
+        return new $className($this->game, $id, $locationArg);
     }
 
     /**
-     * getRooms: Get all rooms in specified location
+     * Get all DontGoInThereRoom objects in specified location
+     * @param string $location Location value in database
+     * @return array<DontGoInThereRoom> An array of DontGoInThereRoom objects
      */
     public function getRooms($location)
     {
         $rooms = $this->rooms->getCardsInLocation($location);
         return array_map(function($room) {
-            return $this->getRoom($room['type'], $room['id']);
+            return $this->getRoom($room['type'], $room['id'], $room['location_arg']);
         }, $rooms);
     }
 
     /**
-     * getUiData: Get ui data of all rooms in specified location
+     * Get uiData of all rooms in specified location
+     * @param string $location Location value from database
+     * @return array An array of uiData for a room
      */
     public function getUiData($location)
     {
@@ -107,7 +117,9 @@ class DontGoInThereRoomManager extends APP_GameClass
     }
 
     /**
-     * dealOpeningRoom: Deal a starting room, put is flipside in waiting.
+     * Deal a starting room, put is flipside in waiting.
+     * @param int $roomPosition The UI position of a room within its location
+     * @return void
      */
     private function dealOpeningRoom($roomPosition)
     {
@@ -127,6 +139,12 @@ class DontGoInThereRoomManager extends APP_GameClass
 
     /**
      * findRoomByType: Return a room of specified type from a list of rooms
+     */
+    /**
+     * Return a DontGoInThereRoom of specified type from a list of rooms
+     * @param array<DontGoInThereRoom> $rooms An array of DontGoInThereRoom objects
+     * @param int $roomType A room type value
+     * @return mixed a DontGoInThereRoom object if it exists in the list, otherwise false
      */
     private function findRoomByType($rooms, $roomType)
     {

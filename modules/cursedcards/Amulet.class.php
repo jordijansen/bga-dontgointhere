@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Amulet: An Amulet Cursed Card object
+ * An Amulet Cursed Card object
  */
 class Amulet extends DontGoInThereCursedCard
 {
-    public function __construct($game, $id, $typeArg)
+    public function __construct($game, $id, $typeArg, $locationArg)
     {
         parent::__construct($game);
         $this->id = $id;
@@ -16,19 +16,24 @@ class Amulet extends DontGoInThereCursedCard
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = true;
+        $this->uiPosition = $locationArg;
     }
 
+
     /**
-     * buildTooltipText: Build tooltip text for Amulet
+     * Build tooltip text for Amulet
+     * Amulet dispel strength is 1 more than curse value, except for 4 which has no ability
+     * @param int $curses Curse value of card
+     * @return string Tooltip text
      */
-    private function buildTooltipText($typeArg)
+    private function buildTooltipText($curses)
     {
-        if($typeArg == 4)
+        if($curses == 4)
         {
             return "";
         }
 
-        $dispelStrength = $typeArg + 1;
+        $dispelStrength = $curses + 1;
 
         return clienttranslate('At game end, dispel an amulet card with a Curse value of '.$dispelStrength.'.');
     }

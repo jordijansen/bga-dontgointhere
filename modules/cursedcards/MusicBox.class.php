@@ -1,11 +1,11 @@
 <?php
 
 /**
- * MusicBox: A Music Box Cursed Card object
+ * A Music Box Cursed Card object
  */
 class MusicBox extends DontGoInThereCursedCard
 {
-    public function __construct($game, $id, $typeArg)
+    public function __construct($game, $id, $typeArg, $locationArg)
     {
         parent::__construct($game);
         $this->id = $id;
@@ -16,10 +16,12 @@ class MusicBox extends DontGoInThereCursedCard
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = true;
+        $this->uiPosition = $locationArg;
     }
 
     /**
-     * buildTooltipText: Build tooltip text for Music Box
+     * Build tooltip text for Music Box
+     * @return string Tooltip text
      */
     private function buildTooltipText()
     {

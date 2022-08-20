@@ -15,7 +15,7 @@ require_once('cursedcards/Tome.class.php');
 require_once('cursedcards/Twin.class.php');
 
 /**
- * DontGoInThereCardManager: Functions to manage cards
+ * Functions to manage cards
  */
 class DontGoInThereCardManager extends APP_GameClass
 {
@@ -30,7 +30,9 @@ class DontGoInThereCardManager extends APP_GameClass
     }
 
     /**
-     * setupNewGame: Setup cards for a new game
+     * Setup cards for a new game
+     * @param int $playerCount Number of players in the game
+     * @return void
      */
     public function setupNewGame($playerCount)
     {
@@ -82,38 +84,49 @@ class DontGoInThereCardManager extends APP_GameClass
     ];
 
     private static $playerCountVariables = [
-        2 => ['cursedCardTypes' => 5, 'cardsToRemove' => 16],
-        3 => ['cursedCardTypes' => 6, 'cardsToRemove' => 12],
-        4 => ['cursedCardTypes' => 7, 'cardsToRemove' => 8],
-        5 => ['cursedCardTypes' => 8, 'cardsToRemove' => 4],
+    2 => ['cursedCardTypes' => 5, 'cardsToRemove' => 16],
+    3 => ['cursedCardTypes' => 6, 'cardsToRemove' => 12],
+    4 => ['cursedCardTypes' => 7, 'cardsToRemove' => 8],
+    5 => ['cursedCardTypes' => 8, 'cardsToRemove' => 4],
     ];
 
+
     /**
-     * getCursedCard: Factory to create a cursed card object
+     * Factory to create a DontGoInThereCursedCard object
+     * @param int $cardType Card type id
+     * @param int $id Card database id
+     * @param int $typeArg Database type_arg Used to denote curse value of card
+     * @param int $locationArg Database location_arg Used to denote ui position of card within its location
+     * @throws BgaVisibleSystemException 
+     * @return DontGoInThereCursedCard A DontGoInThereCursedCard object
      */
-    public function getCursedCard($cardType, $id, $typeArg)
+    public function getCursedCard($cardType, $id, $typeArg, $locationArg)
     {
         if(!isset(self::$cursedCardClasses[$cardType]))
         {
             throw new BgaVisibleSystemException("getCursedCard: Unknown cursed card type $cardType");
         }
         $className = self::$cursedCardClasses[$cardType];
-        return new $className($this->game, $id, $typeArg);
+        return new $className($this->game, $id, $typeArg, $locationArg);
     }
 
     /**
-     * getCursedCards: Get all cursed cards in specified location
+     * Get all DontGoInThereCursedCard objects in a specified location
+     * @param string $location Location value in database
+     * @return array<DontGoInThereCursedCard> An array of DontGoInThereCursedCard objects
      */
     public function getCursedCards($location)
     {
         $cards = $this->cards->getCardsInLocation($location);
         return array_map(function($card) {
-            return $this->getCursedCard($card['type'], $card['id'], $card['type_arg']);
+            return $this->getCursedCard($card['type'], $card['id'], $card['type_arg'], $card['location_arg']);
         }, $cards);
     }
 
     /**
-     * getUiData: Get ui data of all cards in specified location
+     * Get ui data of all cards in specified location
+     * @param string $location Location value in database
+     * @return array An array of ui data for CursedCards
      */
     public function getUiData($location)
     {
@@ -126,7 +139,9 @@ class DontGoInThereCardManager extends APP_GameClass
     }
 
     /**
-     * randomizeCursedCardTypes: Get an array of randomized cursed card types for game based on player count
+     * Get an array of randomized cursed card types for game based on player count
+     * @param int $playerCount Number of players in the game
+     * @return array An array of card types
      */
     private function randomizeCursedCardTypes($playerCount)
     {

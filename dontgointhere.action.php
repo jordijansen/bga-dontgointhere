@@ -12,13 +12,6 @@
  *
  * DontGoInThere main action entry point
  *
- *
- * In this file, you are describing all the methods that can be called from your
- * user interface logic (javascript).
- *       
- * If you define a method "myAction" here, then you can call it from your javascript code with:
- * this.ajaxcall( "/dontgointhere/dontgointhere/myAction.html", ...)
- *
  */
   
   

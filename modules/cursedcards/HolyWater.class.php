@@ -1,11 +1,11 @@
 <?php
 
 /**
- * HolyWater: A Holy Water Cursed Card object
+ * A Holy Water Cursed Card object
  */
 class HolyWater extends DontGoInThereCursedCard
 {
-    public function __construct($game, $id, $typeArg)
+    public function __construct($game, $id, $typeArg, $locationArg)
     {
         parent::__construct($game);
         $this->id = $id;
@@ -16,10 +16,12 @@ class HolyWater extends DontGoInThereCursedCard
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = false;
+        $this->uiPosition = $locationArg;
     }
 
     /**
-     * buildTooltipText: Build tooltip text for Holy Water
+     * Build tooltip text for Holy Water
+     * @return string Tooltip text
      */
     private function buildTooltipText()
     {

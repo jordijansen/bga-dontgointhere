@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Library: A Library Room object
+ * A Library Room object
  */
 class Library extends DontGoInThereRoom
 {
-    public function __construct($game, $id)
+    public function __construct($game, $id, $locationArg)
     {
         parent::__construct($game);
         $this->id = $id;
@@ -14,10 +14,12 @@ class Library extends DontGoInThereRoom
         $this->cssClass = "dgit-room-library";
         $this->tooltipText = self::buildTooltipText();;
         $this->flipSideRoom = SECRET_PASSAGE;
+        $this->uiPosition = $locationArg;
     }
 
     /**
-     * buildTooltipText: Build tooltip text for Library
+     * Build tooltip text for Library
+     * @return string Tooltip text
      */
     private function buildTooltipText()
     {

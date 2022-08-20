@@ -14,6 +14,23 @@
     DontGoInThere HTML template
 -->
 
+<div id="dgit_layout">
+    <div id="dgit_top_panel">
+        <div id="dgit_rooms_panel">
+            <!-- BEGIN room -->
+            <div id="dgit_room_panel_{ROOM_NUM}" class="dgit-room-panel">
+                <div id="dgit_room_{ROOM_NUM}_cards" class="dgit-room-cards">
+                    <!-- BEGIN roomcard -->
+                    <div id="dgit_room_{ROOM_NUM}_card_{CARD_NUM}" class="dgit-card" style="order: {CARD_NUM}"></div>
+                    <!-- END roomcard -->
+                </div>
+                <div id="dgit_room_{ROOM_NUM}" class="dgit-room" style="order: {ROOM_NUM}"></div>
+            </div>
+            <!-- END room -->
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
 
 // Javascript HTML templates

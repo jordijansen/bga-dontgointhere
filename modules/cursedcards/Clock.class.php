@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Clock: A Clock Cursed Card object
+ * A Clock Cursed Card object
  */
 class Clock extends DontGoInThereCursedCard
 {
-    public function __construct($game, $id, $typeArg)
+    public function __construct($game, $id, $typeArg, $locationArg)
     {
         parent::__construct($game);
         $this->id = $id;
@@ -16,10 +16,12 @@ class Clock extends DontGoInThereCursedCard
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = false;
+        $this->uiPosition = $locationArg;
     }
 
     /**
-     * buildTooltipText: Build tooltip text for Clock
+     * Build tooltip text for Clock
+     * @return string Tooltip text
      */
     private function buildTooltipText()
     {

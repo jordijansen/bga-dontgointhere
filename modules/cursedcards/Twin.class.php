@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Twin: A Twin Cursed Card object
+ * A Twin Cursed Card object
  */
 class Twin extends DontGoInThereCursedCard
 {
-    public function __construct($game, $id, $typeArg)
+    public function __construct($game, $id, $typeArg, $locationArg)
     {
         parent::__construct($game);
         $this->id = $id;
@@ -16,10 +16,12 @@ class Twin extends DontGoInThereCursedCard
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = false;
+        $this->uiPosition = $locationArg;
     }
 
     /**
-     * buildTooltipText: Build tooltip text for Twin
+     * Build tooltip text for Twin
+     * @return string Tooltip text
      */
     private function buildTooltipText()
     {

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Mirror: A Mirror Cursed Card object
+ * A Mirror Cursed Card object
  */
 class Mirror extends DontGoInThereCursedCard
 {
-    public function __construct($game, $id, $typeArg)
+    public function __construct($game, $id, $typeArg, $locationArg)
     {
         parent::__construct($game);
         $this->id = $id;
@@ -16,10 +16,12 @@ class Mirror extends DontGoInThereCursedCard
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = false;
+        $this->uiPosition = $locationArg;
     }
 
     /**
-     * buildTooltipText: Build tooltip text for Mirror
+     * Build tooltip text for Mirror
+     * @return string Tooltip text
      */
     private function buildTooltipText()
     {

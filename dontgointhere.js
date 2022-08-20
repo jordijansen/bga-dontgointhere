@@ -10,8 +10,6 @@
  * dontgointhere.js
  *
  * DontGoInThere user interface script
- * 
- * In this file, you are describing the logic of your user interface, in Javascript language.
  *
  */
 
@@ -26,30 +24,19 @@ function (dojo, declare) {
     return declare("bgagame.dontgointhere", ebg.core.gamegui, {
         constructor: function(){
             debug('constructor', 'starting constructor');
-              
-            // Here, you can init the global variables of your user interface
-            // Example:
-            // this.myGlobalValue = 0;
-
         },
         
-        /*
-            setup:
-            
-            This method must set up the game user interface according to current game situation specified
-            in parameters.
-            
-            The method is called each time the game interface is displayed to a player, ie:
-            _ when the game starts
-            _ when a player refreshes the game page (F5)
-            
-            "gamedatas" argument contains all datas retrieved by your "getAllDatas" PHP method.
-        */
-        
+        /**
+         * Called when page is loaded (and refreshed). Build elements visible to the player
+         * @param {Object} gamedatas Current game data
+         */
         setup: function( gamedatas )
         {
             debug('setup', 'Beginning game setup');
             debug('setup::gamedatas', gamedatas);
+
+            debug('setup', 'Definining local constants')
+            this.defineGlobalConstants(gamedatas.constants);
             
             // Setting up player boards
             // for( var player_id in gamedatas.players )
@@ -59,7 +46,21 @@ function (dojo, declare) {
             //     // TODO: Setting up players boards if needed
             // }
             
-            // TODO: Set up your game interface here, according to "gamedatas"
+            debug('setup', 'Create room boards');
+            for(var faceupRoomsKey in gamedatas.faceupRooms)
+            {
+                var room = gamedatas.faceupRooms[faceupRoomsKey];
+                dojo.addClass('dgit_room_'+room.uiPosition, room.cssClass);
+                for(var roomCardsKey in gamedatas.roomCards[room.uiPosition])
+                {
+                    var card = gamedatas.roomCards[room.uiPosition][roomCardsKey];
+                    if(room.type == SECRET_PASSAGE && card.uiPosition == 3) {
+                        dojo.addClass('dgit_room_'+room.uiPosition+'_card_'+card.uiPosition, 'dgit-card-back');
+                    } else {
+                        dojo.addClass('dgit_room_'+room.uiPosition+'_card_'+card.uiPosition, card.cssClass);
+                    }
+                }
+            }
             
  
             // Setup game notifications to handle (see "setupNotifications" method below)
@@ -69,12 +70,15 @@ function (dojo, declare) {
         },
        
 
-        ///////////////////////////////////////////////////
-        //// Game & client states
+        /***********************************************************************************************
+        *    GAME STATE FUNCTIONS::Methods to handle game state transitions                            *
+        ************************************************************************************************/
         
-        // onEnteringState: this method is called each time we are entering into a new game state.
-        //                  You can use this method to perform some user interface changes at this moment.
-        //
+        /**
+         * Perform interface changes when entering a new state
+         * @param {string} stateName Name of state that is being entered
+         * @param {Object} args Any arguments needed for interface updates
+         */
         onEnteringState: function( stateName, args )
         {
             debug('onEnteringState', 'Entering a new state');
@@ -100,9 +104,10 @@ function (dojo, declare) {
             }
         },
 
-        // onLeavingState: this method is called each time we are leaving a game state.
-        //                 You can use this method to perform some user interface changes at this moment.
-        //
+        /**
+         * Perform interface changes when leaving a game state
+         * @param {string} stateName Name of the state that is being left
+         */
         onLeavingState: function( stateName )
         {
             debug('onLeavingState', 'Leaving a state');
@@ -127,9 +132,11 @@ function (dojo, declare) {
             }               
         }, 
 
-        // onUpdateActionButtons: in this method you can manage "action buttons" that are displayed in the
-        //                        action status bar (ie: the HTML links in the status bar).
-        //        
+        /**
+         * Manages displayed action buttons when entering a new state
+         * @param {string} stateName Name of state that is being entered
+         * @param {Object} args Any arguments needed for interface updates
+         */
         onUpdateActionButtons: function( stateName, args )
         {
             debug('onUpdateActionButtons', 'Updating action buttons');
@@ -156,30 +163,29 @@ function (dojo, declare) {
             }
         },        
 
-        ///////////////////////////////////////////////////
-        //// Utility methods
+        /***********************************************************************************************
+        *    UTILITY FUNCTIONS::Generic utility methods                                                *
+        ************************************************************************************************/
         
-        /*
-        
-            Here, you can defines some utility methods that you can use everywhere in your javascript
-            script.
-        
-        */
+        /**
+         * Gives javascript access to constants defined in PHP
+         * @param {Object} userConstants Defined user constants
+         */
+        defineGlobalConstants: function(userConstants)
+        {
+            for(var constant in userConstants)
+            {
+                if(!globalThis[constant])
+                {
+                    globalThis[constant] = userConstants[constant];
+                }
+            }
+        },
 
 
-        ///////////////////////////////////////////////////
-        //// Player's action
-        
-        /*
-        
-            Here, you are defining methods to handle player's action (ex: results of mouse click on 
-            game objects).
-            
-            Most of the time, these methods:
-            _ check the action is possible at this game state.
-            _ make a call to the game server
-        
-        */
+        /***********************************************************************************************
+        *    PLAYER ACTIONS::Handle player UX interaction                                              *
+        ************************************************************************************************/
         
         /* Example:
         
@@ -215,19 +221,14 @@ function (dojo, declare) {
         
         */
 
-        
-        ///////////////////////////////////////////////////
-        //// Reaction to cometD notifications
 
-        /*
-            setupNotifications:
-            
-            In this method, you associate each of your game notifications with your local method to handle it.
-            
-            Note: game notification names correspond to "notifyAllPlayers" and "notifyPlayer" calls in
-                  your dontgointhere.game.php file.
-        
-        */
+        /***********************************************************************************************
+        *    NOTIFICATIONS::Handle notifications from backend                                          *
+        ************************************************************************************************/
+
+        /**
+         * Associate notifications with handler methods
+         */
         setupNotifications: function()
         {
             debug('setupNotifications', 'Setting up notification subscriptions');

@@ -33,50 +33,37 @@
     }    
   	function build_page( $viewArgs )
   	{		
+        // Template name
+        $template = self::getGameName().'_'.self::getGameName();
   	    // Get players & players number
         $players = $this->game->loadPlayersBasicInfos();
         $players_nbr = count( $players );
 
-        /*********** Place your code below:  ************/
-
-
-        /*
-        
-        // Examples: set the value of some element defined in your tpl file like this: {MY_VARIABLE_ELEMENT}
-
-        // Display a specific number / string
-        $this->tpl['MY_VARIABLE_ELEMENT'] = $number_to_display;
-
-        // Display a string to be translated in all languages: 
-        $this->tpl['MY_VARIABLE_ELEMENT'] = self::_("A string to be translated");
-
-        // Display some HTML content of your own:
-        $this->tpl['MY_VARIABLE_ELEMENT'] = self::raw( $some_html_code );
-        
-        */
-        
-        /*
-        
-        // Example: display a specific HTML block for each player in this game.
-        // (note: the block is defined in your .tpl file like this:
-        //      <!-- BEGIN myblock --> 
-        //          ... my HTML code ...
-        //      <!-- END myblock --> 
-        
-
-        $this->page->begin_block( "dontgointhere_dontgointhere", "myblock" );
-        foreach( $players as $player )
+        // Inflate rooms w/ cards blocks
+        $this->page->begin_block($template, 'roomcard');
+        $this->page->begin_block($template, 'room');
+        for($roomNumber = 1; $roomNumber <= 3; $roomNumber++)
         {
-            $this->page->insert_block( "myblock", array( 
-                                                    "PLAYER_NAME" => $player['player_name'],
-                                                    "SOME_VARIABLE" => $some_value
-                                                    ...
-                                                     ) );
+          $this->page->reset_subblocks('roomcard');
+
+          for($cardNumber = 1; $cardNumber <=3; $cardNumber++)
+          {
+            $this->page->insert_block(
+              'roomcard',
+              array(
+                'ROOM_NUM' => $roomNumber,
+                'CARD_NUM' => $cardNumber,
+              )
+            );
+          }
+
+          $this->page->insert_block(
+            'room',
+            array(
+              'ROOM_NUM' => $roomNumber,
+            )
+          );
         }
-        
-        */
-
-
 
         /*********** Do not change anything below this line  ************/
   	}

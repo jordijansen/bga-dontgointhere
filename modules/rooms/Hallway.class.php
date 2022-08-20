@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Hallway: A Hallway Room object
+ * A Hallway Room object
  */
 class Hallway extends DontGoInThereRoom
 {
-    public function __construct($game, $id)
+    public function __construct($game, $id, $locationArg)
     {
         parent::__construct($game);
         $this->id = $id;
@@ -14,10 +14,12 @@ class Hallway extends DontGoInThereRoom
         $this->cssClass = "dgit-room-hallway";
         $this->tooltipText = self::buildTooltipText();;
         $this->flipSideRoom = BASEMENT;
+        $this->uiPosition = $locationArg;
     }
 
     /**
-     * buildTooltipText: Build tooltip text for Hallway
+     * Build tooltip text for Hallway
+     * @return string Tooltip text
      */
     private function buildTooltipText()
     {

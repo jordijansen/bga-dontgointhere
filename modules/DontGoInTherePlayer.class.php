@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DontGoInTherePlayer: Player object
+ * A Player object
  */
 class DontGoInTherePlayer extends APP_GameClass
 {
@@ -44,7 +44,9 @@ class DontGoInTherePlayer extends APP_GameClass
     public function isZombie(){ return $this->zombie; }
 
     /**
-     * getUiData: Get player ui data visible by current player
+     * Get player uiData visible by current player
+     * @param int $currentPlayerId Id of player who is viewing the page
+     * @return array Am array of uiData for a player
      */
     public function getUiData($currentPlayerId = null)
     {

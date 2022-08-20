@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Ring: A Ring Cursed Card object
+ * A Ring Cursed Card object
  */
 class Ring extends DontGoInThereCursedCard
 {
-    public function __construct($game, $id, $typeArg)
+    public function __construct($game, $id, $typeArg, $locationArg)
     {
         parent::__construct($game);
         $this->id = $id;
@@ -16,10 +16,12 @@ class Ring extends DontGoInThereCursedCard
         $this->curses = $typeArg;
         $this->diceIcons = self::determineDiceIcons($typeArg);
         $this->endGameTrigger = false;
+        $this->uiPosition = $locationArg;
     }
 
     /**
-     * buildTooltipText: Build tooltip text for Ring
+     * Build tooltip text for Ring
+     * @return string Tooltip text
      */
     private function buildTooltipText()
     {
