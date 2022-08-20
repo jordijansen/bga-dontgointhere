@@ -45,6 +45,18 @@ function (dojo, declare) {
                          
             //     // TODO: Setting up players boards if needed
             // }
+
+            debug('setup', 'Create card deck')
+            for (var cardNumber = 0; cardNumber < (gamedatas.deckSize/3); cardNumber++)
+            {
+                dojo.place(
+                    this.format_block(
+                        'jstpl_deck_card', {
+                            card_num: cardNumber,
+                        }
+                    ), 'dgit_deck'
+                );
+            }
             
             debug('setup', 'Create room boards');
             for(var faceupRoomsKey in gamedatas.faceupRooms)

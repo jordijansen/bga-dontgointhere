@@ -90,6 +90,16 @@ class DontGoInThereCardManager extends APP_GameClass
     5 => ['cursedCardTypes' => 8, 'cardsToRemove' => 4],
     ];
 
+    /**
+     * Get a count of cards in specified location
+     * @param string $location Database location value
+     * @param int $locationArg Database locationArg value
+     * @return int The number of cards in the locations
+     */
+    public function countCursedCards($location, $locationArg = null)
+    {
+        return $this->cards->countCardsInLocation($location, $locationArg);
+    }
 
     /**
      * Factory to create a DontGoInThereCursedCard object

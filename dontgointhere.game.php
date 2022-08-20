@@ -88,6 +88,7 @@ class DontGoInThere extends Table
         $data = [
             'constants' => get_defined_constants(true)['user'],
             'playerUiData' => $this->playerManager->getUiData($currentPlayerId),
+            'deckSize' => $this->cardManager->countCursedCards('deck'),
             'faceupRooms' => $this->roomManager->getUiData('faceup'),
             'facedownRooms' => $this->roomManager->getUiData('facedown'),
             'roomCards' => [

@@ -23,6 +23,18 @@ div.player-board {
 }
 
 /***** LAYOUT *****/
+#dgit_deck_and_dice {
+    display: flex;
+    flex-flow: row wrap;
+    padding-bottom: 20px;
+}
+
+#dgit_deck {
+    position: relative;
+    height: 340px;
+    padding-left: 10px;
+}
+
 #dgit_rooms_panel {
     display: flex;
     flex-flow: row wrap;   
@@ -53,6 +65,11 @@ div.player-board {
     border: 1px solid;
     box-shadow: 1px 1px 1px 0 #000000a0;
     background-image: url('img/dgit_cards.png');
+}
+
+.dgit-card-in-deck {
+    position: absolute;
+    z-index: -1;
 }
 
 /***** ROOMS *****/

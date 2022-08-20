@@ -16,6 +16,10 @@
 
 <div id="dgit_layout">
     <div id="dgit_top_panel">
+        <div id="dgit_deck_and_dice">
+            <div id="dgit_deck">
+            </div>
+        </div>
         <div id="dgit_rooms_panel">
             <!-- BEGIN room -->
             <div id="dgit_room_panel_{ROOM_NUM}" class="dgit-room-panel">
@@ -33,8 +37,7 @@
 
 <script type="text/javascript">
 
-// Javascript HTML templates
-
+    var jstpl_deck_card = '<div id="dgit_deck_card_${card_num}" class="dgit-card dgit-card-back dgit-card-in-deck" style="bottom: ${card_num}%"></div>';
 
 </script>  
 
