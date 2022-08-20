@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Abstract object for a Cursed Card object
+ * Abstract object for a DontGoInThereCursedCard object
  */
 abstract class DontGoInThereCursedCard extends APP_GameClass
 {
@@ -34,11 +34,11 @@ abstract class DontGoInThereCursedCard extends APP_GameClass
 
     /**
      * Get ui data of CursedCard visible by current player
-     * @return array An array of uiData for a CursedCard object
+     * @return array<mixed> An array of uiData for a CursedCard object
      */
     public function getUiData()
     {
-        return[
+        return [
             'id' => $this->id,
             'name' => $this->name,
             'type' => $this->type,

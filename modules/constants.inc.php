@@ -17,6 +17,17 @@ define('TOME', 10);
 define('TWIN', 11);
 
 /**
+ * Generic
+ */
+define('DGIT_FALSE', 0);
+define('DGIT_TRUE', 1);
+
+/**
+ * Global variables
+ */
+define('CLOCKS_COLLECTED', 'clocks_collected');
+
+/**
  * Room types
  */
 define('ATTIC', 0);

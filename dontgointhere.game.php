@@ -17,6 +17,7 @@
 require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 require_once("modules/constants.inc.php");
 require_once("modules/DontGoInThereCardManager.class.php");
+require_once("modules/DontGoInThereDiceManager.class.php");
 require_once("modules/DontGoInTherePlayerManager.class.php");
 require_once("modules/DontGoInThereRoomManager.class.php");
 class DontGoInThere extends Table
@@ -26,10 +27,11 @@ class DontGoInThere extends Table
         parent::__construct();
         
         self::initGameStateLabels( array(
-            "clocks_collected" => 10,
+            CLOCKS_COLLECTED => 10,
         ) );
 
         $this->cardManager = new DontGoInThereCardManager($this);
+        $this->diceManager = new DontGoInThereDiceManager($this);
         $this->playerManager = new DontGoInTherePlayerManager($this);
         $this->roomManager = new DontGoInThereRoomManager($this);
 	}
@@ -54,23 +56,20 @@ class DontGoInThere extends Table
     {
         // Setup players
         $this->playerManager->setupNewGame($players);
+        // Setup dice
+        $this->diceManager->setupNewGame();
         // Setup rooms
         $this->roomManager->setupNewGame();
         // Setup cards
         $this->cardManager->setupNewGame($this->playerManager->getPlayerCount());
-        
-        /************ Start the game initialization *****/
 
-        // Init global values with their initial values
-        //self::setGameStateInitialValue( 'my_first_global_variable', 0 );
+        // Initialize global variables
+        self::setGameStateInitialValue(CLOCKS_COLLECTED, DGIT_FALSE);
         
         // Init game statistics
         // (note: statistics used in this file must be defined in your stats.inc.php file)
         //self::initStat( 'table', 'table_teststat1', 0 );    // Init a table statistics
         //self::initStat( 'player', 'player_teststat1', 0 );  // Init a player statistics (for all players)
-
-        // TODO: setup the initial game situation here
-       
 
         // Activate first player (which is in general a good idea :) )
         $this->activeNextPlayer();
@@ -87,10 +86,11 @@ class DontGoInThere extends Table
         $currentPlayerId = self::getCurrentPlayerId();
         $data = [
             'constants' => get_defined_constants(true)['user'],
-            'playerUiData' => $this->playerManager->getUiData($currentPlayerId),
             'deckSize' => $this->cardManager->countCursedCards('deck'),
+            'dice' => $this->diceManager->getUiData(),
             'faceupRooms' => $this->roomManager->getUiData('faceup'),
             'facedownRooms' => $this->roomManager->getUiData('facedown'),
+            'playerInfo' => $this->playerManager->getUiData($currentPlayerId),
             'roomCards' => [
                 1 => $this->cardManager->getUiData('room_1'),
                 2 => $this->cardManager->getUiData('room_2'),

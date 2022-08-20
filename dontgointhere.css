@@ -22,6 +22,10 @@ div.player-board {
     background-color: #4f6670;
 }
 
+.dgit-hidden {
+    display: none;
+}
+
 /***** LAYOUT *****/
 #dgit_deck_and_dice {
     display: flex;

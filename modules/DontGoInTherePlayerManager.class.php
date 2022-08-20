@@ -41,7 +41,7 @@ class DontGoInTherePlayerManager extends APP_GameClass
     /**
      * Returns a DontGoInTherePlayer object for active/specified player ID
      * @param int $playerId Database ID of a plyer
-     * @return DontGoInTherePlayer
+     * @return DontGoInTherePlayer A DontGoInTherePlayer object
      */
     public function getPlayer($playerId = null)
     {
@@ -52,8 +52,8 @@ class DontGoInTherePlayerManager extends APP_GameClass
 
     /**
      * Returns an array of DontGoInTherePlayer objects for all/specified player IDs
-     * @param array $playerIds An array of player IDs from database
-     * @return array<DontGoInTherePlayer>
+     * @param array<int> $playerIds An array of player IDs from database
+     * @return array<DontGoInTherePlayer> An array of DontGoInTherePlayer objects
      */
     public function getPlayers($playerIds = null)
     {
@@ -87,7 +87,7 @@ class DontGoInTherePlayerManager extends APP_GameClass
     /**
      * Get all ui data visible by player id
      * @param int $playerId Database ID of a player
-     * @return array Array of uiData for a player
+     * @return array<mixed> Array of uiData for a player
      */
     public function getUiData($playerId)
     {

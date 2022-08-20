@@ -1,7 +1,7 @@
 <?php
 
 /**
- * A Player object
+ * A DontGoInTherePlayer object
  */
 class DontGoInTherePlayer extends APP_GameClass
 {
@@ -46,11 +46,11 @@ class DontGoInTherePlayer extends APP_GameClass
     /**
      * Get player uiData visible by current player
      * @param int $currentPlayerId Id of player who is viewing the page
-     * @return array Am array of uiData for a player
+     * @return array<mixed> An array of uiData for a player
      */
     public function getUiData($currentPlayerId = null)
     {
-        return[
+        return [
             'id' => $this->id,
             'naturalOrder' => $this->naturalOrder,
             'name' => $this->name,
