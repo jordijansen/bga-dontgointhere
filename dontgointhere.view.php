@@ -33,39 +33,52 @@
     }    
   	function build_page( $viewArgs )
   	{		
-        // Template name
-        $template = self::getGameName().'_'.self::getGameName();
-  	    // Get players & players number
-        $players = $this->game->loadPlayersBasicInfos();
-        $players_nbr = count( $players );
+      // Template name
+      $template = self::getGameName().'_'.self::getGameName();
+  	  // Get players & players number
+      $players = $this->game->loadPlayersBasicInfos();
+      $players_nbr = count( $players );
 
-        // Inflate rooms w/ cards blocks
-        $this->page->begin_block($template, 'roomcard');
-        $this->page->begin_block($template, 'room');
-        for($roomNumber = 1; $roomNumber <= 3; $roomNumber++)
+      // Inflate dice
+      $this->page->begin_block($template, 'die');
+      for ($dieNumber = 1; $dieNumber <= 6; $dieNumber++)
+      {
+        $this->page->insert_block(
+          'die',
+          array(
+            'DIE_NUM' => $dieNumber,
+          )
+        );
+      }
+
+
+      // Inflate rooms w/ cards blocks
+      $this->page->begin_block($template, 'roomcard');
+      $this->page->begin_block($template, 'room');
+      for($roomNumber = 1; $roomNumber <= 3; $roomNumber++)
+      {
+        $this->page->reset_subblocks('roomcard');
+
+        for($cardNumber = 1; $cardNumber <=3; $cardNumber++)
         {
-          $this->page->reset_subblocks('roomcard');
-
-          for($cardNumber = 1; $cardNumber <=3; $cardNumber++)
-          {
-            $this->page->insert_block(
-              'roomcard',
-              array(
-                'ROOM_NUM' => $roomNumber,
-                'CARD_NUM' => $cardNumber,
-              )
-            );
-          }
-
           $this->page->insert_block(
-            'room',
+            'roomcard',
             array(
               'ROOM_NUM' => $roomNumber,
+              'CARD_NUM' => $cardNumber,
             )
           );
         }
 
-        /*********** Do not change anything below this line  ************/
+        $this->page->insert_block(
+          'room',
+          array(
+            'ROOM_NUM' => $roomNumber,
+          )
+        );
+      }
+
+      /*********** Do not change anything below this line  ************/
   	}
   }
   

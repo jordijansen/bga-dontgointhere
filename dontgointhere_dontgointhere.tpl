@@ -18,7 +18,13 @@
     <div id="dgit_top_panel">
         <div id="dgit_deck_and_dice">
             <div id="dgit_deck"></div>
-            <div id="dgit_dice_tray"></div>
+            <div id="dgit_dice_tray">
+                <!-- BEGIN die -->
+                <div id="dgit_die_{DIE_NUM}" class="dgit-die">
+                    <div id="dgit_die_{DIE_NUM}_face" class="dgit-die-face"></div>
+                </div>
+                <!-- END die -->
+            </div>
         </div>
         <div id="dgit_rooms_panel">
             <!-- BEGIN room -->
