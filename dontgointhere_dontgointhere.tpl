@@ -17,8 +17,8 @@
 <div id="dgit_layout">
     <div id="dgit_top_panel">
         <div id="dgit_deck_and_dice">
-            <div id="dgit_deck">
-            </div>
+            <div id="dgit_deck"></div>
+            <div id="dgit_dice_tray"></div>
         </div>
         <div id="dgit_rooms_panel">
             <!-- BEGIN room -->
