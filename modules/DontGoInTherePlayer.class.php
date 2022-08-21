@@ -54,6 +54,7 @@ class DontGoInTherePlayer extends APP_GameClass
             'id' => $this->id,
             'naturalOrder' => $this->naturalOrder,
             'name' => $this->name,
+            'color' => $this->color,
             'curses' => $this->curses,
             'ghostTokens' => ($this->id == $currentPlayerId) ? $this->ghostTokens : '?',
             'cardsDispeled' => $this->cardsDispeled,

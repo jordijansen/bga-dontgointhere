@@ -24,6 +24,13 @@ function (dojo, declare) {
     return declare("bgagame.dontgointhere", ebg.core.gamegui, {
         constructor: function(){
             debug('constructor', 'starting constructor');
+
+            this.deckCounter = new ebg.counter();
+            this.playerCurseCounters = [];
+            this.playerSidePanelCurseCounters = [];
+            this.currentPlayerGhosts = new ebg.counter();
+            this.currentPlayerSidePanelGhosts = new ebg.counter();
+            this.playerDispeledCounters = [];
         },
         
         /**
@@ -50,6 +57,7 @@ function (dojo, declare) {
                         'jstpl_player_side_panel', {
                             player_id: player.id,
                             player_natural_order: player.naturalOrder,
+                            player_color: player.color,
                         }
                     ), 'player_board_' + player.id
                 );
@@ -59,22 +67,48 @@ function (dojo, declare) {
                     dojo.removeClass('dgit_player_' + player.id + '_active_player', 'dgit-hidden')
                 }
 
+                this.playerCurseCounters[player.id] = new ebg.counter();
+                this.playerCurseCounters[player.id].create('dgit_player_' + player.id + '_curse_counter');
+                this.playerCurseCounters[player.id].setValue(player.curses);
+                this.playerSidePanelCurseCounters[player.id] = new ebg.counter();
+                this.playerSidePanelCurseCounters[player.id].create('dgit_player_' + player.id + '_side_panel_curse_counter');
+                this.playerSidePanelCurseCounters[player.id].setValue(player.curses);
+
+                this.playerDispeledCounters[player.id] = new ebg.counter();
+                this.playerDispeledCounters[player.id].create('dgit_player_' + player.id + '_dispeled_counter');
+                this.playerDispeledCounters[player.id].setValue(player.cardsDispeled);
+
+                if (player.id == this.getCurrentPlayerId())
+                {
+                    this.currentPlayerGhosts.create('dgit_player_' + player.id + '_ghost_counter');
+                    this.currentPlayerGhosts.setValue(player.ghostTokens);
+                    this.currentPlayerSidePanelGhosts.create('dgit_player_' + player.id + '_side_panel_ghost_counter');
+                    this.currentPlayerSidePanelGhosts.setValue(player.ghostTokens);
+                }
+
                 if (player.cardsDispeled > 0) { 
                     dojo.removeClass('dgit_player_' + player.id + '_dispeled', 'dgit-hidden');
                 }
             }
 
             debug('setup', 'Create card deck');
-            for(var cardNumber = 0; cardNumber < (gamedatas.deckSize/3); cardNumber++)
-            {
-                dojo.place(
-                    this.format_block(
-                        'jstpl_deck_card', {
-                            card_num: cardNumber,
-                        }
-                    ), 'dgit_deck'
-                );
+            if (gamedatas.deckSize == 0) {
+                dojo.addClass('dgit_deck', 'dgit-hidden');
+            } else {
+                this.deckCounter.create('dgit_deck_counter');
+                this.deckCounter.setValue(gamedatas.deckSize);
+                for(var cardNumber = 0; cardNumber < (gamedatas.deckSize/3); cardNumber++)
+                {
+                    dojo.place(
+                        this.format_block(
+                            'jstpl_deck_card', {
+                                card_num: cardNumber,
+                            }
+                        ), 'dgit_deck'
+                    );
+                }
             }
+            
 
             debug('setup', 'Create dice');
             for (var dieKey in gamedatas.dice)

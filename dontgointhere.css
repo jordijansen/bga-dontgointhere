@@ -75,6 +75,16 @@ div.player-board {
     padding-left: 10px;
 }
 
+#dgit_deck_counter {
+    position: absolute;
+    font-size: xx-large;
+    font-weight: bolder;
+    color: darkslategray;
+    text-shadow: 5px 0 5px #8bc98a,0 -5px 5px #8bc98a,0 5px 5px #8bc98a,-5px 0 5px #8bc98a;
+    right: 10%;
+    bottom: 10%;
+}
+
 #dgit_ghost_tokens {
     position: relative;
     width: 340px;
@@ -149,6 +159,36 @@ div.player-board {
     justify-content: center;
 }
 
+.dgit-player-curse-counter {
+    position: absolute;
+    font-size: large;
+    font-weight: bolder;
+    color: linen;
+    right: 67%;
+    bottom: 24%;
+    z-index: 1;
+}
+
+.dgit-player-side-panel-curse-counter {
+    position: absolute;
+    font-size: large;
+    font-weight: bolder;
+    color: linen;
+    right: 34%;
+    bottom: 24%;
+    z-index: 1;
+}
+
+.dgit-player-ghost-counter {
+    position: absolute;
+    font-size: xx-large;
+    font-weight: bolder;
+    color: darkslategray;
+    right: 17%;
+    bottom: -4%;
+    z-index: 1;
+}
+
 .dgit-player-meeples {
     position: relative;
     display: flex;
@@ -172,6 +212,16 @@ div.player-board {
 
 .dgit-player-dispeled {
     position: relative;
+}
+
+.dgit-player-dispeled-counter {
+    position: absolute;
+    font-size: xx-large;
+    font-weight: bolder;
+    color: darkslategray;
+    right: 10%;
+    bottom: 10%;
+    z-index: 1;
 }
 
 .dgit-player-cards {
@@ -245,6 +295,7 @@ div.player-board {
     width: 70px;
     height: 72.5px;
     background-image: url('img/dgit_ghost_tokens.png');
+    opacity: .65;
 }
 
 .dgit-ghost-x {
