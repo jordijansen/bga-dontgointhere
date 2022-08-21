@@ -73,6 +73,40 @@ class DontGoInTherePlayerManager extends APP_GameClass
         return $players;
     }
 
+    /**
+     * Get a list of all DontGoInTherePlayer objects, sorted by natural order, starting with the current player
+     * @return array<DontGoInTherePlayer> an array of DontGoInTherePlayer objects
+     */
+    public function getPlayersInViewOrder()
+    {
+        $playerInfo = self::getPlayers();
+        $playerCount = count($playerInfo);;
+        $currentPlayer = self::findPlayerById($playerInfo, $this->game->getViewingPlayerId());
+
+        if($currentPlayer) {
+            $sortedPlayerInfo = [];
+            $sortedPlayerInfo[] = $currentPlayer;
+            $lastPlayerAdded = $currentPlayer;
+
+            while(count($sortedPlayerInfo) < $playerCount)
+            {
+                $nextPlayerNaturalOrder = 0;
+                if($lastPlayerAdded->getNaturalOrder() == $playerCount) {
+                    $nextPlayerNaturalOrder = 1;
+                } else {
+                    $nextPlayerNaturalOrder = 1 + $lastPlayerAdded->getNaturalOrder();
+                }
+                $nextPlayer = self::findPlayerByNaturalOrder($playerInfo, $nextPlayerNaturalOrder);
+                $sortedPlayerInfo[] = $nextPlayer;
+                $lastPlayerAdded = $nextPlayer;
+            }
+
+            return $sortedPlayerInfo;
+        } else {
+            return $playerInfo;
+        }
+    }
+
 
     /**
      * Returns the number of players
@@ -98,5 +132,43 @@ class DontGoInTherePlayerManager extends APP_GameClass
         }
 
         return $uiData;
+    }
+
+    /**
+     * Return a DontGoInTherePlayer of specified ID from a list of players
+     * @param array<DontGoInTherePlayer> $players An array of DontGoInTherePlayer objects
+     * @param int $playerId A player ID
+     * @return mixed a DontGoInTherePlayer object if it exists in the list, otherwise false
+     */
+    private function findPlayerById($players, $playerId)
+    {
+        foreach($players as $player)
+        {
+            if($playerId == $player->getId())
+            {
+                return $player;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return a DontGoInTherePlayer of specified natural order from a list of players
+     * @param array<DontGoInTherePlayer> $players An array of DontGoInTherePlayer objects
+     * @param int $playerId A player's natural order
+     * @return mixed a DontGoInTherePlayer object if it exists in the list, otherwise false
+     */
+    private function findPlayerByNaturalOrder($players, $playerNaturalOrder)
+    {
+        foreach($players as $player)
+        {
+            if($playerNaturalOrder == $player->getNaturalOrder())
+            {
+                return $player;
+            }
+        }
+
+        return false;
     }
 }

@@ -138,15 +138,12 @@ class DontGoInThereRoomManager extends APP_GameClass
     }
 
     /**
-     * findRoomByType: Return a room of specified type from a list of rooms
-     */
-    /**
      * Return a DontGoInThereRoom of specified type from a list of rooms
      * @param array<DontGoInThereRoom> $rooms An array of DontGoInThereRoom objects
      * @param int $roomType A room type value
      * @return mixed a DontGoInThereRoom object if it exists in the list, otherwise false
      */
-    private function findRoomByType($rooms, $roomType)
+    public function findRoomByType($rooms, $roomType)
     {
         foreach($rooms as $room)
         {

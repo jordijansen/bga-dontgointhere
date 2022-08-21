@@ -39,15 +39,29 @@ function (dojo, declare) {
             this.defineGlobalConstants(gamedatas.constants);
             
             // Setting up player boards
-            // for( var player_id in gamedatas.players )
-            // {
-            //     var player = gamedatas.players[player_id];
-                         
-            //     // TODO: Setting up players boards if needed
-            // }
+            debug('setup', 'Setting up player elements')
+            for(var playerKey in gamedatas.playerInfo)
+            {
+                var player = gamedatas.playerInfo[playerKey];
+                debug('setup::player', player);
+
+                if (player.cardsDispeled > 0) { 
+                    dojo.removeClass('dgit_player_' + player.id + '_dispeled', 'dgit-hidden');
+                }
+                for(var cardNumber = 0; cardNumber < player.cardsDispeled; cardNumber++)
+                {
+                    dojo.place(
+                        this.format_block(
+                            'jstpl_deck_card', {
+                                card_num: cardNumber,
+                            }
+                        ), 'dgit_player_'+player.id+'_dispeled'
+                    );
+                }
+            }
 
             debug('setup', 'Create card deck');
-            for (var cardNumber = 0; cardNumber < (gamedatas.deckSize/3); cardNumber++)
+            for(var cardNumber = 0; cardNumber < (gamedatas.deckSize/3); cardNumber++)
             {
                 dojo.place(
                     this.format_block(
@@ -80,8 +94,24 @@ function (dojo, declare) {
                     }
                 }
             }
+
+            debug('setup', 'Create player cards');
+            gamedatas.playerCards.sort((a, b) => (a.type > b.type) ? 1 : -1);
+            debug('setup', gamedatas.playerCards);
+            for(var playerCardsKey in gamedatas.playerCards)
+            {
+                var playerCard = gamedatas.playerCards[playerCardsKey];
+                dojo.place(
+                    this.format_block(
+                        'jstpl_player_card', {
+                            card_id: playerCard.id,
+                            player_id: playerCard.uiPosition,
+                            card_css_class: playerCard.cssClass,
+                        }
+                    ), 'dgit_player_'+playerCard.uiPosition+'_cards'
+                );
+            }
             
- 
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
 

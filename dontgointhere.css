@@ -19,14 +19,33 @@ html {
 }
 
 div.player-board {
-    background-color: #4f6670;
+    background-color: gray;
 }
 
 .dgit-hidden {
     display: none;
 }
 
+.dgit-header {
+    display: inline-block;
+    box-shadow: 3px 3px 3px 0 #000000a0;
+    width: 99%;
+    height: 30px;
+    line-height: 30px;
+    font-size: x-large;
+    font-weight: bolder;
+    margin-top: -25px;
+    margin-left: -10px;
+    padding-left: 10px;
+}
+
 /***** LAYOUT *****/
+#dgit_layout {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 20px
+}
+
 #dgit_game_panel {
     display: flex;
     flex-flow: row wrap;
@@ -83,6 +102,39 @@ div.player-board {
     margin-bottom: -15px;
     z-index: 1;
     justify-items: center;
+}
+
+#dgit_bottom_panel {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 20px;
+    padding-left: 10px;
+}
+
+.dgit-player-panel {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 20px;
+}
+
+.dgit-player-dispeled {
+    position: relative;
+    width: 100px;
+    height: 170px;
+    left: -25px;
+    bottom: -40px;
+    transform: scale(.5);
+}
+
+.dgit-player-cards {
+    display: flex;
+    flex-flow: row wrap;
+    position: relative;
+    height: 170px;
+    left: -258px;
+    bottom: 20px;
+    gap: 5px;
+    transform: scale(.5);
 }
 
 /***** CARDS *****/

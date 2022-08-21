@@ -35,13 +35,25 @@
   	{		
       // Template name
       $template = self::getGameName().'_'.self::getGameName();
-  	  // Get players & players number
-      $players = $this->game->loadPlayersBasicInfos();
-      $players_nbr = count($players);
+
+  	  // Inflate players
+      $players = $this->game->playerManager->getPlayersInViewOrder();
+      $this->page->begin_block($template, 'playerarea');
+      foreach($players as $playerKey => $player)
+      {
+        $this->page->insert_block(
+          'playerarea',
+          array(
+            'PLAYER_ID' => $player->getId(),
+            'PLAYER_NAME' => $player->getName(),
+            'PLAYER_COLOR' => $player->getColor(),
+          )
+        );
+      }
 
       // Inflate a pile of ghosts
       $this->page->begin_block($template, 'ghost');
-      for ($ghostNumber = 1; $ghostNumber <= 48; $ghostNumber++)
+      for($ghostNumber = 1; $ghostNumber <= 48; $ghostNumber++)
       {
         $this->page->insert_block(
           'ghost',

@@ -90,6 +90,7 @@ class DontGoInThere extends Table
             'dice' => $this->diceManager->getUiData(),
             'faceupRooms' => $this->roomManager->getUiData('faceup'),
             'facedownRooms' => $this->roomManager->getUiData('facedown'),
+            'playerCards' => $this->cardManager->getUiData('hand'),
             'playerInfo' => $this->playerManager->getUiData($currentPlayerId),
             'roomCards' => [
                 1 => $this->cardManager->getUiData('room_1'),
@@ -113,13 +114,17 @@ class DontGoInThere extends Table
 
 
     /***********************************************************************************************
-    *    UTILITY FUNCTIONS::Generic utility methods                                                *
-    ************************************************************************************************/
+     *    UTILITY FUNCTIONS::Generic utility methods                                                *
+     ************************************************************************************************/
 
-    /*
-        In this space, you can put any utility methods useful for your game logic
-    */
-
+    /**
+     * Gives access to getCurrentPlayerId to other classes
+     * @return int ID of player who loaded screen
+     */
+    function getViewingPlayerId()
+    {
+        return self::getCurrentPlayerId();
+    }
 
 
     /***********************************************************************************************
