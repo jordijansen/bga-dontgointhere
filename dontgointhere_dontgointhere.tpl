@@ -16,8 +16,17 @@
 
 <div id="dgit_layout">
     <div id="dgit_top_panel">
-        <div id="dgit_deck_and_dice">
+        <div id="dgit_game_panel">
             <div id="dgit_deck"></div>
+            <div id="dgit_ghost_tokens">
+                <!-- BEGIN ghost -->
+                <div id="dgit_x_ghost_{GHOST_NUM}" class="dgit-ghost-x" style="z-index: {Z_INDEX}; animation-delay: {DELAY}ms; animation-duration: {X_TIME}s;">
+                    <div id="dgit_y_ghost_{GHOST_NUM}" class="dgit-ghost-y" style="animation-delay: {DELAY}ms; animation-duration: {Y_TIME}s;">
+                        <div id="dgit_ghost_{GHOST_NUM}" class="dgit-ghost-token dgit-ghost-token-{GHOST_TYPE} dgit-ghost-spin" style="animation-delay: {DELAY}ms; animation-duration: {SPIN_TIME}s;"></div>
+                    </div>
+                </div>
+                <!-- END ghost -->
+            </div>
             <div id="dgit_dice_tray">
                 <!-- BEGIN die -->
                 <div id="dgit_die_{DIE_NUM}" class="dgit-die">

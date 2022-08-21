@@ -37,7 +37,25 @@
       $template = self::getGameName().'_'.self::getGameName();
   	  // Get players & players number
       $players = $this->game->loadPlayersBasicInfos();
-      $players_nbr = count( $players );
+      $players_nbr = count($players);
+
+      // Inflate a pile of ghosts
+      $this->page->begin_block($template, 'ghost');
+      for ($ghostNumber = 1; $ghostNumber <= 48; $ghostNumber++)
+      {
+        $this->page->insert_block(
+          'ghost',
+          array(
+            'GHOST_NUM' => $ghostNumber,
+            'GHOST_TYPE' => ceil($ghostNumber / 2),
+            'DELAY' => ($ghostNumber - 1) * 100,
+            'X_TIME' => random_int(10, 20),
+            'Y_TIME' => random_int(10, 20),
+            'SPIN_TIME' => random_int(10, 20),
+            'Z_INDEX' => random_int(1, 70),
+          )
+        );
+      }
 
       // Inflate dice
       $this->page->begin_block($template, 'die');
@@ -50,7 +68,6 @@
           )
         );
       }
-
 
       // Inflate rooms w/ cards blocks
       $this->page->begin_block($template, 'roomcard');

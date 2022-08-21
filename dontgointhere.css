@@ -27,7 +27,7 @@ div.player-board {
 }
 
 /***** LAYOUT *****/
-#dgit_deck_and_dice {
+#dgit_game_panel {
     display: flex;
     flex-flow: row wrap;
     padding-top: 10px;
@@ -40,6 +40,15 @@ div.player-board {
     width: 200px;
     height: 340px;
     padding-left: 10px;
+}
+
+#dgit_ghost_tokens {
+    position: relative;
+    width: 340px;
+    height: 340px;
+    border: 5px solid;
+    box-shadow: 5px 5px 5px 0 #000000a0;
+    background-image: url('img/dgit_ghost_tray.png');
 }
 
 #dgit_dice_tray {
@@ -113,6 +122,40 @@ div.player-board {
     box-shadow: 0px 0px 10px 10px rgba(139, 201, 138, .9);
     -webkit-box-shadow: 0px 0px 10px 10px rgba(139, 201, 138, .9);
     -moz-box-shadow: 0px 0px 10px 10px rgba(139, 201, 138, .9);
+}
+
+/***** GHOST TOKENS *****/
+.dgit-ghost-token {
+    display: inline-block;
+    position: relative;
+    width: 70px;
+    height: 72.5px;
+    background-image: url('img/dgit_ghost_tokens.png');
+}
+
+.dgit-ghost-x {
+    animation: x linear infinite alternate;
+    position: absolute;
+}
+
+.dgit-ghost-y {
+    animation: y linear infinite alternate;
+}
+
+.dgit-ghost-spin {
+    animation: spin linear infinite;
+}
+
+@keyframes x {
+    100% {
+        transform: translateX(calc(340px - 70px));
+    }
+}
+
+@keyframes y {
+    100% {
+        transform: translateY(calc(340px - 72.5px));
+    }
 }
 
 /***** ROOMS *****/
@@ -200,6 +243,32 @@ div.player-board {
 .dgit-face-4 { background-position: 60% 0; }
 .dgit-face-5 { background-position: 80% 0; }
 .dgit-face-6 { background-position: 100% 0; }
+
+/********** POSITION CLASSES FOR GHOST TOKENS SPRITE **********/
+.dgit-ghost-token-1 { background-position: 0 0; }
+.dgit-ghost-token-2 { background-position: 33.33% 0; }
+.dgit-ghost-token-3 { background-position: 66.66% 0; }
+.dgit-ghost-token-4 { background-position: 100% 0; }
+.dgit-ghost-token-5 { background-position: 0 20%; }
+.dgit-ghost-token-6 { background-position: 33.33% 20%; }
+.dgit-ghost-token-7 { background-position: 66.66% 20%; }
+.dgit-ghost-token-8 { background-position: 100% 20%; }
+.dgit-ghost-token-9 { background-position: 0 40%; }
+.dgit-ghost-token-10 { background-position: 33.33% 40%; }
+.dgit-ghost-token-11 { background-position: 66.66% 40%; }
+.dgit-ghost-token-12 { background-position: 100% 40%; }
+.dgit-ghost-token-13 { background-position: 0 60%; }
+.dgit-ghost-token-14 { background-position: 33.33% 60%; }
+.dgit-ghost-token-15 { background-position: 66.66% 60%; }
+.dgit-ghost-token-16 { background-position: 100% 60%; }
+.dgit-ghost-token-17 { background-position: 0 80%; }
+.dgit-ghost-token-18 { background-position: 33.33% 80%; }
+.dgit-ghost-token-19 { background-position: 66.66% 80%; }
+.dgit-ghost-token-20 { background-position: 100% 80%; }
+.dgit-ghost-token-21 { background-position: 0 100%; }
+.dgit-ghost-token-22 { background-position: 33.33% 100%; }
+.dgit-ghost-token-23 { background-position: 66.66% 100%; }
+.dgit-ghost-token-24 { background-position: 100% 100%; }
 
 /********** POSITION CLASSES FOR ROOMS SPRITE **********/
 .dgit-room-attic          { background-position: 100% 0;}
