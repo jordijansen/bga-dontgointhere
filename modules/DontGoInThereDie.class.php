@@ -18,7 +18,7 @@ class DontGoInThereDie extends APP_GameClass
         $this->id = (int) $row['id'];
         $this->value = (int) $row['value'];
         $this->face = self::determineFace($this->value);
-        $this->cssClass = "dgit-face-".$this->value;
+        $this->cssClass = self::determineCssClass($this->value);
     }
 
     public function getId() { return $this->id; }
@@ -55,5 +55,14 @@ class DontGoInThereDie extends APP_GameClass
             return GHOST;
         }
         return $value;
+    }
+
+    private function determineCssClass($value)
+    {
+        if($value == 0) {
+            return "dgit-hidden";
+        } else {
+            return "dgit-face-".$value;
+        }
     }
 }

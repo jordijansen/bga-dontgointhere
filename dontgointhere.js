@@ -59,13 +59,10 @@ function (dojo, declare) {
             }
 
             debug('setup', 'Create dice');
-            for (var dieId in gamedatas.dice)
+            for (var dieKey in gamedatas.dice)
             {
-                var die = gamedatas.dice[dieId];
-                if (die.face != HIDDEN) {
-                    dojo.removeClass('dgit_die_'+die.value, 'dgit-hidden');
-                    dojo.addClass('dgit_die_'+die.value+'_face', die.cssClass);
-                }
+                var die = gamedatas.dice[dieKey];
+                dojo.addClass('dgit_die_'+die.id+'_face', die.cssClass);
             }
             
             debug('setup', 'Create room boards');
