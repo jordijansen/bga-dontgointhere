@@ -45,18 +45,22 @@ function (dojo, declare) {
                 var player = gamedatas.playerInfo[playerKey];
                 debug('setup::player', player);
 
+                dojo.place(
+                    this.format_block(
+                        'jstpl_player_side_panel', {
+                            player_id: player.id,
+                            player_natural_order: player.naturalOrder,
+                        }
+                    ), 'player_board_' + player.id
+                );
+
+                if (player.id == this.getActivePlayerId())
+                {
+                    dojo.removeClass('dgit_player_' + player.id + '_active_player', 'dgit-hidden')
+                }
+
                 if (player.cardsDispeled > 0) { 
                     dojo.removeClass('dgit_player_' + player.id + '_dispeled', 'dgit-hidden');
-                }
-                for(var cardNumber = 0; cardNumber < player.cardsDispeled; cardNumber++)
-                {
-                    dojo.place(
-                        this.format_block(
-                            'jstpl_deck_card', {
-                                card_num: cardNumber,
-                            }
-                        ), 'dgit_player_'+player.id+'_dispeled'
-                    );
                 }
             }
 

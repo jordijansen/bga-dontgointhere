@@ -51,12 +51,22 @@
     <div id="dgit_bottom_panel">
         <!-- BEGIN playerarea -->
         <div id="dgit_player_{PLAYER_ID}_panel" class="whiteblock dgit-player-panel" style="z-index: -1;">
-            <h3 id="dgit_player_{PLAYER_ID}_header" class="dgit-header" style="color: #{PLAYER_COLOR}; background-image: linear-gradient(to right, #2F4F4F, #{PLAYER_COLOR})">
+            <h3 id="dgit_player_{PLAYER_ID}_header" class="dgit-header" style="color: #{PLAYER_COLOR}; background-image: linear-gradient(to right, gray, #{PLAYER_COLOR})">
                 {PLAYER_NAME}
             </h3>
-            <div id="dgit_player_{PLAYER_ID}_meeples" class="dgit-player-meeples" style="background-color: #{PLAYER_COLOR}50"></div>
-            <div id="dgit_player_{PLAYER_ID}_dispeled" class="dgit-player-dispeled dgit-hidden"></div>
-            <div id="dgit_player_{PLAYER_ID}_cards" class="dgit-player-cards"></div>
+            <div id="dgit_player_{PLAYER_ID}_info_panel" class="dgit-player-info-panel">
+                <div id="dgit_player_{PLAYER_ID}_tracker_panel" class="dgit-player-tracker-panel">
+                    <div id="dgit_player_{PLAYER_ID}_curse_tracker" class="dgit-curse-icon"></div>
+                    <div id="dgit_player_{PLAYER_ID}_ghost_tracker" class="dgit-ghost-token dgit-ghost-token-{PLAYER_NATURAL_ORDER}"></div>
+                </div>
+                <div id="dgit_player_{PLAYER_ID}_meeples" class="dgit-player-meeples" style="background-color: #{PLAYER_COLOR}50; border-color: #{PLAYER_COLOR}; color: #{PLAYER_COLOR}"></div>
+            </div>
+            <div id="dgit_player_{PLAYER_ID}_cards_panel" class="dgit-player-cards-panel">
+                <div id="dgit_player_{PLAYER_ID}_dispeled" class="dgit-player-dispeled dgit-hidden">
+                    <div id="dgit_player_{PLAYER_ID}_dispeled_cards" class="dgit-card dgit-card-back"></div>
+                </div>
+                <div id="dgit_player_{PLAYER_ID}_cards" class="dgit-player-cards"></div>
+            </div>
         </div>
         <!-- END playerarea -->
     </div>
@@ -67,6 +77,11 @@
     var jstpl_deck_card = '<div id="dgit_deck_card_${card_num}" class="dgit-card dgit-card-back dgit-card-in-deck" style="bottom: ${card_num}%"></div>';
     var jstpl_meeple = '<div id="dgit_player_${player_id}_meeple_${meeple_id}" class="dgit-meeple ${meeple_css_class}"></div>';
     var jstpl_player_card = '<div id="dgit_player_${player_id}_card_${card_id}" class="dgit-card ${card_css_class}"></div>';
+    var jstpl_player_side_panel = '<div id="dgit_player_${player_id}_side_panel" class="dgit-player-side-panel">\
+                                        <div id="dgit_player_${player_id}_active_player" class="dgit-active-player dgit-hidden"></div>\
+                                        <div id="dgit_player_${player_id}_curse_count" class="dgit-curse-icon"></div>\
+                                        <div id="dgit_player_${player_id}_ghost_count" class="dgit-ghost-token dgit-ghost-token-${player_natural_order}"></div>\
+                                   </div>';
 
 </script>  
 

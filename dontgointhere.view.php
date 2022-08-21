@@ -47,6 +47,7 @@
             'PLAYER_ID' => $player->getId(),
             'PLAYER_NAME' => $player->getName(),
             'PLAYER_COLOR' => $player->getColor(),
+            'PLAYER_NATURAL_ORDER' => $player->getNaturalOrder(),
           )
         );
       }

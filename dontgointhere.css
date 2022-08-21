@@ -22,8 +22,13 @@ div.player-board {
     background-color: gray;
 }
 
+#page-title {
+    background-image: linear-gradient(to right, linen, lightgray);
+    border-radius: 5px;
+}
+
 .dgit-hidden {
-    display: none;
+    display: none !important;
 }
 
 .dgit-header {
@@ -41,6 +46,14 @@ div.player-board {
 }
 
 /***** LAYOUT *****/
+.dgit-player-side-panel {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    gap: 10px;
+    transform: scale(.75);
+}
+
 #dgit_layout {
     display: flex;
     flex-flow: column nowrap;
@@ -117,6 +130,23 @@ div.player-board {
     flex-flow: row wrap;
     gap: 20px;
     border-radius: 5px;
+    align-items: flex-end;
+}
+
+.dgit-player-info-panel {
+    position: relative;
+    display: flex;
+    flex-flow: column wrap;
+    gap: 20px;
+    height: 282px;
+}
+
+.dgit-player-tracker-panel {
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 10px;
+    justify-content: center;
 }
 
 .dgit-player-meeples {
@@ -126,29 +156,38 @@ div.player-board {
     gap: 5px;
     width: 170px;
     height: 170px;
+    border: 5px solid;
+    box-shadow: 5px 5px 5px 0;
     border-radius: 10px;
     justify-content: center;
     align-items: center;
 }
 
+.dgit-player-cards-panel {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 5px;
+}
+
 .dgit-player-dispeled {
     position: relative;
-    width: 100px;
-    height: 170px;
-    left: -25px;
-    bottom: -40px;
-    transform: scale(.5);
 }
 
 .dgit-player-cards {
     display: flex;
     flex-flow: row wrap;
     position: relative;
-    height: 170px;
-    left: -258px;
-    bottom: 20px;
     gap: 5px;
-    transform: scale(.5);
+}
+
+/***** ACTIVE PLAYER MARKER *****/
+.dgit-active-player {
+    display: inline-block;
+    position: relative;
+    width: 54px;
+    height: 73px;
+    background-image: url('img/dgit_active_player.png');
 }
 
 /***** CARDS *****/
@@ -166,6 +205,15 @@ div.player-board {
 .dgit-card-in-deck {
     position: absolute;
     z-index: -1;
+}
+
+/***** CURSE ICON *****/
+.dgit-curse-icon {
+    display: inline-block;
+    position: relative;
+    width: 56px;
+    height: 73px;
+    background-image: url('img/dgit_curse_icon.png');
 }
 
 /***** DICE *****/
