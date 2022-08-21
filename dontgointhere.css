@@ -28,6 +28,7 @@ div.player-board {
 
 .dgit-header {
     display: inline-block;
+    border-radius: 5px;
     box-shadow: 3px 3px 3px 0 #000000a0;
     width: 99%;
     height: 30px;
@@ -115,6 +116,19 @@ div.player-board {
     display: flex;
     flex-flow: row wrap;
     gap: 20px;
+    border-radius: 5px;
+}
+
+.dgit-player-meeples {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 5px;
+    width: 170px;
+    height: 170px;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
 }
 
 .dgit-player-dispeled {
@@ -210,6 +224,17 @@ div.player-board {
     }
 }
 
+/***** MEEPLES ****/
+.dgit-meeple {
+    display: inline-block;
+    position: relative;
+    width: 40px;
+    height: 57px;
+    -webkit-filter: drop-shadow(2px 1px 0 black) drop-shadow(-1px -1px 0 black);
+    filter:drop-shadow(2px 1px 0 black) drop-shadow(-1px -1px 0 black);
+    background-image: url('img/dgit_meeples.png');
+}
+
 /***** ROOMS *****/
 .dgit-room {
     display: inline-block;
@@ -297,15 +322,15 @@ div.player-board {
 .dgit-face-6 { background-position: 100% 0; }
 
 /********** POSITION CLASSES FOR GHOST TOKENS SPRITE **********/
-.dgit-ghost-token-1 { background-position: 0 0; }
-.dgit-ghost-token-2 { background-position: 33.33% 0; }
-.dgit-ghost-token-3 { background-position: 66.66% 0; }
-.dgit-ghost-token-4 { background-position: 100% 0; }
-.dgit-ghost-token-5 { background-position: 0 20%; }
-.dgit-ghost-token-6 { background-position: 33.33% 20%; }
-.dgit-ghost-token-7 { background-position: 66.66% 20%; }
-.dgit-ghost-token-8 { background-position: 100% 20%; }
-.dgit-ghost-token-9 { background-position: 0 40%; }
+.dgit-ghost-token-1  { background-position: 0 0; }
+.dgit-ghost-token-2  { background-position: 33.33% 0; }
+.dgit-ghost-token-3  { background-position: 66.66% 0; }
+.dgit-ghost-token-4  { background-position: 100% 0; }
+.dgit-ghost-token-5  { background-position: 0 20%; }
+.dgit-ghost-token-6  { background-position: 33.33% 20%; }
+.dgit-ghost-token-7  { background-position: 66.66% 20%; }
+.dgit-ghost-token-8  { background-position: 100% 20%; }
+.dgit-ghost-token-9  { background-position: 0 40%; }
 .dgit-ghost-token-10 { background-position: 33.33% 40%; }
 .dgit-ghost-token-11 { background-position: 66.66% 40%; }
 .dgit-ghost-token-12 { background-position: 100% 40%; }
@@ -321,6 +346,13 @@ div.player-board {
 .dgit-ghost-token-22 { background-position: 33.33% 100%; }
 .dgit-ghost-token-23 { background-position: 66.66% 100%; }
 .dgit-ghost-token-24 { background-position: 100% 100%; }
+
+/********** POSITION CLASSES FOR MEEPLES SPRITE **********/
+.dgit-meeple-purple { background-position: 0 0; }
+.dgit-meeple-red    { background-position: 25% 0; }
+.dgit-meeple-teal   { background-position: 50% 0; }
+.dgit-meeple-white  { background-position: 75% 0; }
+.dgit-meeple-yellow { background-position: 100% 0; }
 
 /********** POSITION CLASSES FOR ROOMS SPRITE **********/
 .dgit-room-attic          { background-position: 100% 0;}

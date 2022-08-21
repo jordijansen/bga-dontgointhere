@@ -83,11 +83,12 @@ class DontGoInThereCardManager extends APP_GameClass
         TWIN => 'Twin',
     ];
 
+    // Map of player counts to setup variables
     private static $playerCountVariables = [
-    2 => ['cursedCardTypes' => 5, 'cardsToRemove' => 16],
-    3 => ['cursedCardTypes' => 6, 'cardsToRemove' => 12],
-    4 => ['cursedCardTypes' => 7, 'cardsToRemove' => 8],
-    5 => ['cursedCardTypes' => 8, 'cardsToRemove' => 4],
+        2 => ['cursedCardTypes' => 5, 'cardsToRemove' => 16],
+        3 => ['cursedCardTypes' => 6, 'cardsToRemove' => 12],
+        4 => ['cursedCardTypes' => 7, 'cardsToRemove' => 8],
+        5 => ['cursedCardTypes' => 8, 'cardsToRemove' => 4],
     ];
 
     /**
@@ -136,7 +137,7 @@ class DontGoInThereCardManager extends APP_GameClass
     /**
      * Get ui data of all cards in specified location
      * @param string $location Location value in database
-     * @return array An array of ui data for CursedCards
+     * @return array<mixed> An array of ui data for CursedCards
      */
     public function getUiData($location)
     {

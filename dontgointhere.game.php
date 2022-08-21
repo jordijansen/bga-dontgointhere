@@ -18,6 +18,7 @@ require_once( APP_GAMEMODULE_PATH.'module/table/table.game.php' );
 require_once("modules/constants.inc.php");
 require_once("modules/DontGoInThereCardManager.class.php");
 require_once("modules/DontGoInThereDiceManager.class.php");
+require_once("modules/DontGoInThereMeepleManager.class.php");
 require_once("modules/DontGoInTherePlayerManager.class.php");
 require_once("modules/DontGoInThereRoomManager.class.php");
 class DontGoInThere extends Table
@@ -32,6 +33,7 @@ class DontGoInThere extends Table
 
         $this->cardManager = new DontGoInThereCardManager($this);
         $this->diceManager = new DontGoInThereDiceManager($this);
+        $this->meepleManager = new DontGoInThereMeepleManager($this);
         $this->playerManager = new DontGoInTherePlayerManager($this);
         $this->roomManager = new DontGoInThereRoomManager($this);
 	}
@@ -56,12 +58,19 @@ class DontGoInThere extends Table
     {
         // Setup players
         $this->playerManager->setupNewGame($players);
+        // Setup meeples
+        $this->meepleManager->setupNewGame($this->playerManager->getPlayers());
         // Setup dice
         $this->diceManager->setupNewGame();
         // Setup rooms
         $this->roomManager->setupNewGame();
         // Setup cards
         $this->cardManager->setupNewGame($this->playerManager->getPlayerCount());
+
+        foreach($this->playerManager->getPlayers() as $player)
+        {
+            $this->cardManager->cards->pickCards(5, 'deck', $player->getId());
+        }
 
         // Initialize global variables
         self::setGameStateInitialValue(CLOCKS_COLLECTED, DGIT_FALSE);
@@ -90,6 +99,7 @@ class DontGoInThere extends Table
             'dice' => $this->diceManager->getUiData(),
             'faceupRooms' => $this->roomManager->getUiData('faceup'),
             'facedownRooms' => $this->roomManager->getUiData('facedown'),
+            'meeplesInHand' => $this->meepleManager->getUiData('hand'),
             'playerCards' => $this->cardManager->getUiData('hand'),
             'playerInfo' => $this->playerManager->getUiData($currentPlayerId),
             'roomCards' => [

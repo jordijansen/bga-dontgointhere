@@ -17,7 +17,7 @@ define('TOME', 10);
 define('TWIN', 11);
 
 /**
- * DIE FACES
+ * Die faces
  */
 define('HIDDEN', 0);
 define('BLANK', 1);
@@ -33,6 +33,15 @@ define('DGIT_TRUE', 1);
  * Global variables
  */
 define('CLOCKS_COLLECTED', 'clocks_collected');
+
+/**
+ * Meeple types
+ */
+define('PURPLE', 0);
+define('RED', 1);
+define('TEAL', 2);
+define('WHITE', 3);
+define('YELLOW', 4);
 
 /**
  * Room types

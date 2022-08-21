@@ -95,6 +95,21 @@ function (dojo, declare) {
                 }
             }
 
+            debug('setup', 'Create meeples in hand');
+            for (var meeplesKey in gamedatas.meeplesInHand)
+            {
+                var meeple = gamedatas.meeplesInHand[meeplesKey];
+                dojo.place(
+                    this.format_block(
+                        'jstpl_meeple', {
+                            player_id: meeple.owner,
+                            meeple_id: meeple.id,
+                            meeple_css_class: meeple.cssClass,
+                        }
+                    ), 'dgit_player_'+meeple.owner+'_meeples'
+                );
+            }
+
             debug('setup', 'Create player cards');
             gamedatas.playerCards.sort((a, b) => (a.type > b.type) ? 1 : -1);
             debug('setup', gamedatas.playerCards);

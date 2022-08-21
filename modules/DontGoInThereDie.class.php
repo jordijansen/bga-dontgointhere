@@ -11,6 +11,11 @@ class DontGoInThereDie extends APP_GameClass
     private $face;
     private $cssClass;
 
+    /**
+     * Construct a DontGoInThereDie object
+     * @param mixed $game The game class
+     * @param mixed $row The die row from the database
+     */
     public function __construct($game, $row)
     {
         $this->game = $game;
