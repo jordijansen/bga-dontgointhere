@@ -35,7 +35,7 @@ function (dojo, declare) {
             debug('setup', 'Beginning game setup');
             debug('setup::gamedatas', gamedatas);
 
-            debug('setup', 'Definining local constants')
+            debug('setup', 'Definining local constants');
             this.defineGlobalConstants(gamedatas.constants);
             
             // Setting up player boards
@@ -46,7 +46,7 @@ function (dojo, declare) {
             //     // TODO: Setting up players boards if needed
             // }
 
-            debug('setup', 'Create card deck')
+            debug('setup', 'Create card deck');
             for (var cardNumber = 0; cardNumber < (gamedatas.deckSize/3); cardNumber++)
             {
                 dojo.place(
@@ -56,6 +56,16 @@ function (dojo, declare) {
                         }
                     ), 'dgit_deck'
                 );
+            }
+
+            debug('setup', 'Create dice');
+            for (var dieId in gamedatas.dice)
+            {
+                var die = gamedatas.dice[dieId];
+                if (die.face != HIDDEN) {
+                    dojo.removeClass('dgit_die_'+die.value, 'dgit-hidden');
+                    dojo.addClass('dgit_die_'+die.value+'_face', die.cssClass);
+                }
             }
             
             debug('setup', 'Create room boards');

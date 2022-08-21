@@ -190,12 +190,12 @@ div.player-board {
 .dgit-card-twin-4 { background-position: 37.5% 100%; }
 
 /********** POSITION CLASSES FOR DICE SPRITE **********/
-.dgit-face-one { background-position: 0 0; }
-.dgit-face-two { background-position: 20% 0; }
-.dgit-face-three { background-position: 40% 0; }
-.dgit-face-four { background-position: 60% 0; }
-.dgit-face-five { background-position: 80% 0; }
-.dgit-face-six { background-position: 100% 0; }
+.dgit-face-1 { background-position: 0 0; }
+.dgit-face-2 { background-position: 20% 0; }
+.dgit-face-3 { background-position: 40% 0; }
+.dgit-face-4 { background-position: 60% 0; }
+.dgit-face-5 { background-position: 80% 0; }
+.dgit-face-6 { background-position: 100% 0; }
 
 /********** POSITION CLASSES FOR ROOMS SPRITE **********/
 .dgit-room-attic          { background-position: 100% 0;}

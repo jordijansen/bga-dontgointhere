@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `card` (
 
 CREATE TABLE IF NOT EXISTS `die` (
   `die_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `die_face` int(10) NOT NULL DEFAULT '0',
+  `die_value` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`die_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 

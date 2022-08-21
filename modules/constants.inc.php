@@ -17,6 +17,13 @@ define('TOME', 10);
 define('TWIN', 11);
 
 /**
+ * DIE FACES
+ */
+define('HIDDEN', 0);
+define('BLANK', 1);
+define('GHOST', 2);
+
+/**
  * Generic
  */
 define('DGIT_FALSE', 0);

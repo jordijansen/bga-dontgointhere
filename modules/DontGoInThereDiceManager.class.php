@@ -50,7 +50,7 @@ class DontGoInThereDiceManager extends APP_GameClass
      */
     public function getDice($dieIds = null)
     {
-        $sql = "SELECT die_id id, die_face face FROM die";
+        $sql = "SELECT die_id id, die_value value FROM die";
         if(is_array($dieIds))
         {
             $sql .= " WHERE die_id IN ('".implode("','", $dieIds)."')";
