@@ -40,12 +40,10 @@
         <div id="dgit_rooms_panel">
             <!-- BEGIN room -->
             <div id="dgit_room_panel_{ROOM_NUM}" class="dgit-room-panel">
-                <div id="dgit_room_{ROOM_NUM}_cards" class="dgit-room-cards">
-                    <!-- BEGIN roomcard -->
-                    <div id="dgit_room_{ROOM_NUM}_card_{CARD_NUM}" class="dgit-card" style="order: {CARD_NUM}"></div>
-                    <!-- END roomcard -->
+                <div id="dgit_room_{ROOM_NUM}_cards" class="dgit-room-cards"></div>
+                <div id="dgit_room_{ROOM_NUM}" class="dgit-room" style="order: {ROOM_NUM}">
+                    <span id="dgit_room_{ROOM_NUM}_tooltip" class="dgit-room-tooltip">i</span>
                 </div>
-                <div id="dgit_room_{ROOM_NUM}" class="dgit-room" style="order: {ROOM_NUM}"></div>
             </div>
             <!-- END room -->
         </div>
@@ -81,7 +79,9 @@
 
     var jstpl_deck_card = '<div id="dgit_deck_card_${card_num}" class="dgit-card dgit-card-back dgit-card-in-deck" style="bottom: ${card_num}%"></div>';
     var jstpl_meeple = '<div id="dgit_player_${player_id}_meeple_${meeple_id}" class="dgit-meeple ${meeple_css_class}"></div>';
-    var jstpl_player_card = '<div id="dgit_player_${player_id}_card_${card_id}" class="dgit-card ${card_css_class}"></div>';
+    var jstpl_player_card = '<div id="dgit_player_${player_id}_card_${card_id}" class="dgit-card ${card_css_class}">\
+                                <span id="dgit_card_${card_id}_tooltip" class="dgit-card-tooltip">i</span>\
+                            </div>';
     var jstpl_player_side_panel = '<div id="dgit_player_${player_id}_side_panel" class="dgit-player-side-panel">\
                                         <div id="dgit_player_${player_id}_active_player" class="dgit-active-player dgit-hidden"></div>\
                                         <div id="dgit_player_${player_id}_curse_count" class="dgit-curse-icon">\
@@ -91,6 +91,9 @@
                                             <span id="dgit_player_${player_id}_side_panel_ghost_counter" class="dgit-player-ghost-counter" style="text-shadow: 2px 0 2px #${player_color},0 -2px 2px #${player_color},0 2px 2px #${player_color},-2px 0 2px #${player_color};">?</span>\
                                         </div>\
                                    </div>';
+    var jstpl_room_card = '<div id="dgit_room_${room_number}_card_${card_id}" class="dgit-card ${card_css_class}" style="order: ${card_number}">\
+                                <span id="dgit_card_${card_id}_tooltip" class="dgit-card-tooltip">i</span>\
+                           </div>';
 
 </script>  
 

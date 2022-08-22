@@ -82,24 +82,10 @@
         );
       }
 
-      // Inflate rooms w/ cards blocks
-      $this->page->begin_block($template, 'roomcard');
+      // Inflate rooms
       $this->page->begin_block($template, 'room');
       for($roomNumber = 1; $roomNumber <= 3; $roomNumber++)
       {
-        $this->page->reset_subblocks('roomcard');
-
-        for($cardNumber = 1; $cardNumber <=3; $cardNumber++)
-        {
-          $this->page->insert_block(
-            'roomcard',
-            array(
-              'ROOM_NUM' => $roomNumber,
-              'CARD_NUM' => $cardNumber,
-            )
-          );
-        }
-
         $this->page->insert_block(
           'room',
           array(

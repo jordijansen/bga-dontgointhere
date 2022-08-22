@@ -115,7 +115,7 @@ class DontGoInThereRoomManager extends APP_GameClass
         }
         return $ui;
     }
-
+    
     /**
      * Deal a starting room, put is flipside in waiting.
      * @param int $roomPosition The UI position of a room within its location

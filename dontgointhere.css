@@ -45,6 +45,38 @@ div.player-board {
     padding-left: 10px;
 }
 
+.dgit-card-tooltip {
+    display: inline-block;
+    position: absolute;
+    font-size: small;
+    font-weight: bold;
+    text-align: center;
+    color: #8bc98a;
+    right: 2%;
+    bottom: 2%;
+    border: 2px solid #8bc98a;
+    border-radius: 20px;
+    z-index: 1;
+    width: 15px;
+    height: 15px;
+}
+
+.dgit-room-tooltip {
+    display: inline-block;
+    position: absolute;
+    font-size: x-large;
+    font-weight: bolder;
+    text-align: center;
+    color: #8bc98a;
+    right: 5%;
+    bottom: 5%;
+    border: 5px solid #8bc98a;
+    border-radius: 20px;
+    z-index: 1;
+    width: 30px;
+    height: 30px;
+}
+
 /***** LAYOUT *****/
 .dgit-player-side-panel {
     display: flex;
@@ -82,7 +114,7 @@ div.player-board {
     color: darkslategray;
     text-shadow: 5px 0 5px #8bc98a,0 -5px 5px #8bc98a,0 5px 5px #8bc98a,-5px 0 5px #8bc98a;
     right: 10%;
-    bottom: 10%;
+    bottom: 20%;
 }
 
 #dgit_ghost_tokens {
@@ -141,6 +173,7 @@ div.player-board {
     gap: 20px;
     border-radius: 5px;
     align-items: flex-end;
+    z-index: 1 !important;
 }
 
 .dgit-player-info-panel {
@@ -350,7 +383,7 @@ div.player-board {
 
 
 /********** POSITION CLASSES FOR CARDS SPRITE **********/
-.dgit-card-back { background-position: 0 0; }
+.dgit-card-back { background-position: 0 0 !important; }
 
 .dgit-card-amulet-1 { background-position: 12.5% 0; }
 .dgit-card-amulet-2 { background-position: 37.5% 40%; }

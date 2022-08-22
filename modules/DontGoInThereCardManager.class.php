@@ -150,6 +150,33 @@ class DontGoInThereCardManager extends APP_GameClass
     }
 
     /**
+     * Move a card to a new location
+     * @param DontGoInThereCursedCard $card card object
+     * @param string $location Destination location
+     * @param int $locationArg Destination location arg
+     * @return void
+     */
+    public function moveCard($card, $location, $locationArg)
+    {
+        $this->cards->moveCard($card->getId(), $location, $locationArg);
+    }
+
+    /**
+     * Move multiple cards to a new location
+     * @param array<DontGoInThereCursedCard> $cards array of card objects
+     * @param mixed $location Destination location
+     * @param mixed $locationArg Destination location arg
+     * @return void
+     */
+    public function moveCards($cards, $location, $locationArg)
+    {
+        foreach($cards as $card)
+        {
+            self::moveCard($card, $location, $locationArg);
+        }
+    }
+
+    /**
      * Get an array of randomized cursed card types for game based on player count
      * @param int $playerCount Number of players in the game
      * @return array An array of card types

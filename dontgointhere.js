@@ -121,14 +121,32 @@ function (dojo, declare) {
             for(var faceupRoomsKey in gamedatas.faceupRooms)
             {
                 var room = gamedatas.faceupRooms[faceupRoomsKey];
-                dojo.addClass('dgit_room_'+room.uiPosition, room.cssClass);
+                dojo.addClass('dgit_room_' + room.uiPosition, room.cssClass);
+                this.addTooltip('dgit_room_' + room.uiPosition + '_tooltip', room.tooltipText, '');
                 for(var roomCardsKey in gamedatas.roomCards[room.uiPosition])
                 {
                     var card = gamedatas.roomCards[room.uiPosition][roomCardsKey];
-                    if(room.type == SECRET_PASSAGE && card.uiPosition == 3) {
-                        dojo.addClass('dgit_room_'+room.uiPosition+'_card_'+card.uiPosition, 'dgit-card-back');
+                    dojo.place(
+                        this.format_block(
+                            'jstpl_room_card', {
+                                card_id: card.id,
+                                room_number: room.uiPosition,
+                                card_number: card.uiPosition,
+                                card_css_class: card.cssClass,
+                            }
+                        ), 'dgit_room_'+room.uiPosition+'_cards'
+                    );
+                    if (room.type == SECRET_PASSAGE && card.uiPosition == 3) {
+                        console.log('dgit_room_' + room.uiPosition + '_card_' + card.id + '_tooltip');
+                        dojo.addClass('dgit_room_' + room.uiPosition + '_card_' + card.id, 'dgit-card-back');
+                        dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
                     } else {
-                        dojo.addClass('dgit_room_'+room.uiPosition+'_card_'+card.uiPosition, card.cssClass);
+                        if (card.tooltipText.length > 0) {
+                            this.addTooltip('dgit_card_' + card.id + '_tooltip', card.tooltipText, '');
+                        } else {
+                            dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
+                        }
+                        
                     }
                 }
             }
@@ -163,6 +181,14 @@ function (dojo, declare) {
                         }
                     ), 'dgit_player_'+playerCard.uiPosition+'_cards'
                 );
+
+                console.log('dgit_card_' + playerCard.id + '_tooltip');
+                console.log(playerCard.tooltipText);
+                if (playerCard.tooltipText.length > 0) {
+                    this.addTooltip('dgit_card_' + playerCard.id + '_tooltip', playerCard.tooltipText, '');
+                } else {
+                    dojo.addClass('dgit_card_' + playerCard.id + '_tooltip', 'dgit-hidden');
+                }
             }
             
             // Setup game notifications to handle (see "setupNotifications" method below)

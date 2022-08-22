@@ -58,20 +58,15 @@ class DontGoInThere extends Table
     {
         // Setup players
         $this->playerManager->setupNewGame($players);
+        // Setup cards
+        $this->cardManager->setupNewGame($this->playerManager->getPlayerCount());
         // Setup meeples
         $this->meepleManager->setupNewGame($this->playerManager->getPlayers());
         // Setup dice
         $this->diceManager->setupNewGame();
         // Setup rooms
         $this->roomManager->setupNewGame();
-        // Setup cards
-        $this->cardManager->setupNewGame($this->playerManager->getPlayerCount());
-
-        foreach($this->playerManager->getPlayers() as $player)
-        {
-            $this->cardManager->cards->pickCards(5, 'deck', $player->getId());
-        }
-
+        
         // Initialize global variables
         self::setGameStateInitialValue(CLOCKS_COLLECTED, DGIT_FALSE);
         
