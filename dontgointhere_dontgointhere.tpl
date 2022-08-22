@@ -91,7 +91,7 @@
                                             <span id="dgit_player_${player_id}_side_panel_ghost_counter" class="dgit-player-ghost-counter" style="text-shadow: 2px 0 2px #${player_color},0 -2px 2px #${player_color},0 2px 2px #${player_color},-2px 0 2px #${player_color};">?</span>\
                                         </div>\
                                    </div>';
-    var jstpl_room_card = '<div id="dgit_room_${room_number}_card_${card_id}" class="dgit-card ${card_css_class}" style="order: ${card_number}">\
+    var jstpl_room = '<div id="dgit_room_${room_number}_card_${card_id}" class="dgit-card ${card_css_class}" style="order: ${card_number}">\
                                 <span id="dgit_card_${card_id}_tooltip" class="dgit-card-tooltip">i</span>\
                            </div>';
 

@@ -53,7 +53,7 @@ define([
 
                 // Place custom block in player panel
                 debug(debugLogTag, 'Placing custom block in player panel')
-                this.placeBlock('jstpl_player_side_panel', 'player_board_' + player.id,
+                this.placeBlock(PLAYER_SIDE_PANEL_TEMPLATE, 'player_board_' + player.id,
                     { player_id: player.id, player_natural_order: player.naturalOrder, player_color: player.color });
 
                 // Unhide active player marker for first player
@@ -89,7 +89,7 @@ define([
                 // Create face down cards to simulate deck size visually
                 for(var cardNumber = 0; cardNumber < (gamedatas.deckSize/3); cardNumber++)
                 {
-                    this.placeBlock('jstpl_deck_card', 'dgit_deck', { card_num: cardNumber });
+                    this.placeBlock(DECK_CARD_TEMPLATE, 'dgit_deck', { card_num: cardNumber });
                 }
             }
             
@@ -121,7 +121,7 @@ define([
                     // Create card
                     var card = gamedatas.roomCards[room.uiPosition][roomCardsKey];
                     debug(debugLogTag + 'Creating card in room', card);
-                    this.placeBlock('jstpl_room_card', 'dgit_room_' + room.uiPosition + '_cards',
+                    this.placeBlock(ROOM_TEMPLATE, 'dgit_room_' + room.uiPosition + '_cards',
                         { card_id: card.id, room_number: room.uiPosition, card_number: card.uiPosition, card_css_class: card.cssClass });
                     
                     if (room.type == SECRET_PASSAGE && card.uiPosition == 3) {
@@ -152,7 +152,7 @@ define([
 
                 // Place meeple
                 debug(debugLogTag, 'Placing meeple');
-                this.placeBlock('jstpl_meeple', 'dgit_player_' + meeple.owner + '_meeples',
+                this.placeBlock(MEEPLE_TEMPLATE, 'dgit_player_' + meeple.owner + '_meeples',
                     { player_id: meeple.owner, meeple_id: meeple.id, meeple_css_class: meeple.cssClass });
             }
 
@@ -171,7 +171,7 @@ define([
                 // Place card
                 debug(debugLogTag + 'Creating player card', playerCard);
                 var playerCard = gamedatas.playerCards[playerCardsKey];
-                this.placeBlock('jstpl_player_card', 'dgit_player_' + playerCard.uiPosition + '_cards',
+                this.placeBlock(PLAYER_CARD_TEMPLATE, 'dgit_player_' + playerCard.uiPosition + '_cards',
                     { card_id: playerCard.id, player_id: playerCard.uiPosition, card_css_class: playerCard.cssClass } );
 
                 // Create tooltip

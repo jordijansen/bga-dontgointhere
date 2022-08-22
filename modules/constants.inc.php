@@ -54,6 +54,15 @@ define('DGIT_TRUE', 1);
 define('CLOCKS_COLLECTED', 'clocks_collected');
 
 /**
+ * JSTPL template names
+ */
+define('DECK_CARD_TEMPLATE', 'jstpl_deck_card');
+define('MEEPLE_TEMPLATE', 'jstpl_meeple');
+define('PLAYER_CARD_TEMPLATE', 'jstpl_player_card');
+define('PLAYER_SIDE_PANEL_TEMPLATE', 'jstpl_player_side_panel');
+define('ROOM_TEMPLATE', 'jstpl_room');
+
+/**
  * Meeple types
  */
 define('PURPLE', 0);
