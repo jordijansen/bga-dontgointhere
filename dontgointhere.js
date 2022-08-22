@@ -121,7 +121,7 @@ define([
                     // Create card
                     var card = gamedatas.roomCards[room.uiPosition][roomCardsKey];
                     debug(debugLogTag + 'Creating card in room', card);
-                    this.placeBlock(ROOM_TEMPLATE, 'dgit_room_' + room.uiPosition + '_cards',
+                    this.placeBlock(ROOM_CARD_TEMPLATE, 'dgit_room_' + room.uiPosition + '_cards',
                         { card_id: card.id, room_number: room.uiPosition, card_number: card.uiPosition, card_css_class: card.cssClass });
                     
                     if (room.type == SECRET_PASSAGE && card.uiPosition == 3) {
@@ -204,26 +204,22 @@ define([
          */
         onEnteringState: function( stateName, args )
         {
-            debug('onEnteringState', 'Entering a new state');
-            debug('onEnteringState::stateName', stateName);
-            debug('onEnteringState::args', args);
+            var debugLogTag = 'game::onEnteringState::';
+            debug(debugLogTag, 'Entering a new state');
+            debug(debugLogTag + 'stateName', stateName);
+            debug(debugLogTag + 'args', args);
             
             switch( stateName )
             {
-            
-            /* Example:
-            
-            case 'myGameState':
-            
-                // Show some HTML block at this game state
-                dojo.style( 'my_html_block_id', 'display', 'block' );
-                
-                break;
-           */
-           
-           
-            case 'dummmy':
-                break;
+                case PLAYER_TURN:
+                    if (this.isCurrentPlayerActive())
+                    { 
+                        dojo.query('div[meeple="none"]').addClass('dgit-selectable');
+                        this.connectClass('dgit-room-space', 'onclick', 'onClickRoomSpace');
+                    }
+                    break;
+                case 'dummmy':
+                    break;
             }
         },
 
@@ -307,6 +303,16 @@ define([
         },
 
         /**
+         * Build the ajax url for an action
+         * @param {string} actionName Name of the action
+         * @returns {string} ajax url for the action
+         */
+        getActionUrl: function (actionName)
+        { 
+            return '/' + this.game_name + '/' + this.game_name + '/' + actionName + '.html';
+        },
+
+        /**
          * Create an html block from a jstpl template and place in parent div
          * @param {string} template Name of template (aka jstpl variable)
          * @param {string} parentDiv Id of div to place block into
@@ -327,44 +333,58 @@ define([
             dojo.place(this.format_block(template, args), parentDiv);
         },
 
+        /**
+         * Trigger an ajax call for a player action
+         * @param {string} actionName Name of the action
+         * @param {Object} args Args required for the action 
+         */
+        triggerPlayerAction: function (actionName, args)
+        { 
+            var debugLogTag = 'game::triggerPlayerAction::';
+            debug(debugLogTag, 'Triggering player action');
+            debug(debugLogTag + 'actionName', actionName);
+            debug(debugLogTag + 'args', args);
+
+            // Check if action is possible in current state
+            if (!this.checkAction(actionName)) {
+                debug(debugLogTag, 'Action not possible at the momment');
+            }
+
+            // Add lock = true to args
+            if (!args) {
+                args = [];
+            }
+            args.lock = true;
+
+            this.ajaxcall(this.getActionUrl(actionName), args, this, function (result) {
+                debug(debugLogTag, 'Successful call to action');
+            }, function (error) {
+                if (error) {
+                    debug(debugLogTag, 'Error calling action')
+                }
+            });
+        },
+
 
         /***********************************************************************************************
         *    PLAYER ACTIONS::Handle player UX interaction                                              *
         ************************************************************************************************/
         
-        /* Example:
-        
-        onMyMethodToCall1: function( evt )
-        {
-            console.log( 'onMyMethodToCall1' );
-            
-            // Preventing default browser reaction
-            dojo.stopEvent( evt );
+        onClickRoomSpace: function (event)
+        { 
+            var debugLogTag = 'game::onClickRoomSpace::';
+            debug(debugLogTag, 'Room space clicked on');
+            debug(debugLogTag + 'event', event);
 
-            // Check that this action is possible (see "possibleactions" in states.inc.php)
-            if( ! this.checkAction( 'myAction' ) )
-            {   return; }
+            dojo.stopEvent(event);
 
-            this.ajaxcall( "/dontgointhere/dontgointhere/myAction.html", { 
-                                                                    lock: true, 
-                                                                    myArgument1: arg1, 
-                                                                    myArgument2: arg2,
-                                                                    ...
-                                                                 }, 
-                         this, function( result ) {
-                            
-                            // What to do after the server call if it succeeded
-                            // (most of the time: nothing)
-                            
-                         }, function( is_error) {
+            if (this.isCurrentPlayerActive() && event.target.attributes.meeple.value == 'none') {
+                var room = event.target.attributes.room.value;
+                var space = event.target.attributes.space.value;
 
-                            // What to do after the server call in anyway (success or failure)
-                            // (most of the time: nothing)
-
-                         } );        
-        },        
-        
-        */
+                this.triggerPlayerAction(PLACE_MEEPLE, { room: room, space: space });
+            }
+        },
 
 
         /***********************************************************************************************

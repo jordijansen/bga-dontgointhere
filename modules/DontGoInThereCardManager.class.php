@@ -34,7 +34,7 @@ class DontGoInThereCardManager extends APP_GameClass
      * @param int $playerCount Number of players in the game
      * @return void
      */
-    public function setupNewGame($playerCount)
+    public function setupNewGame($playerCount, $libraryPosition)
     {
         // Get cursed card types to use for this game
         $cursedCardTypes = self::randomizeCursedCardTypes($playerCount);
@@ -60,10 +60,29 @@ class DontGoInThereCardManager extends APP_GameClass
         // Deal 3 cards cards to each room
         for($roomPosition = 1; $roomPosition <= 3; $roomPosition++)
         {
-            for($cardSlot = 1; $cardSlot <= 3; $cardSlot++)
-            {
-                $this->cards->pickCardForLocation(DECK, ROOM_PREPEND.$roomPosition, $cardSlot);
+            // If this is the library we need to sort cards by curse value
+            if($libraryPosition == $roomPosition) {
+                $nextThreeCards = self::getCursedCardsOnTopOfDeck(3);
+
+                usort($nextThreeCards, function(DontGoInThereCursedCard $a, DontGoInThereCursedCard $b) {
+                    if($a->getCurses() === $b->getCurses()) {
+                        return 0;
+                    }
+                    return $a->getCurses() < $b->getCurses() ? -1 : 1;
+                });
+                
+                for($cardSlot = 1; $cardSlot <= 3; $cardSlot++)
+                {
+                    $nextCard = array_shift($nextThreeCards);
+                    $this->cards->moveCard($nextCard->getId(), ROOM_PREPEND . $roomPosition, $cardSlot);
+                }
+            } else {
+                for($cardSlot = 1; $cardSlot <= 3; $cardSlot++)
+                {
+                    $this->cards->pickCardForLocation(DECK, ROOM_PREPEND . $roomPosition, $cardSlot);
+                }
             }
+            
         }
     }
 
@@ -134,6 +153,14 @@ class DontGoInThereCardManager extends APP_GameClass
         }, $cards);
     }
 
+    public function getCursedCardsOnTopOfDeck($amount)
+    {
+        $cards = $this->cards->getCardsOnTop($amount, DECK);
+        return array_map(function($card) {
+            return $this->getCursedCard($card[TYPE], $card[ID], $card[TYPE_ARG], $card[LOCATION_ARG]);
+        }, $cards);
+    }
+
     /**
      * Get ui data of all cards in specified location
      * @param string $location Location value in database
@@ -168,7 +195,7 @@ class DontGoInThereCardManager extends APP_GameClass
      * @param mixed $locationArg Destination location arg
      * @return void
      */
-    public function moveCards($cards, $location, $locationArg)
+    public function moveCards($cards, $location, $locationArg = 0)
     {
         foreach($cards as $card)
         {

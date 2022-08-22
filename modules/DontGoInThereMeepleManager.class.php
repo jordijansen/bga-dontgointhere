@@ -61,6 +61,19 @@ class DontGoInThereMeepleManager extends APP_GameClass
     }
 
     /**
+     * Move a meeple into a room
+     * @param DontGoInTherePlayer $player Player whose meeple is moving
+     * @param int $room UiPosition of room
+     * @param int $space Space on room meeple is moving to
+     * @return void
+     */
+    public function moveMeepleToRoom($player, $room, $space)
+    {
+        $meeple = self::getMeepleFromHand($player);
+        $this->meeples->moveCard($meeple->getId(), ROOM_PREPEND . $room, $space);
+    }
+
+    /**
      * Get ui data of all meeples in a specified location
      * @param string $location Location value in DB
      * @return array<mixed> An array of ui data for meeples
@@ -91,5 +104,19 @@ class DontGoInThereMeepleManager extends APP_GameClass
             throw new BgaVisibleSystemException("determineMeepleType: Unknown hex color $hexColor");
         }
         return self::$hexToMeepleType[$hexColor];
+    }
+
+    /**
+     * Grab any of a player's unused meeples
+     * @param DontGoInTherePlayer $player A player object
+     * @return DontGoInThereMeeple A meeple object
+     */
+    private function getMeepleFromHand($player)
+    {
+        $meepleType = self::$hexToMeepleType[$player->getColor()];
+        $meepleOwner = $player->getId();
+        $playersMeeples = $this->meeples->getCardsOfTypeInLocation($meepleType, $meepleOwner, HAND);
+        $meepleRecord = array_pop($playersMeeples);
+        return self::getMeeple($meepleRecord['id'], $meepleRecord['type'], $meepleRecord['type_arg'], $meepleRecord['location_arg']);
     }
 }

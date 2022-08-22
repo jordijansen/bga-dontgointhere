@@ -58,14 +58,14 @@ class DontGoInThere extends Table
     {
         // Setup players
         $this->playerManager->setupNewGame($players);
-        // Setup cards
-        $this->cardManager->setupNewGame($this->playerManager->getPlayerCount());
         // Setup meeples
         $this->meepleManager->setupNewGame($this->playerManager->getPlayers());
         // Setup dice
         $this->diceManager->setupNewGame();
         // Setup rooms
         $this->roomManager->setupNewGame();
+        // Setup cards
+        $this->cardManager->setupNewGame($this->playerManager->getPlayerCount(), $this->roomManager->getLibraryPosition());
         
         // Initialize global variables
         self::setGameStateInitialValue(CLOCKS_COLLECTED, DGIT_FALSE);
@@ -139,31 +139,13 @@ class DontGoInThere extends Table
     *    PLAYER ACTIONS::Methods when players trigger actions                                      *
     ************************************************************************************************/
 
-    /*
-    
-    Example:
-
-    function playCard( $card_id )
+    function placeMeeple($room, $space)
     {
-        // Check that this is the player's turn and that it is a "possible action" at this game state (see states.inc.php)
-        self::checkAction( 'playCard' ); 
-        
-        $player_id = self::getActivePlayerId();
-        
-        // Add your game logic to play a card there 
-        ...
-        
-        // Notify all players about the card played
-        self::notifyAllPlayers( "cardPlayed", clienttranslate( '${player_name} plays ${card_name}' ), array(
-            'player_id' => $player_id,
-            'player_name' => self::getActivePlayerName(),
-            'card_name' => $card_name,
-            'card_id' => $card_id
-        ) );
-          
+        $player = $this->playerManager->getPlayer(self::getActivePlayerId());
+        $this->meepleManager->moveMeepleToRoom($player, $room, $space);
+
+        $this->gamestate->nextState(NEXT_PLAYER);
     }
-    
-    */
 
     
     /***********************************************************************************************
@@ -191,19 +173,16 @@ class DontGoInThere extends Table
     /***********************************************************************************************
     *    GAME STATE::Global game state actions                                                     *
     ************************************************************************************************/
-    
-    /*
-    
-    Example for game state "MyGameState":
 
-    function stMyGameState()
+    /**
+     * Handle transition to next player
+     * @return void
+     */
+    function stNextPlayer()
     {
-        // Do some stuff ...
-        
-        // (very often) go to another gamestate
-        $this->gamestate->nextState( 'some_gamestate_transition' );
-    }    
-    */
+        $this->activeNextPlayer();
+        $this->gamestate->nextState(PLAYER_TURN);
+    }
 
 
     /***********************************************************************************************

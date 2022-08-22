@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Action names
+ */
+define('PLACE_MEEPLE', 'placeMeeple');
+
+/**
  * Card types
  */
 define('AMULET', 0);
@@ -23,6 +28,7 @@ define('DECK', 'deck');
 define('FACEDOWN', 'facedown');
 define('FACEUP', 'faceup');
 define('HAND', 'hand');
+define('HOLDING', 'holding');
 define('ROOM_PREPEND', 'room_');
 define('TRASH', 'trash');
 
@@ -60,7 +66,7 @@ define('DECK_CARD_TEMPLATE', 'jstpl_deck_card');
 define('MEEPLE_TEMPLATE', 'jstpl_meeple');
 define('PLAYER_CARD_TEMPLATE', 'jstpl_player_card');
 define('PLAYER_SIDE_PANEL_TEMPLATE', 'jstpl_player_side_panel');
-define('ROOM_TEMPLATE', 'jstpl_room');
+define('ROOM_CARD_TEMPLATE', 'jstpl_room_card');
 
 /**
  * Meeple types
@@ -80,3 +86,19 @@ define('HALLWAY', 2);
 define('LIBRARY', 3);
 define('NURSERY', 4);
 define('SECRET_PASSAGE', 5);
+
+/**
+ * State IDS
+ */
+define('STATE_GAME_SETUP', 1);
+define('STATE_PLAYER_TURN', 2);
+define('STATE_NEXT_PLAYER', 3);
+define('STATE_GAME_END', 99);
+
+/**
+ * State names
+ */
+define('GAME_END', 'gameEnd');
+define('GAME_SETUP', 'gameSetup');
+define('NEXT_PLAYER', 'nextPlayer');
+define('PLAYER_TURN', 'playerTurn');

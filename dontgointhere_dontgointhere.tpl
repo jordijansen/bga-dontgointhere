@@ -42,6 +42,10 @@
             <div id="dgit_room_panel_{ROOM_NUM}" class="dgit-room-panel">
                 <div id="dgit_room_{ROOM_NUM}_cards" class="dgit-room-cards"></div>
                 <div id="dgit_room_{ROOM_NUM}" class="dgit-room" style="order: {ROOM_NUM}">
+                    <div id="dgit_room_{ROOM_NUM}_space_1" room="{ROOM_NUM}" space="1" meeple="none" class="dgit-room-space dgit-room-space-1"></div>
+                    <div id="dgit_room_{ROOM_NUM}_space_2" room="{ROOM_NUM}" space="2" meeple="none" class="dgit-room-space dgit-room-space-2"></div>
+                    <div id="dgit_room_{ROOM_NUM}_space_3" room="{ROOM_NUM}" space="3" meeple="none" class="dgit-room-space dgit-room-space-3"></div>
+                    <div id="dgit_room_{ROOM_NUM}_space_4" room="{ROOM_NUM}" space="4" meeple="none" class="dgit-room-space dgit-room-space-4"></div>
                     <span id="dgit_room_{ROOM_NUM}_tooltip" class="dgit-room-tooltip">i</span>
                 </div>
             </div>
@@ -91,9 +95,9 @@
                                             <span id="dgit_player_${player_id}_side_panel_ghost_counter" class="dgit-player-ghost-counter" style="text-shadow: 2px 0 2px #${player_color},0 -2px 2px #${player_color},0 2px 2px #${player_color},-2px 0 2px #${player_color};">?</span>\
                                         </div>\
                                    </div>';
-    var jstpl_room = '<div id="dgit_room_${room_number}_card_${card_id}" class="dgit-card ${card_css_class}" style="order: ${card_number}">\
-                                <span id="dgit_card_${card_id}_tooltip" class="dgit-card-tooltip">i</span>\
-                           </div>';
+    var jstpl_room_card = '<div id="dgit_room_${room_number}_card_${card_id}" class="dgit-card ${card_css_class}" style="order: ${card_number}">\
+                            <span id="dgit_card_${card_id}_tooltip" class="dgit-card-tooltip">i</span>\
+                      </div>';
 
 </script>  
 

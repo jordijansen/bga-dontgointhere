@@ -115,6 +115,16 @@ class DontGoInThereRoomManager extends APP_GameClass
         }
         return $ui;
     }
+
+    public function getLibraryPosition()
+    {
+        $faceupRooms = self::getRooms(FACEUP);
+        $library = self::findRoomByType($faceupRooms, LIBRARY);
+        if(!$library){
+            return 0;
+        }
+        return $library->getUiPosition();
+    }
     
     /**
      * Deal a starting room, put is flipside in waiting.
