@@ -36,12 +36,12 @@ class DontGoInThereRoomManager extends APP_GameClass
         $rooms = [];
         foreach($roomTypes as $roomType)
         {
-            $rooms[] = ['type' => $roomType, 'type_arg' => 0, 'nbr' => 1];
+            $rooms[] = [TYPE => $roomType, TYPE_ARG => 0, 'nbr' => 1];
         }
-        $this->rooms->createCards($rooms, 'deck');
+        $this->rooms->createCards($rooms, DECK);
 
         // Shuffle room deck
-        $this->rooms->shuffle('deck');
+        $this->rooms->shuffle(DECK);
 
         // Deal 3 opening rooms
         for($uiPosition = 1; $uiPosition <= 3; $uiPosition++)
@@ -97,7 +97,7 @@ class DontGoInThereRoomManager extends APP_GameClass
     {
         $rooms = $this->rooms->getCardsInLocation($location);
         return array_map(function($room) {
-            return $this->getRoom($room['type'], $room['id'], $room['location_arg']);
+            return $this->getRoom($room[TYPE], $room[ID], $room[LOCATION_ARG]);
         }, $rooms);
     }
 
@@ -130,11 +130,11 @@ class DontGoInThereRoomManager extends APP_GameClass
         $drawnRoom = array_shift($rooms);
 
         // Place card faceup in position
-        $this->rooms->moveCard($drawnRoom->getId(), 'faceup', $roomPosition);
+        $this->rooms->moveCard($drawnRoom->getId(), FACEUP, $roomPosition);
 
         // Get flip side room, and put in waiting
         $flipSideRoom = self::findRoomByType($rooms, $drawnRoom->getFlipSideRoom());
-        $this->rooms->moveCard($flipSideRoom->getId(), 'facedown', $roomPosition);
+        $this->rooms->moveCard($flipSideRoom->getId(), FACEDOWN, $roomPosition);
     }
 
     /**

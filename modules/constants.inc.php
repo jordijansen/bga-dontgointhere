@@ -17,6 +17,25 @@ define('TOME', 10);
 define('TWIN', 11);
 
 /**
+ * Component locations
+ */
+define('DECK', 'deck');
+define('FACEDOWN', 'facedown');
+define('FACEUP', 'faceup');
+define('HAND', 'hand');
+define('ROOM_PREPEND', 'room_');
+define('TRASH', 'trash');
+
+/**
+ * Database columns
+ */
+define('ID', 'id');
+define('LOCATION', 'location');
+define('LOCATION_ARG', 'location_arg');
+define('TYPE', 'type');
+define('TYPE_ARG', 'type_arg');
+
+/**
  * Die faces
  */
 define('HIDDEN', 0);

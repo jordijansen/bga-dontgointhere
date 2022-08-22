@@ -29,9 +29,9 @@ class DontGoInThereMeepleManager extends APP_GameClass
         foreach($players as $player)
         {
             $meepleType = self::determineMeepleType($player->getColor());
-            $meeples[] = ['type' => $meepleType, 'type_arg' => $player->getId(), 'nbr' => 5];
+            $meeples[] = [TYPE => $meepleType, TYPE_ARG => $player->getId(), 'nbr' => 5];
         }
-        $this->meeples->createCards($meeples, 'hand');
+        $this->meeples->createCards($meeples, HAND);
     }
 
     /**
@@ -56,7 +56,7 @@ class DontGoInThereMeepleManager extends APP_GameClass
     {
         $meeples = $this->meeples->getCardsInLocation($location);
         return array_map(function($meeple) {
-            return $this->getMeeple($meeple['id'], $meeple['type'], $meeple['type_arg'], $meeple['location_arg']);
+            return $this->getMeeple($meeple[ID], $meeple[TYPE], $meeple[TYPE_ARG], $meeple[LOCATION_ARG]);
         }, $meeples);
     }
 

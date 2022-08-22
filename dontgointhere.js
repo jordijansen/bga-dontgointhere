@@ -16,21 +16,17 @@
  var isDebug = window.location.host == 'studio.boardgamearena.com';
  var debug = isDebug ? console.info.bind(window.console) : function(){};
 define([
-    "dojo","dojo/_base/declare",
+    "dojo",
+    "dojo/_base/declare",
     "ebg/core/gamegui",
-    "ebg/counter"
-],
-function (dojo, declare) {
+    "ebg/counter",
+    g_gamethemeurl + 'modules/scripts/CounterManager.js',
+], function (dojo, declare) {
     return declare("bgagame.dontgointhere", ebg.core.gamegui, {
         constructor: function(){
-            debug('constructor', 'starting constructor');
-
-            this.deckCounter = new ebg.counter();
-            this.playerCurseCounters = [];
-            this.playerSidePanelCurseCounters = [];
-            this.currentPlayerGhosts = new ebg.counter();
-            this.currentPlayerSidePanelGhosts = new ebg.counter();
-            this.playerDispeledCounters = [];
+            debug('game::constructor::', 'Starting constructor');
+                
+            this.counterManager = new dgit.counterManager();
         },
         
         /**
@@ -39,108 +35,103 @@ function (dojo, declare) {
          */
         setup: function( gamedatas )
         {
-            debug('setup', 'Beginning game setup');
-            debug('setup::gamedatas', gamedatas);
+            // Initial debug logging
+            var debugLogTag = 'game::setup::';
+            debug(debugLogTag, 'Beginning game setup');
+            debug(debugLogTag+'gamedatas', gamedatas);
 
-            debug('setup', 'Definining local constants');
+            // Define global constants
+            debug(debugLogTag, 'Defining global constants');
             this.defineGlobalConstants(gamedatas.constants);
             
-            // Setting up player boards
-            debug('setup', 'Setting up player elements')
+            // Setup player elements
+            debug(debugLogTag, 'Setting up elements for all players')
             for(var playerKey in gamedatas.playerInfo)
             {
                 var player = gamedatas.playerInfo[playerKey];
-                debug('setup::player', player);
+                debug(debugLogTag+'Setting up player elements', player);
 
-                dojo.place(
-                    this.format_block(
-                        'jstpl_player_side_panel', {
-                            player_id: player.id,
-                            player_natural_order: player.naturalOrder,
-                            player_color: player.color,
-                        }
-                    ), 'player_board_' + player.id
-                );
+                // Place custom block in player panel
+                debug(debugLogTag, 'Placing custom block in player panel')
+                this.placeBlock('jstpl_player_side_panel', 'player_board_' + player.id,
+                    { player_id: player.id, player_natural_order: player.naturalOrder, player_color: player.color });
 
+                // Unhide active player marker for first player
+                debug(debugLogTag, 'Unhiding active player marker for first player')
                 if (player.id == this.getActivePlayerId())
                 {
                     dojo.removeClass('dgit_player_' + player.id + '_active_player', 'dgit-hidden')
                 }
 
-                this.playerCurseCounters[player.id] = new ebg.counter();
-                this.playerCurseCounters[player.id].create('dgit_player_' + player.id + '_curse_counter');
-                this.playerCurseCounters[player.id].setValue(player.curses);
-                this.playerSidePanelCurseCounters[player.id] = new ebg.counter();
-                this.playerSidePanelCurseCounters[player.id].create('dgit_player_' + player.id + '_side_panel_curse_counter');
-                this.playerSidePanelCurseCounters[player.id].setValue(player.curses);
-
-                this.playerDispeledCounters[player.id] = new ebg.counter();
-                this.playerDispeledCounters[player.id].create('dgit_player_' + player.id + '_dispeled_counter');
-                this.playerDispeledCounters[player.id].setValue(player.cardsDispeled);
-
+                // Create player related counters
+                debug(debugLogTag, 'Creating player related counters')
+                this.counterManager.createPlayerCurseCounters(player);
+                this.counterManager.createPlayerDispeledCounter(player);
                 if (player.id == this.getCurrentPlayerId())
                 {
-                    this.currentPlayerGhosts.create('dgit_player_' + player.id + '_ghost_counter');
-                    this.currentPlayerGhosts.setValue(player.ghostTokens);
-                    this.currentPlayerSidePanelGhosts.create('dgit_player_' + player.id + '_side_panel_ghost_counter');
-                    this.currentPlayerSidePanelGhosts.setValue(player.ghostTokens);
+                    this.counterManager.createPlayerGhostCounters(player);
                 }
 
+                // If player has dispeled cards, show dispeled card element
                 if (player.cardsDispeled > 0) { 
+                    debug(debugLogTag, 'Unhiding dispeled card element')
                     dojo.removeClass('dgit_player_' + player.id + '_dispeled', 'dgit-hidden');
                 }
             }
 
-            debug('setup', 'Create card deck');
+            // Create card deck
+            debug(debugLogTag, 'Creating card deck');
             if (gamedatas.deckSize == 0) {
                 dojo.addClass('dgit_deck', 'dgit-hidden');
             } else {
-                this.deckCounter.create('dgit_deck_counter');
-                this.deckCounter.setValue(gamedatas.deckSize);
+                this.counterManager.createDeckCounter(gamedatas.deckSize);
+
+                // Create face down cards to simulate deck size visually
                 for(var cardNumber = 0; cardNumber < (gamedatas.deckSize/3); cardNumber++)
                 {
-                    dojo.place(
-                        this.format_block(
-                            'jstpl_deck_card', {
-                                card_num: cardNumber,
-                            }
-                        ), 'dgit_deck'
-                    );
+                    this.placeBlock('jstpl_deck_card', 'dgit_deck', { card_num: cardNumber });
                 }
             }
             
-
-            debug('setup', 'Create dice');
+            // Create dice
+            debug(debugLogTag, 'Creating dice');
             for (var dieKey in gamedatas.dice)
             {
                 var die = gamedatas.dice[dieKey];
                 dojo.addClass('dgit_die_'+die.id+'_face', die.cssClass);
             }
             
-            debug('setup', 'Create room boards');
+            // Create rooms
+            debug(debugLogTag, 'Creating rooms');
             for(var faceupRoomsKey in gamedatas.faceupRooms)
             {
+                // Create room
                 var room = gamedatas.faceupRooms[faceupRoomsKey];
+                debug(debugLogTag + 'Creating room', room);
+                
+                // Add room css class and tooltip
+                debug(debugLogTag, 'Adding CSS and tooltip to room')
                 dojo.addClass('dgit_room_' + room.uiPosition, room.cssClass);
                 this.addTooltip('dgit_room_' + room.uiPosition + '_tooltip', room.tooltipText, '');
+
+                // Create cards currently in room
+                debug(debugLogTag, 'Creating cards in room')
                 for(var roomCardsKey in gamedatas.roomCards[room.uiPosition])
                 {
+                    // Create card
                     var card = gamedatas.roomCards[room.uiPosition][roomCardsKey];
-                    dojo.place(
-                        this.format_block(
-                            'jstpl_room_card', {
-                                card_id: card.id,
-                                room_number: room.uiPosition,
-                                card_number: card.uiPosition,
-                                card_css_class: card.cssClass,
-                            }
-                        ), 'dgit_room_'+room.uiPosition+'_cards'
-                    );
+                    debug(debugLogTag + 'Creating card in room', card);
+                    this.placeBlock('jstpl_room_card', 'dgit_room_' + room.uiPosition + '_cards',
+                        { card_id: card.id, room_number: room.uiPosition, card_number: card.uiPosition, card_css_class: card.cssClass });
+                    
                     if (room.type == SECRET_PASSAGE && card.uiPosition == 3) {
-                        console.log('dgit_room_' + room.uiPosition + '_card_' + card.id + '_tooltip');
+                        // If room is secret passage flip the 3rd card face down for everyone who has not placed a meeple here
+                        debug(debugLogTag, 'Flipping third card in Secret Passage face down');
                         dojo.addClass('dgit_room_' + room.uiPosition + '_card_' + card.id, 'dgit-card-back');
                         dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
                     } else {
+                        // If card is faceup show tooltip
+                        debug(debugLogTag, 'Creating card tooltip');
                         if (card.tooltipText.length > 0) {
                             this.addTooltip('dgit_card_' + card.id + '_tooltip', card.tooltipText, '');
                         } else {
@@ -151,50 +142,54 @@ function (dojo, declare) {
                 }
             }
 
-            debug('setup', 'Create meeples in hand');
+            // Create meeples in player hands
+            debug(debugLogTag, 'Creating meeples in hand');
             for (var meeplesKey in gamedatas.meeplesInHand)
             {
+                // Create meeple
                 var meeple = gamedatas.meeplesInHand[meeplesKey];
-                dojo.place(
-                    this.format_block(
-                        'jstpl_meeple', {
-                            player_id: meeple.owner,
-                            meeple_id: meeple.id,
-                            meeple_css_class: meeple.cssClass,
-                        }
-                    ), 'dgit_player_'+meeple.owner+'_meeples'
-                );
+                debug(debugLogTag + 'Creating meeple', meeple);
+
+                // Place meeple
+                debug(debugLogTag, 'Placing meeple');
+                this.placeBlock('jstpl_meeple', 'dgit_player_' + meeple.owner + '_meeples',
+                    { player_id: meeple.owner, meeple_id: meeple.id, meeple_css_class: meeple.cssClass });
             }
 
-            debug('setup', 'Create player cards');
+            // TODO: Handle meeples in rooms
+
+            // Create player cards
+            debug(debugLogTag + 'Creating player cards', gamedatas.playerCards);
+
+            // Sort cards by type so cards of same type are adjacent
+            debug(debugLogTag + 'Sorting player cards');
             gamedatas.playerCards.sort((a, b) => (a.type > b.type) ? 1 : -1);
-            debug('setup', gamedatas.playerCards);
+
+
             for(var playerCardsKey in gamedatas.playerCards)
             {
+                // Place card
+                debug(debugLogTag + 'Creating player card', playerCard);
                 var playerCard = gamedatas.playerCards[playerCardsKey];
-                dojo.place(
-                    this.format_block(
-                        'jstpl_player_card', {
-                            card_id: playerCard.id,
-                            player_id: playerCard.uiPosition,
-                            card_css_class: playerCard.cssClass,
-                        }
-                    ), 'dgit_player_'+playerCard.uiPosition+'_cards'
-                );
+                this.placeBlock('jstpl_player_card', 'dgit_player_' + playerCard.uiPosition + '_cards',
+                    { card_id: playerCard.id, player_id: playerCard.uiPosition, card_css_class: playerCard.cssClass } );
 
-                console.log('dgit_card_' + playerCard.id + '_tooltip');
-                console.log(playerCard.tooltipText);
+                // Create tooltip
+                debug(debugLogTag, 'Creating tooltip');
                 if (playerCard.tooltipText.length > 0) {
+                    // If card has a tooltip, create it
                     this.addTooltip('dgit_card_' + playerCard.id + '_tooltip', playerCard.tooltipText, '');
                 } else {
+                    // Else hide tooltip element
                     dojo.addClass('dgit_card_' + playerCard.id + '_tooltip', 'dgit-hidden');
                 }
             }
             
             // Setup game notifications to handle (see "setupNotifications" method below)
+            debug(debugLogTag, 'Setting up notifications');
             this.setupNotifications();
 
-            debug('setup', 'Ending game setup');
+            debug(debugLogTag, 'Ending game setup');
         },
        
 
@@ -301,6 +296,7 @@ function (dojo, declare) {
          */
         defineGlobalConstants: function(userConstants)
         {
+            debug('game::defineGlobalConstants::userConstants', userConstants);
             for(var constant in userConstants)
             {
                 if(!globalThis[constant])
@@ -308,6 +304,27 @@ function (dojo, declare) {
                     globalThis[constant] = userConstants[constant];
                 }
             }
+        },
+
+        /**
+         * Create an html block from a jstpl template and place in parent div
+         * @param {string} template Name of template (aka jstpl variable)
+         * @param {string} parentDiv Id of div to place block into
+         * @param {Object} args Arguments needed by the template
+         */
+        placeBlock: function (template, parentDiv, args)
+        { 
+            var debugLogTag = 'game::placeblock::';
+            debug(debugLogTag, 'Placing HTML block');
+            debug(debugLogTag + 'template', template);
+            debug(debugLogTag + 'parentDiv', parentDiv);
+            debug(debugLogTag + 'args', args);
+
+            if (!args) {
+                args = [];
+            }
+            
+            dojo.place(this.format_block(template, args), parentDiv);
         },
 
 

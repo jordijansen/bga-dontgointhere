@@ -45,24 +45,24 @@ class DontGoInThereCardManager extends APP_GameClass
         {
             for($curses = 1; $curses <= 4; $curses++)
             {
-                $cards[] = ['type' => $cardType, 'type_arg' => $curses, 'nbr' => 2];
+                $cards[] = [TYPE => $cardType, TYPE_ARG => $curses, 'nbr' => 2];
             }
         }
-        $this->cards->createCards($cards, 'deck');
+        $this->cards->createCards($cards, DECK);
 
         // Shuffle deck
-        $this->cards->shuffle('deck');
+        $this->cards->shuffle(DECK);
 
         // Remove cards from deck based on player count
         $numberOfCardsToRemove = self::$playerCountVariables[$playerCount]['cardsToRemove'];
-        $this->cards->pickCardsForLocation($numberOfCardsToRemove, 'deck', 'trash');
+        $this->cards->pickCardsForLocation($numberOfCardsToRemove, DECK, TRASH);
 
         // Deal 3 cards cards to each room
         for($roomPosition = 1; $roomPosition <= 3; $roomPosition++)
         {
             for($cardSlot = 1; $cardSlot <= 3; $cardSlot++)
             {
-                $this->cards->pickCardForLocation('deck', 'room_'.$roomPosition, $cardSlot);
+                $this->cards->pickCardForLocation(DECK, ROOM_PREPEND.$roomPosition, $cardSlot);
             }
         }
     }
@@ -130,7 +130,7 @@ class DontGoInThereCardManager extends APP_GameClass
     {
         $cards = $this->cards->getCardsInLocation($location);
         return array_map(function($card) {
-            return $this->getCursedCard($card['type'], $card['id'], $card['type_arg'], $card['location_arg']);
+            return $this->getCursedCard($card[TYPE], $card[ID], $card[TYPE_ARG], $card[LOCATION_ARG]);
         }, $cards);
     }
 

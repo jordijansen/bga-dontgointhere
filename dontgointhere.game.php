@@ -88,20 +88,23 @@ class DontGoInThere extends Table
     protected function getAllDatas()
     {
         $currentPlayerId = self::getCurrentPlayerId();
+
+        $roomCards = [];
+        for ($roomNumber = 1; $roomNumber <= 3; $roomNumber++)
+        {
+            $roomCards[$roomNumber] = $this->cardManager->getUiData(ROOM_PREPEND . $roomNumber);
+        }
+
         $data = [
             'constants' => get_defined_constants(true)['user'],
-            'deckSize' => $this->cardManager->countCursedCards('deck'),
+            'deckSize' => $this->cardManager->countCursedCards(DECK),
             'dice' => $this->diceManager->getUiData(),
-            'faceupRooms' => $this->roomManager->getUiData('faceup'),
-            'facedownRooms' => $this->roomManager->getUiData('facedown'),
-            'meeplesInHand' => $this->meepleManager->getUiData('hand'),
-            'playerCards' => $this->cardManager->getUiData('hand'),
+            'faceupRooms' => $this->roomManager->getUiData(FACEUP),
+            'facedownRooms' => $this->roomManager->getUiData(FACEDOWN),
+            'meeplesInHand' => $this->meepleManager->getUiData(HAND),
+            'playerCards' => $this->cardManager->getUiData(HAND),
             'playerInfo' => $this->playerManager->getUiData($currentPlayerId),
-            'roomCards' => [
-                1 => $this->cardManager->getUiData('room_1'),
-                2 => $this->cardManager->getUiData('room_2'),
-                3 => $this->cardManager->getUiData('room_3'),
-            ],
+            'roomCards' => $roomCards,
         ];
         return $data;
     }
@@ -123,7 +126,7 @@ class DontGoInThere extends Table
      ************************************************************************************************/
 
     /**
-     * Gives access to getCurrentPlayerId to other classes
+     * Wrapper for getCurrentPlayerId
      * @return int ID of player who loaded screen
      */
     function getViewingPlayerId()
