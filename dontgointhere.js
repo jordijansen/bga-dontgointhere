@@ -13,8 +13,8 @@
  *
  */
 
- var isDebug = window.location.host == 'studio.boardgamearena.com';
- var debug = isDebug ? console.info.bind(window.console) : function(){};
+var isDebug = window.location.host == 'studio.boardgamearena.com';
+var debug = isDebug ? console.info.bind(window.console) : function(){};
 define([
     "dojo",
     "dojo/_base/declare",
@@ -140,6 +140,21 @@ define([
                         
                     }
                 }
+
+                // Create meeples currently in room
+                debug(debugLogTag, 'Creating meeples in room');
+                for (var roomMeeplesKey in gamedatas.meeplesInRooms[room.uiPosition])
+                {
+                    var meeple = gamedatas.meeplesInRooms[room.uiPosition][roomMeeplesKey];
+                    debug(debugLogTag + 'Creating meeple in room', meeple);
+                    var meepleDiv = 'dgit_player_' + meeple.owner + '_meeple_' + meeple.id;
+                    var roomSpaceDiv = 'dgit_room_' + room.uiPosition + '_space_' + meeple.uiPosition;
+                    var roomHighlightDiv = 'dgit_room_' + room.uiPosition + '_space_highlight_' + meeple.uiPosition;
+                    this.placeBlock(MEEPLE_TEMPLATE, roomSpaceDiv,
+                        { player_id: meeple.owner, meeple_id: meeple.id, meeple_css_class: meeple.cssClass });
+                    this.placeOnObject(meepleDiv, roomSpaceDiv);
+                    dojo.setAttr(roomHighlightDiv, 'meeple', meeple.owner);
+                }
             }
 
             // Create meeples in player hands
@@ -155,8 +170,6 @@ define([
                 this.placeBlock(MEEPLE_TEMPLATE, 'dgit_player_' + meeple.owner + '_meeples',
                     { player_id: meeple.owner, meeple_id: meeple.id, meeple_css_class: meeple.cssClass });
             }
-
-            // TODO: Handle meeples in rooms
 
             // Create player cards
             debug(debugLogTag + 'Creating player cards', gamedatas.playerCards);
@@ -214,8 +227,9 @@ define([
                 case PLAYER_TURN:
                     if (this.isCurrentPlayerActive())
                     { 
-                        dojo.query('div[meeple="none"]').addClass('dgit-selectable');
-                        this.connectClass('dgit-room-space', 'onclick', 'onClickRoomSpace');
+                        dojo.query('div[meeple="none"]').addClass('dgit-clickable');
+                        dojo.query('div[meeple="none"]').addClass('dgit-highlight');
+                        this.connectClass('dgit-room-space-highlight', 'onclick', 'onClickRoomSpace');
                     }
                     break;
                 case 'dummmy':
@@ -231,6 +245,9 @@ define([
         {
             debug('onLeavingState', 'Leaving a state');
             debug('onLeavingState::stateName', stateName);
+
+            this.removeAllTemporaryStyles();
+            this.disconnectAll();
             
             switch( stateName )
             {
@@ -313,6 +330,15 @@ define([
         },
 
         /**
+         * Add CSS styling to make an element interactive
+         * @param {string} elementId Id of the element
+         */
+        makeElementInteractive: function (elementId)
+        { 
+            dojo.addClass(elementId, ['dgit-clickable', 'dgit-highlight']);
+        },
+
+        /**
          * Create an html block from a jstpl template and place in parent div
          * @param {string} template Name of template (aka jstpl variable)
          * @param {string} parentDiv Id of div to place block into
@@ -331,6 +357,15 @@ define([
             }
             
             dojo.place(this.format_block(template, args), parentDiv);
+        },
+
+        /**
+         * Remove all styles potentially added for game states
+         */
+        removeAllTemporaryStyles: function ()
+        { 
+            dojo.query('.dgit-clickable').removeClass('dgit-clickable');
+            dojo.query('.dgit-highlight').removeClass('dgit-highlight');
         },
 
         /**
@@ -397,35 +432,22 @@ define([
         setupNotifications: function()
         {
             debug('setupNotifications', 'Setting up notification subscriptions');
-            
-            // TODO: here, associate your game notifications with local methods
-            
-            // Example 1: standard notification handling
-            // dojo.subscribe( 'cardPlayed', this, "notif_cardPlayed" );
-            
-            // Example 2: standard notification handling + tell the user interface to wait
-            //            during 3 seconds after calling the method in order to let the players
-            //            see what is happening in the game.
-            // dojo.subscribe( 'cardPlayed', this, "notif_cardPlayed" );
-            // this.notifqueue.setSynchronous( 'cardPlayed', 3000 );
-            // 
-        },  
-        
-        // TODO: from this point and below, you can write your game notifications handling methods
-        
-        /*
-        Example:
-        
-        notif_cardPlayed: function( notif )
-        {
-            console.log( 'notif_cardPlayed' );
-            console.log( notif );
-            
-            // Note: notif.args contains the arguments specified during you "notifyAllPlayers" / "notifyPlayer" PHP call
-            
-            // TODO: play the card in the user interface.
-        },    
-        
-        */
+
+            dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
+        },
+
+        notif_placeMeeple: function (notification)
+        { 
+            var meeple = notification.args.meeple;
+            var room = notification.args.room;
+            var space = notification.args.space;
+
+            var meepleDiv = 'dgit_player_' + meeple.owner + '_meeple_' + meeple.id;
+            var roomSpaceDiv = 'dgit_room_' + room.uiPosition + '_space_' + space;
+            var roomHighlightDiv = 'dgit_room_' + room.uiPosition + '_space_highlight_' + space;
+            this.attachToNewParent(meepleDiv, roomSpaceDiv);
+            this.slideToObject(meepleDiv, roomSpaceDiv).play();
+            dojo.setAttr(roomHighlightDiv, 'meeple', meeple.owner);
+        },
    });             
 });

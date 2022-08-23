@@ -102,6 +102,16 @@ class DontGoInThereRoomManager extends APP_GameClass
     }
 
     /**
+     * Get a gaceup room by its ui position
+     * @param int $uiPosition
+     * @return DontGoInThereRoom room object
+     */
+    public function getFaceupRoomByUiPosition($uiPosition)
+    {
+        return self::findRoomByUiPosition(self::getRooms(FACEUP), $uiPosition);
+    }
+
+    /**
      * Get uiData of all rooms in specified location
      * @param string $location Location value from database
      * @return array An array of uiData for a room
@@ -116,6 +126,10 @@ class DontGoInThereRoomManager extends APP_GameClass
         return $ui;
     }
 
+    /**
+     * Get the UI position of the Library if it is faceu[]
+     * @return mixed UI position of Library if its faceup otherwise return false
+     */
     public function getLibraryPosition()
     {
         $faceupRooms = self::getRooms(FACEUP);
@@ -157,12 +171,28 @@ class DontGoInThereRoomManager extends APP_GameClass
     {
         foreach($rooms as $room)
         {
-            if($roomType == $room->getType())
-            {
+            if($roomType == $room->getType()) {
                 return $room;
             }
         }
 
+        return false;
+    }
+
+    /**
+     * Return a DontGoInThereRoom of specified ui location from a list of rooms
+     * @param array<DontGoInThereRoom> $rooms An array of DontGoInThereRoom objects
+     * @param int $uiPosition A room ui position
+     * @return mixed a DontGoInThereRoom object if it exists in the list, otherwise false
+     */
+    public function findRoomByUiPosition($rooms, $uiPosition)
+    {
+        foreach($rooms as $room)
+        {
+            if($uiPosition == $room->getUiPosition()) {
+                return $room;
+            }
+        }
         return false;
     }
 }

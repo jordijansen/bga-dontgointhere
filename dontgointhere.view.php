@@ -24,78 +24,91 @@
  *
  */
   
-  require_once( APP_BASE_PATH."view/common/game.view.php" );
+require_once( APP_BASE_PATH."view/common/game.view.php" );
   
-  class view_dontgointhere_dontgointhere extends game_view
-  {
-    function getGameName() {
-        return "dontgointhere";
-    }    
-  	function build_page( $viewArgs )
-  	{		
-      // Template name
-      $template = self::getGameName().'_'.self::getGameName();
+ class view_dontgointhere_dontgointhere extends game_view
+ {
+   function getGameName() {
+    return "dontgointhere";
+  }    
+  function build_page( $viewArgs )
+  {		
+    // Template name
+    $template = self::getGameName().'_'.self::getGameName();
 
-  	  // Inflate players
-      $players = $this->game->playerManager->getPlayersInViewOrder();
-      $this->page->begin_block($template, 'playerarea');
-      foreach($players as $playerKey => $player)
+    // Inflate players
+    $players = $this->game->playerManager->getPlayersInViewOrder();
+    $this->page->begin_block($template, 'playerarea');
+    foreach($players as $playerKey => $player)
+    {
+      $this->page->insert_block(
+        'playerarea',
+        array(
+          'PLAYER_ID' => $player->getId(),
+          'PLAYER_NAME' => $player->getName(),
+          'PLAYER_COLOR' => $player->getColor(),
+          'PLAYER_NATURAL_ORDER' => $player->getNaturalOrder(),
+        )
+      );
+    }
+
+    // Inflate a pile of ghosts
+    $this->page->begin_block($template, 'ghost');
+    for($ghostNumber = 1; $ghostNumber <= 48; $ghostNumber++)
+    {
+      $this->page->insert_block(
+        'ghost',
+        array(
+          'GHOST_NUM' => $ghostNumber,
+          'GHOST_TYPE' => ceil($ghostNumber / 2),
+          'DELAY' => ($ghostNumber - 1) * 100,
+          'X_TIME' => random_int(10, 20),
+          'Y_TIME' => random_int(10, 20),
+          'SPIN_TIME' => random_int(10, 20),
+          'Z_INDEX' => random_int(1, 70),
+        )
+      );
+    }
+
+    // Inflate dice
+    $this->page->begin_block($template, 'die');
+    for ($dieNumber = 1; $dieNumber <= 6; $dieNumber++)
+    {
+      $this->page->insert_block(
+        'die',
+        array(
+          'DIE_NUM' => $dieNumber,
+        )
+      );
+    }
+
+    // Inflate rooms
+    $this->page->begin_block($template, 'roomspace');
+    $this->page->begin_block($template, 'room');
+    for($roomNumber = 1; $roomNumber <= 3; $roomNumber++)
+    {
+      $this->page->reset_subblocks('roomspace');
+
+      for ($spaceNumber = 1; $spaceNumber <= 4; $spaceNumber++)
       {
         $this->page->insert_block(
-          'playerarea',
-          array(
-            'PLAYER_ID' => $player->getId(),
-            'PLAYER_NAME' => $player->getName(),
-            'PLAYER_COLOR' => $player->getColor(),
-            'PLAYER_NATURAL_ORDER' => $player->getNaturalOrder(),
-          )
-        );
-      }
-
-      // Inflate a pile of ghosts
-      $this->page->begin_block($template, 'ghost');
-      for($ghostNumber = 1; $ghostNumber <= 48; $ghostNumber++)
-      {
-        $this->page->insert_block(
-          'ghost',
-          array(
-            'GHOST_NUM' => $ghostNumber,
-            'GHOST_TYPE' => ceil($ghostNumber / 2),
-            'DELAY' => ($ghostNumber - 1) * 100,
-            'X_TIME' => random_int(10, 20),
-            'Y_TIME' => random_int(10, 20),
-            'SPIN_TIME' => random_int(10, 20),
-            'Z_INDEX' => random_int(1, 70),
-          )
-        );
-      }
-
-      // Inflate dice
-      $this->page->begin_block($template, 'die');
-      for ($dieNumber = 1; $dieNumber <= 6; $dieNumber++)
-      {
-        $this->page->insert_block(
-          'die',
-          array(
-            'DIE_NUM' => $dieNumber,
-          )
-        );
-      }
-
-      // Inflate rooms
-      $this->page->begin_block($template, 'room');
-      for($roomNumber = 1; $roomNumber <= 3; $roomNumber++)
-      {
-        $this->page->insert_block(
-          'room',
+          'roomspace',
           array(
             'ROOM_NUM' => $roomNumber,
+            'SPACE_NUM' => $spaceNumber,
           )
         );
       }
+      $this->page->insert_block(
+        'room',
+        array(
+          'ROOM_NUM' => $roomNumber,
+        )
+      );
+    }
 
-      /*********** Do not change anything below this line  ************/
-  	}
+    /*********** Do not change anything below this line  ************/
   }
+}
   
 

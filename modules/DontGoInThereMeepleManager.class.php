@@ -65,12 +65,13 @@ class DontGoInThereMeepleManager extends APP_GameClass
      * @param DontGoInTherePlayer $player Player whose meeple is moving
      * @param int $room UiPosition of room
      * @param int $space Space on room meeple is moving to
-     * @return void
+     * @return DontGoInThereMeeple meeple object moved
      */
     public function moveMeepleToRoom($player, $room, $space)
     {
         $meeple = self::getMeepleFromHand($player);
         $this->meeples->moveCard($meeple->getId(), ROOM_PREPEND . $room, $space);
+        return $meeple;
     }
 
     /**
@@ -90,11 +91,11 @@ class DontGoInThereMeepleManager extends APP_GameClass
 
     // Map of hex colors to meeple type
     private static $hexToMeepleType = [
-        '451f69' => PURPLE,
-        'f8602b' => RED,
-        '00cbb1' => TEAL,
-        'eaeaea' => WHITE,
-        'fff97b' => YELLOW,
+        '4c266d' => PURPLE,
+        'e44e35' => RED,
+        '1bad80' => TEAL,
+        'ffffff' => WHITE,
+        'f4af2b' => YELLOW,
     ];
 
     private function determineMeepleType($hexColor)

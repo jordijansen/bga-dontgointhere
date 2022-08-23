@@ -42,10 +42,10 @@
             <div id="dgit_room_panel_{ROOM_NUM}" class="dgit-room-panel">
                 <div id="dgit_room_{ROOM_NUM}_cards" class="dgit-room-cards"></div>
                 <div id="dgit_room_{ROOM_NUM}" class="dgit-room" style="order: {ROOM_NUM}">
-                    <div id="dgit_room_{ROOM_NUM}_space_1" room="{ROOM_NUM}" space="1" meeple="none" class="dgit-room-space dgit-room-space-1"></div>
-                    <div id="dgit_room_{ROOM_NUM}_space_2" room="{ROOM_NUM}" space="2" meeple="none" class="dgit-room-space dgit-room-space-2"></div>
-                    <div id="dgit_room_{ROOM_NUM}_space_3" room="{ROOM_NUM}" space="3" meeple="none" class="dgit-room-space dgit-room-space-3"></div>
-                    <div id="dgit_room_{ROOM_NUM}_space_4" room="{ROOM_NUM}" space="4" meeple="none" class="dgit-room-space dgit-room-space-4"></div>
+                    <!-- BEGIN roomspace -->
+                    <div id="dgit_room_{ROOM_NUM}_space_{SPACE_NUM}" class="dgit-room-space dgit-room-space-{SPACE_NUM}"></div>
+                    <div id="dgit_room_{ROOM_NUM}_space_highlight_{SPACE_NUM}" room="{ROOM_NUM}" space="{SPACE_NUM}" meeple="none" class="dgit-room-space-highlight dgit-room-space-highlight-{SPACE_NUM}"></div>
+                    <!-- END roomspace -->
                     <span id="dgit_room_{ROOM_NUM}_tooltip" class="dgit-room-tooltip">i</span>
                 </div>
             </div>

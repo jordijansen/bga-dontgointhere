@@ -27,13 +27,16 @@ div.player-board {
     border-radius: 5px;
 }
 
+.dgit-clickable {
+    cursor: pointer;
+}
+
 .dgit-hidden {
     display: none !important;
 }
 
-.dgit-selectable {
+.dgit-highlight {
     border: 5px solid #8bc98a;
-    cursor: pointer;
 }
 
 .dgit-header {
@@ -365,12 +368,31 @@ div.player-board {
 .dgit-meeple {
     display: inline-block;
     position: relative;
-    width: 40px;
+    width: 39px;
     height: 57px;
-    -webkit-filter: drop-shadow(2px 1px 0 black) drop-shadow(-1px -1px 0 black);
-    filter:drop-shadow(2px 1px 0 black) drop-shadow(-1px -1px 0 black);
     background-image: url('img/dgit_meeples.png');
 }
+
+.dgit-meeple-space-1 {
+    top: -38px !important;
+    left: 12px !important;
+}
+
+.dgit-meeple-space-2 {
+    top: -25px !important;
+    left: 17px !important;
+}
+
+.dgit-meeple-space-3 {
+    top: -13px !important;
+    left: 21px !important;
+}
+
+.dgit-meeple-space-4 {
+    top: -3px !important;
+    left: 29px !important;
+}
+
 
 /***** ROOMS *****/
 .dgit-room {
@@ -386,40 +408,68 @@ div.player-board {
 .dgit-room-space {
     display: inline-block;
     position: absolute;
-    border-radius: 55%;
-    transform: rotate(-25deg);
+    width: 45px;
+    height: 60px;
 }
 
 .dgit-room-space-1 {
-    width: 61px;
-    height: 28px;
-    top: 87px;
-    left: 211px;
+    top: 55px;
+    left: 225px;
     z-index: 1;
 }
 
 .dgit-room-space-2 {
-    width: 71px;
-    height: 38px;
-    top: 126px;
-    left: 229px;
+    top: 110px;
+    left: 250px;
     z-index: 2;
 }
 
 .dgit-room-space-3 {
-    width: 80px;
-    height: 52px;
-    top: 176px;
-    left: 254px;
+    top: 170px;
+    left: 280px;
     z-index: 3;
 }
 
 .dgit-room-space-4 {
+    top: 255px;
+    left: 320px;
+    z-index: 4;
+}
+
+.dgit-room-space-highlight {
+    display: inline-block;
+    position: absolute;
+    border-radius: 55%;
+    transform: rotate(-25deg);
+    z-index: 10;
+}
+
+.dgit-room-space-highlight-1 {
+    width: 61px;
+    height: 28px;
+    top: 87px;
+    left: 211px;
+}
+
+.dgit-room-space-highlight-2 {
+    width: 71px;
+    height: 38px;
+    top: 126px;
+    left: 229px;
+}
+
+.dgit-room-space-highlight-3 {
+    width: 80px;
+    height: 52px;
+    top: 176px;
+    left: 254px;
+}
+
+.dgit-room-space-highlight-4 {
     width: 91px;
     height: 70px;
     top: 244px;
     left: 288px;
-    z-index: 4;
 }
 
 

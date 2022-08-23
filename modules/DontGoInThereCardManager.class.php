@@ -70,7 +70,7 @@ class DontGoInThereCardManager extends APP_GameClass
                     }
                     return $a->getCurses() < $b->getCurses() ? -1 : 1;
                 });
-                
+
                 for($cardSlot = 1; $cardSlot <= 3; $cardSlot++)
                 {
                     $nextCard = array_shift($nextThreeCards);
@@ -153,6 +153,11 @@ class DontGoInThereCardManager extends APP_GameClass
         }, $cards);
     }
 
+    /**
+     * Get X number of cards from the top of the deck
+     * @param int $amount Number of cards to get
+     * @return array<DontGoInThereCursedCard> Array of card objects
+     */
     public function getCursedCardsOnTopOfDeck($amount)
     {
         $cards = $this->cards->getCardsOnTop($amount, DECK);

@@ -90,9 +90,11 @@ class DontGoInThere extends Table
         $currentPlayerId = self::getCurrentPlayerId();
 
         $roomCards = [];
+        $roomMeeples = [];
         for ($roomNumber = 1; $roomNumber <= 3; $roomNumber++)
         {
             $roomCards[$roomNumber] = $this->cardManager->getUiData(ROOM_PREPEND . $roomNumber);
+            $roomMeeples[$roomNumber] = $this->meepleManager->getUiData(ROOM_PREPEND . $roomNumber);
         }
 
         $data = [
@@ -102,6 +104,7 @@ class DontGoInThere extends Table
             'faceupRooms' => $this->roomManager->getUiData(FACEUP),
             'facedownRooms' => $this->roomManager->getUiData(FACEDOWN),
             'meeplesInHand' => $this->meepleManager->getUiData(HAND),
+            'meeplesInRooms' => $roomMeeples,
             'playerCards' => $this->cardManager->getUiData(HAND),
             'playerInfo' => $this->playerManager->getUiData($currentPlayerId),
             'roomCards' => $roomCards,
@@ -139,10 +142,28 @@ class DontGoInThere extends Table
     *    PLAYER ACTIONS::Methods when players trigger actions                                      *
     ************************************************************************************************/
 
-    function placeMeeple($room, $space)
+    /**
+     * Place a a meeple of the active player in the chosen room space
+     * @param int $roomPosition UI position of target room
+     * @param int $space Chosen space in the room
+     * @return void
+     */
+    function placeMeeple($roomPosition, $space)
     {
         $player = $this->playerManager->getPlayer(self::getActivePlayerId());
-        $this->meepleManager->moveMeepleToRoom($player, $room, $space);
+        $room = $this->roomManager->getFaceupRoomByUiPosition($roomPosition);
+        $meeple = $this->meepleManager->moveMeepleToRoom($player, $roomPosition, $space);
+
+        self::notifyAllPlayers(
+            PLACE_MEEPLE,
+            clienttranslate('${playerName} places a meeple in The ${roomName}'),
+            array(
+                'playerName' => $player->getName(),
+                'roomName' => $room->getName(),
+                'room' => $room->getUiData(),
+                'space' => $space,
+                'meeple' => $meeple->getUiData(),
+            ));
 
         $this->gamestate->nextState(NEXT_PLAYER);
     }
