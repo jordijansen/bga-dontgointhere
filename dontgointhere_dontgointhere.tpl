@@ -62,7 +62,7 @@
                 <div id="dgit_player_{PLAYER_ID}_tracker_panel" class="dgit-player-tracker-panel">
                     <div id="dgit_player_{PLAYER_ID}_curse_tracker" class="dgit-curse-icon"></div>
                     <span id="dgit_player_{PLAYER_ID}_curse_counter" class="dgit-player-curse-counter">0</span>
-                    <div id="dgit_player_{PLAYER_ID}_ghost_tracker" class="dgit-ghost-token dgit-ghost-token-{PLAYER_NATURAL_ORDER}"></div>
+                    <div id="dgit_player_{PLAYER_ID}_ghost_tracker" class="dgit-ghost-token dgit-ghost-token-{PLAYER_NATURAL_ORDER} dgit-ghost-tracker"></div>
                     <span id="dgit_player_{PLAYER_ID}_ghost_counter" class="dgit-player-ghost-counter" style="text-shadow: 2px 0 2px #{PLAYER_COLOR},0 -2px 2px #{PLAYER_COLOR},0 2px 2px #{PLAYER_COLOR},-2px 0 2px #{PLAYER_COLOR};">?</span>
                 </div>
                 <div id="dgit_player_{PLAYER_ID}_meeples" class="dgit-player-meeples" style="background-color: #{PLAYER_COLOR}50; border-color: #{PLAYER_COLOR}; color: #{PLAYER_COLOR}"></div>
@@ -91,7 +91,7 @@
                                         <div id="dgit_player_${player_id}_curse_count" class="dgit-curse-icon">\
                                             <span id="dgit_player_${player_id}_side_panel_curse_counter" class="dgit-player-side-panel-curse-counter">0</span>\
                                         </div>\
-                                        <div id="dgit_player_${player_id}_ghost_count" class="dgit-ghost-token dgit-ghost-token-${player_natural_order}">\
+                                        <div id="dgit_player_${player_id}_ghost_count" class="dgit-ghost-token dgit-ghost-token-${player_natural_order} dgit-ghost-tracker">\
                                             <span id="dgit_player_${player_id}_side_panel_ghost_counter" class="dgit-player-ghost-counter" style="text-shadow: 2px 0 2px #${player_color},0 -2px 2px #${player_color},0 2px 2px #${player_color},-2px 0 2px #${player_color};">?</span>\
                                         </div>\
                                    </div>';

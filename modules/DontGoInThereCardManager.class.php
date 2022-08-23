@@ -123,21 +123,19 @@ class DontGoInThereCardManager extends APP_GameClass
 
     /**
      * Factory to create a DontGoInThereCursedCard object
-     * @param int $cardType Card type id
-     * @param int $id Card database id
-     * @param int $typeArg Database type_arg Used to denote curse value of card
-     * @param int $locationArg Database location_arg Used to denote ui position of card within its location
+     * @param mixed $card DB record of card
      * @throws BgaVisibleSystemException 
      * @return DontGoInThereCursedCard A DontGoInThereCursedCard object
      */
-    public function getCursedCard($cardType, $id, $typeArg, $locationArg)
+    public function getCursedCard($card)
     {
+        $cardType = $card['type'];
         if(!isset(self::$cursedCardClasses[$cardType]))
         {
             throw new BgaVisibleSystemException("getCursedCard: Unknown cursed card type $cardType");
         }
         $className = self::$cursedCardClasses[$cardType];
-        return new $className($this->game, $id, $typeArg, $locationArg);
+        return new $className($this->game, $card);
     }
 
     /**
@@ -149,7 +147,7 @@ class DontGoInThereCardManager extends APP_GameClass
     {
         $cards = $this->cards->getCardsInLocation($location);
         return array_map(function($card) {
-            return $this->getCursedCard($card[TYPE], $card[ID], $card[TYPE_ARG], $card[LOCATION_ARG]);
+            return $this->getCursedCard($card);
         }, $cards);
     }
 
@@ -162,7 +160,7 @@ class DontGoInThereCardManager extends APP_GameClass
     {
         $cards = $this->cards->getCardsOnTop($amount, DECK);
         return array_map(function($card) {
-            return $this->getCursedCard($card[TYPE], $card[ID], $card[TYPE_ARG], $card[LOCATION_ARG]);
+            return $this->getCursedCard($card);
         }, $cards);
     }
 

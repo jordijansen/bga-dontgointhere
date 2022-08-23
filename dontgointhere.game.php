@@ -161,7 +161,6 @@ class DontGoInThere extends Table
                 'playerName' => $player->getName(),
                 'roomName' => $room->getName(),
                 'room' => $room->getUiData(),
-                'space' => $space,
                 'meeple' => $meeple->getUiData(),
             ));
 

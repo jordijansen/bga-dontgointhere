@@ -5,18 +5,18 @@
  */
 class Twin extends DontGoInThereCursedCard
 {
-    public function __construct($game, $id, $typeArg, $locationArg)
+    public function __construct($game, $row)
     {
         parent::__construct($game);
-        $this->id = $id;
+        $this->id = $row[ID];
         $this->name = clienttranslate('Twin');
         $this->type = TWIN;
-        $this->cssClass = "dgit-card-twin-".$typeArg;
+        $this->cssClass = "dgit-card-twin-".$row[TYPE_ARG];
         $this->tooltipText = self::buildTooltipText();
-        $this->curses = $typeArg;
-        $this->diceIcons = self::determineDiceIcons($typeArg);
+        $this->curses = $row[TYPE_ARG];
+        $this->diceIcons = self::determineDiceIcons($row[TYPE_ARG]);
         $this->endGameTrigger = false;
-        $this->uiPosition = $locationArg;
+        $this->uiPosition = $row[LOCATION_ARG];
     }
 
     /**

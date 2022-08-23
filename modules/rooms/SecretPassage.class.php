@@ -5,16 +5,16 @@
  */
 class SecretPassage extends DontGoInThereRoom
 {
-    public function __construct($game, $id, $locationArg)
+    public function __construct($game, $row)
     {
         parent::__construct($game);
-        $this->id = $id;
+        $this->id = $row[ID];
         $this->name = clienttranslate('Secret Passage');
         $this->type = SECRET_PASSAGE;
         $this->cssClass = "dgit-room-secret-passage";
         $this->tooltipText = self::buildTooltipText();;
         $this->flipSideRoom = LIBRARY;
-        $this->uiPosition = $locationArg;
+        $this->uiPosition = $row[LOCATION_ARG];
     }
 
     /**

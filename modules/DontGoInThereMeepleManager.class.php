@@ -36,15 +36,12 @@ class DontGoInThereMeepleManager extends APP_GameClass
 
     /**
      * Factory to create a DontGoInThereMeeple object
-     * @param mixed $id Meeple ID from DB
-     * @param mixed $type Meeple type from DB
-     * @param mixed $typeArg Meeple typeArg from DB
-     * @param mixed $locationArg Meeple locationArg from DB
+     * @param mixed $row Meeple record from DB
      * @return DontGoInThereMeeple A DontGoInThereMeeple object
      */
-    public function getMeeple($id, $type, $typeArg, $locationArg)
+    public function getMeeple($row)
     {
-        return new DontGoInThereMeeple($this->game, $id, $type, $typeArg, $locationArg);
+        return new DontGoInThereMeeple($this->game, $row);
     }
 
     /**
@@ -56,7 +53,7 @@ class DontGoInThereMeepleManager extends APP_GameClass
     {
         $meeples = $this->meeples->getCardsInLocation($location);
         return array_map(function($meeple) {
-            return $this->getMeeple($meeple[ID], $meeple[TYPE], $meeple[TYPE_ARG], $meeple[LOCATION_ARG]);
+            return $this->getMeeple($meeple);
         }, $meeples);
     }
 
@@ -71,7 +68,8 @@ class DontGoInThereMeepleManager extends APP_GameClass
     {
         $meeple = self::getMeepleFromHand($player);
         $this->meeples->moveCard($meeple->getId(), ROOM_PREPEND . $room, $space);
-        return $meeple;
+        $movedMeeple = $this->meeples->getCard($meeple->getId());
+        return self::getMeeple($movedMeeple);
     }
 
     /**
@@ -118,6 +116,6 @@ class DontGoInThereMeepleManager extends APP_GameClass
         $meepleOwner = $player->getId();
         $playersMeeples = $this->meeples->getCardsOfTypeInLocation($meepleType, $meepleOwner, HAND);
         $meepleRecord = array_pop($playersMeeples);
-        return self::getMeeple($meepleRecord['id'], $meepleRecord['type'], $meepleRecord['type_arg'], $meepleRecord['location_arg']);
+        return self::getMeeple($meepleRecord);
     }
 }

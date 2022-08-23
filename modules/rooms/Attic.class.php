@@ -5,16 +5,16 @@
  */
 class Attic extends DontGoInThereRoom
 {
-    public function __construct($game, $id, $locationArg)
+    public function __construct($game, $row)
     {
         parent::__construct($game);
-        $this->id = $id;
+        $this->id = $row[ID];
         $this->name = clienttranslate('Attic');
         $this->type = ATTIC;
         $this->cssClass = "dgit-room-attic";
         $this->tooltipText = '';
         $this->flipSideRoom = NURSERY;
-        $this->uiPosition = $locationArg;
+        $this->uiPosition = $row[LOCATION_ARG];
     }
 
     /**

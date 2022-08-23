@@ -5,18 +5,18 @@
  */
 class Ring extends DontGoInThereCursedCard
 {
-    public function __construct($game, $id, $typeArg, $locationArg)
+    public function __construct($game, $row)
     {
         parent::__construct($game);
-        $this->id = $id;
+        $this->id = $row[ID];
         $this->name = clienttranslate('Ring');
         $this->type = RING;
-        $this->cssClass = "dgit-card-ring-".$typeArg;
+        $this->cssClass = "dgit-card-ring-".$row[TYPE_ARG];
         $this->tooltipText = self::buildTooltipText();
-        $this->curses = $typeArg;
-        $this->diceIcons = self::determineDiceIcons($typeArg);
+        $this->curses = $row[TYPE_ARG];
+        $this->diceIcons = self::determineDiceIcons($row[TYPE_ARG]);
         $this->endGameTrigger = false;
-        $this->uiPosition = $locationArg;
+        $this->uiPosition = $row[LOCATION_ARG];
     }
 
     /**

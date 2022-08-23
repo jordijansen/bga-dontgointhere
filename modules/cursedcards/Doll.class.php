@@ -5,18 +5,18 @@
  */
 class Doll extends DontGoInThereCursedCard
 {
-    public function __construct($game, $id, $typeArg, $locationArg)
+    public function __construct($game, $row)
     {
         parent::__construct($game);
-        $this->id = $id;
+        $this->id = $row[ID];
         $this->name = clienttranslate('Doll');
         $this->type = DOLL;
-        $this->cssClass = "dgit-card-doll-".$typeArg;
+        $this->cssClass = "dgit-card-doll-".$row[TYPE_ARG];
         $this->tooltipText = self::buildTooltipText();
-        $this->curses = $typeArg;
-        $this->diceIcons = self::determineDiceIcons($typeArg);
+        $this->curses = $row[TYPE_ARG];
+        $this->diceIcons = self::determineDiceIcons($row[TYPE_ARG]);
         $this->endGameTrigger = false;
-        $this->uiPosition = $locationArg;
+        $this->uiPosition = $row[LOCATION_ARG];
     }
 
     /**

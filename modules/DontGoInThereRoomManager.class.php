@@ -72,20 +72,19 @@ class DontGoInThereRoomManager extends APP_GameClass
 
     /**
      * Factory to create a DontGoInThereRoom object
-     * @param int $roomType Room type
-     * @param int $id Database id of room
-     * @param int $locationArg Database location_arg Used to denote ui position of room within its location
+     * @param mixed $room Room record from databas
      * @throws BgaVisibleException 
      * @return DontGoInThereRoom A DontGoInThereRoom object
      */
-    public function getRoom($roomType, $id, $locationArg)
+    public function getRoom($room)
     {
+        $roomType = $room[TYPE];
         if(!isset(self::$roomClasses[$roomType]))
         {
             throw new BgaVisibleException("getRoom: Unknown room type $roomType");
         }
         $className = self::$roomClasses[$roomType];
-        return new $className($this->game, $id, $locationArg);
+        return new $className($this->game, $room);
     }
 
     /**
@@ -97,7 +96,7 @@ class DontGoInThereRoomManager extends APP_GameClass
     {
         $rooms = $this->rooms->getCardsInLocation($location);
         return array_map(function($room) {
-            return $this->getRoom($room[TYPE], $room[ID], $room[LOCATION_ARG]);
+            return $this->getRoom($room);
         }, $rooms);
     }
 

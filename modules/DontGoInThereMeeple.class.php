@@ -15,20 +15,17 @@ class DontGoInThereMeeple extends APP_GameClass
     /**
      * Construct a DontGoInThereMeeple object
      * @param mixed $game The game class
-     * @param mixed $id Meeple ID from DB
-     * @param mixed $type Meeple type from DB
-     * @param mixed $typeArg Meeple typeArg from DB (aka owner's player id)
-     * @param mixed $locationArg Meeple locationArg from DB
+     * @param mixed $row Meeple record from database
      */
-    public function __construct($game, $id, $type, $typeArg, $locationArg)
+    public function __construct($game, $row)
     {
         $this->game = $game;
 
-        $this->id = $id;
-        $this->type = $type;
-        $this->owner = $typeArg;
-        $this->cssClass = self::determineCssClass($type);
-        $this->uiPosition = $locationArg;
+        $this->id = $row[ID];
+        $this->type = $row[TYPE];
+        $this->owner = $row[TYPE_ARG];
+        $this->cssClass = self::determineCssClass($row[TYPE]);
+        $this->uiPosition = $row[LOCATION_ARG];
     }
 
     public function getId() { return $this->id; }

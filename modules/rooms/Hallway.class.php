@@ -5,16 +5,16 @@
  */
 class Hallway extends DontGoInThereRoom
 {
-    public function __construct($game, $id, $locationArg)
+    public function __construct($game, $row)
     {
         parent::__construct($game);
-        $this->id = $id;
+        $this->id = $row[ID];
         $this->name = clienttranslate('Hallway');
         $this->type = HALLWAY;
         $this->cssClass = "dgit-room-hallway";
         $this->tooltipText = self::buildTooltipText();;
         $this->flipSideRoom = BASEMENT;
-        $this->uiPosition = $locationArg;
+        $this->uiPosition = $row[LOCATION_ARG];
     }
 
     /**

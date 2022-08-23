@@ -5,16 +5,16 @@
  */
 class Library extends DontGoInThereRoom
 {
-    public function __construct($game, $id, $locationArg)
+    public function __construct($game, $row)
     {
         parent::__construct($game);
-        $this->id = $id;
+        $this->id = $row[ID];
         $this->name = clienttranslate('Library');
         $this->type = LIBRARY;
         $this->cssClass = "dgit-room-library";
         $this->tooltipText = self::buildTooltipText();;
         $this->flipSideRoom = SECRET_PASSAGE;
-        $this->uiPosition = $locationArg;
+        $this->uiPosition = $row[LOCATION_ARG];
     }
 
     /**

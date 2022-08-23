@@ -352,6 +352,10 @@ div.player-board {
     animation: spin linear infinite;
 }
 
+.dgit-ghost-tracker {
+    opacity: 1 !important;
+}
+
 @keyframes x {
     100% {
         transform: translateX(calc(340px - 70px));

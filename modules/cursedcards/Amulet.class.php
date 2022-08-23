@@ -5,18 +5,18 @@
  */
 class Amulet extends DontGoInThereCursedCard
 {
-    public function __construct($game, $id, $typeArg, $locationArg)
+    public function __construct($game, $row)
     {
         parent::__construct($game);
-        $this->id = $id;
+        $this->id = $row[ID];
         $this->name = clienttranslate('Amulet');
         $this->type = AMULET;
-        $this->cssClass = "dgit-card-amulet-".$typeArg;
-        $this->tooltipText = self::buildTooltipText($typeArg);
-        $this->curses = $typeArg;
-        $this->diceIcons = self::determineDiceIcons($typeArg);
+        $this->cssClass = "dgit-card-amulet-".$row[TYPE_ARG];
+        $this->tooltipText = self::buildTooltipText($row[TYPE_ARG]);
+        $this->curses = $row[TYPE_ARG];
+        $this->diceIcons = self::determineDiceIcons($row[TYPE_ARG]);
         $this->endGameTrigger = true;
-        $this->uiPosition = $locationArg;
+        $this->uiPosition = $row[LOCATION_ARG];
     }
 
 
