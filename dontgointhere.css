@@ -370,6 +370,7 @@ div.player-board {
     position: relative;
     width: 39px;
     height: 57px;
+    transform: rotateY(180deg);
     background-image: url('img/dgit_meeples.png');
 }
 
