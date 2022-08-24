@@ -208,6 +208,10 @@ define([
             dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
         },
 
+        /**
+         * Handle movement of active player token in UI
+         * @param {Object} notification notification object
+         */
         notif_changePlayer: function (notification)
         { 
             var nextPlayerId = notification.args.nextPlayer;
