@@ -10,7 +10,9 @@ define([
     'ebg/core/gamegui',
 ], (dojo, declare) => {
     return declare('dgit.utilities', ebg.core.gamegui, {
-        constructor() { },
+        constructor(game) {
+            this.game = game;
+         },
 
         /**
          * Gives javascript access to constants defined in PHP
@@ -25,6 +27,16 @@ define([
                     globalThis[constant] = userConstants[constant];
                 }
             }
+        },
+
+        /**
+         * Build the ajax url for an action
+         * @param {string} actionName Name of the action
+         * @returns {string} ajax url for the action
+         */
+        getActionUrl: function (actionName)
+        { 
+            return '/' + this.game.game_name + '/' + this.game.game_name + '/' + actionName + '.html';
         },
 
         /**
@@ -58,6 +70,29 @@ define([
         { 
             dojo.query('.dgit-clickable').removeClass('dgit-clickable');
             dojo.query('.dgit-highlight').removeClass('dgit-highlight');
+        },
+
+        /**
+         * Trigger an ajax call for a player action
+         * @param {string} actionName Name of the action
+         * @param {Object} args Args required for the action 
+         */
+        triggerPlayerAction: function (actionName, args)
+        { 
+            // Check if action is possible in current state
+            if (this.game.isCurrentPlayerActive()&& this.game.checkAction(actionName)) {
+                // Add lock = true to args
+                if (!args) {
+                    args = [];
+                }
+                args.lock = true;
+
+                this.game.ajaxcall(this.getActionUrl(actionName), args, this, function (result) {
+                }, function (error) {
+                    if (error) {
+                    }
+                });
+            }
         },
    });
 });

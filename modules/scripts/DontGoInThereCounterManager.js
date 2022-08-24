@@ -10,7 +10,9 @@ define([
     'ebg/counter',
 ], (dojo, declare) => {
     return declare('dgit.counterManager', null, {
-        constructor() {
+        constructor(game) {
+            this.game = game;
+            
             this.deckCounter = new ebg.counter();
             this.playerCurseCounters = [];
             this.playerSidePanelCurseCounters = [];

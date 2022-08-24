@@ -7,13 +7,11 @@ var debug = isDebug ? console.info.bind(window.console) : function(){};
 define([
     'dojo',
     'dojo/_base/declare',
-    g_gamethemeurl + 'modules/scripts/DontGoInThereCounterManager.js',
-    g_gamethemeurl + 'modules/scripts/DontGoInThereUtilities.js',
+    'ebg/core/gamegui',
 ], (dojo, declare) => {
     return declare('dgit.cardManager', null, {
-        constructor() {
-            this.counterManager = new dgit.counterManager();
-            this.util = new dgit.utilities();
+        constructor(game) {
+            this.game = game;
         },
 
         /**
@@ -26,12 +24,12 @@ define([
             if (gamedatas.deckSize == 0) {
                 dojo.addClass('dgit_deck', 'dgit-hidden');
             } else {
-                this.counterManager.createDeckCounter(gamedatas.deckSize);
+                this.game.counterManager.createDeckCounter(gamedatas.deckSize);
 
                 // Create face down cards to simulate deck size visually
                 for(var cardNumber = 0; cardNumber < (gamedatas.deckSize/3); cardNumber++)
                 {
-                    this.util.placeBlock(DECK_CARD_TEMPLATE, 'dgit_deck', { card_num: cardNumber });
+                    this.game.util.placeBlock(DECK_CARD_TEMPLATE, 'dgit_deck', { card_num: cardNumber });
                 }
             }
 
@@ -43,7 +41,7 @@ define([
             {
                 // Place card
                 var playerCard = gamedatas.playerCards[playerCardsKey];
-                this.util.placeBlock(PLAYER_CARD_TEMPLATE, 'dgit_player_' + playerCard.uiPosition + '_cards',
+                this.game.util.placeBlock(PLAYER_CARD_TEMPLATE, 'dgit_player_' + playerCard.uiPosition + '_cards',
                     { card_id: playerCard.id, player_id: playerCard.uiPosition, card_css_class: playerCard.cssClass } );
 
                 // Create tooltip

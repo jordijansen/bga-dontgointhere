@@ -10,7 +10,9 @@ define([
     'ebg/core/gamegui',
 ], (dojo, declare) => {
     return declare('dgit.diceManager', ebg.core.gamegui, {
-        constructor() { },
+        constructor(game) {
+            this.game = game;
+        },
 
         /**
          * Setup dice info when view is loaded

@@ -168,7 +168,7 @@ class DontGoInThere extends Table
         if($room->getType() == SECRET_PASSAGE)
         {
             self::notifyAllPlayers(
-                'secretPassagePeek',
+                SECRET_PASSAGE_PEEK,
                 clienttranslate('${player_name} can now see the hidden card in The Secret Passage'),
                 array(
                     'player_name' => $this->getActivePlayerName(),
@@ -215,9 +215,10 @@ class DontGoInThere extends Table
         $nextPlayer = $this->activeNextPlayer();
 
         self::notifyAllPlayers(
-            'changePlayer',
-            '',
+            CHANGE_PLAYER,
+            clienttranslate('${player_name} is now the active player'),
             array(
+                'player_name' => self::getActivePlayerName(),
                 'nextPlayer' => $nextPlayer,
             )
         );

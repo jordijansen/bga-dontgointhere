@@ -31,13 +31,13 @@ define([
         constructor: function(){
             debug('game::constructor::', 'Starting constructor');
             
-            this.cardManager = new dgit.cardManager();
-            this.counterManager = new dgit.counterManager();
-            this.diceManager = new dgit.diceManager();
-            this.meepleManager = new dgit.meepleManager();
-            this.playerManager = new dgit.playerManager();
-            this.roomManager = new dgit.roomManager();
-            this.util = new dgit.utilities();
+            this.cardManager = new dgit.cardManager(this);
+            this.counterManager = new dgit.counterManager(this);
+            this.diceManager = new dgit.diceManager(this);
+            this.meepleManager = new dgit.meepleManager(this);
+            this.playerManager = new dgit.playerManager(this);
+            this.roomManager = new dgit.roomManager(this);
+            this.util = new dgit.utilities(this);
         },
         
         /**
@@ -60,9 +60,9 @@ define([
             // Setup meeple elements
             this.meepleManager.setup(gamedatas);
             // Setup player elements
-            this.playerManager.setup(gamedatas, this.getActivePlayerId(), this.getCurrentPlayerId());
+            this.playerManager.setup(gamedatas);
             // Setup room elements
-            this.roomManager.setup(gamedatas, this.getCurrentPlayerId());
+            this.roomManager.setup(gamedatas);
 
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
@@ -143,15 +143,6 @@ define([
         /***********************************************************************************************
         *    PLAYER ACTIONS::Handle player UX interaction                                              *
         ************************************************************************************************/
-        /**
-         * Build the ajax url for an action
-         * @param {string} actionName Name of the action
-         * @returns {string} ajax url for the action
-         */
-        getActionUrl: function (actionName)
-        { 
-            return '/' + this.game_name + '/' + this.game_name + '/' + actionName + '.html';
-        },
         
         /**
          * Triggers when a user clicks an empty room space to place a meeple
@@ -161,37 +152,13 @@ define([
         { 
             dojo.stopEvent(event);
 
-            if (this.isCurrentPlayerActive() && event.target.attributes.meeple.value == 'none') {
+            if (event.target.attributes.meeple.value == 'none') {
                 var room = event.target.attributes.room.value;
                 var space = event.target.attributes.space.value;
 
-                this.triggerPlayerAction(PLACE_MEEPLE, { room: room, space: space });
+                this.util.triggerPlayerAction(PLACE_MEEPLE, { room: room, space: space });
             }
         },
-
-        /**
-         * Trigger an ajax call for a player action
-         * @param {string} actionName Name of the action
-         * @param {Object} args Args required for the action 
-         */
-        triggerPlayerAction: function (actionName, args)
-        { 
-            // Check if action is possible in current state
-            if (this.checkAction(actionName)) {
-                // Add lock = true to args
-                if (!args) {
-                    args = [];
-                }
-                args.lock = true;
-
-                this.ajaxcall(this.getActionUrl(actionName), args, this, function (result) {
-                }, function (error) {
-                    if (error) {
-                    }
-                });
-            }
-        },
-
 
         /***********************************************************************************************
         *    NOTIFICATIONS::Handle notifications from backend                                          *
@@ -204,7 +171,7 @@ define([
         {
             debug('setupNotifications', 'Setting up notification subscriptions');
 
-            dojo.subscribe('changePlayer', this, 'notif_changePlayer');
+            dojo.subscribe(CHANGE_PLAYER, this, 'notif_changePlayer');
             dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
         },
 
@@ -230,7 +197,7 @@ define([
             var meeple = notification.args.meeple;
             var room = notification.args.room;
 
-            this.meepleManager.moveMeepleToRoom(player, meeple, room, this.getCurrentPlayerId());
+            this.meepleManager.moveMeepleToRoom(player, meeple, room);
         },
    });             
 });

@@ -8,11 +8,10 @@ define([
     'dojo',
     'dojo/_base/declare',
     'ebg/core/gamegui',
-    g_gamethemeurl + 'modules/scripts/DontGoInThereUtilities.js',
 ], (dojo, declare) => {
     return declare('dgit.meepleManager', ebg.core.gamegui, {
-        constructor() { 
-            this.util = new dgit.utilities();
+        constructor(game) {
+            this.game = game;
         },
 
         /**
@@ -27,7 +26,7 @@ define([
                 var meeple = gamedatas.meeplesInHand[meeplesKey];
 
                 // Place meeple
-                this.util.placeBlock(MEEPLE_TEMPLATE, 'dgit_player_' + meeple.owner + '_meeples',
+                this.game.util.placeBlock(MEEPLE_TEMPLATE, 'dgit_player_' + meeple.owner + '_meeples',
                     { player_id: meeple.owner, meeple_id: meeple.id, meeple_css_class: meeple.cssClass });
             }
         },
@@ -39,7 +38,7 @@ define([
          * @param {Object} room Room object
          * @param {int} currentPlayerId The ID of the current player
          */
-        moveMeepleToRoom: function (player, meeple, room, currentPlayerId)
+        moveMeepleToRoom: function (player, meeple, room)
         { 
             var meepleDiv = 'dgit_player_' + meeple.owner + '_meeple_' + meeple.id;
             var roomSpaceDiv = 'dgit_room_' + room.uiPosition + '_space_' + meeple.uiPosition;
@@ -48,7 +47,7 @@ define([
             this.slideToObject(meepleDiv, roomSpaceDiv).play();
             dojo.setAttr(roomHighlightDiv, 'meeple', meeple.owner);
 
-            if (room.type == SECRET_PASSAGE && player.id == currentPlayerId) {
+            if (room.type == SECRET_PASSAGE && player.id == this.game.getCurrentPlayerId()) {
                 var secretPassageHiddenCard = dojo.query('div[special="secret-passage"')[0];
                 if (secretPassageHiddenCard) {
                     dojo.removeClass(secretPassageHiddenCard.id, 'dgit-card-back');

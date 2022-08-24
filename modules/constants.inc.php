@@ -3,7 +3,9 @@
 /**
  * Action names
  */
+define('CHANGE_PLAYER', 'changePlayer');
 define('PLACE_MEEPLE', 'placeMeeple');
+define('SECRET_PASSAGE_PEEK', 'secretPassagePeek');
 
 /**
  * Card types
