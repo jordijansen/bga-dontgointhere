@@ -1,5 +1,15 @@
 /**
- * Script to manage dice elements
+ * ------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * DontGoInThere implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * DontGoInThereRoomManager.js
+ * 
+ * Script to manage room elements
  */
 
 var isDebug = window.location.host == 'studio.boardgamearena.com';

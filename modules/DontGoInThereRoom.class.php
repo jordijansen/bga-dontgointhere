@@ -1,8 +1,19 @@
 <?php
 
 /**
- * Abstract object for a DontGoInThereRoom object
+ * ------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * DontGoInThere implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * DontGoInThereRoom.class.php
+ * 
+ * Abstract room object
  */
+
 abstract class DontGoInThereRoom extends APP_GameClass
 {
     protected $game;

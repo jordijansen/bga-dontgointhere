@@ -1,5 +1,19 @@
 <?php
 
+/**
+ * ------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * DontGoInThere implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * DontGoInThereCardManager.class.php
+ * 
+ * Functions to manage cards
+ */
+
 require_once('DontGoInThereCursedCard.class.php');
 require_once('cursedcards/Amulet.class.php');
 require_once('cursedcards/Cat.class.php');
@@ -14,9 +28,6 @@ require_once('cursedcards/Ring.class.php');
 require_once('cursedcards/Tome.class.php');
 require_once('cursedcards/Twin.class.php');
 
-/**
- * Functions to manage cards
- */
 class DontGoInThereCardManager extends APP_GameClass
 {
     public $game;

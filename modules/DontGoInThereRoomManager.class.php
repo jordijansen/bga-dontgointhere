@@ -1,5 +1,19 @@
 <?php
 
+/**
+ * ------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * DontGoInThere implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * DontGoInThereRoomManager.class.php
+ * 
+ * Functions to manage rooms
+ */
+
 require_once('DontGoInThereRoom.class.php');
 require_once('rooms/Attic.class.php');
 require_once('rooms/Basement.class.php');
@@ -8,9 +22,6 @@ require_once('rooms/Library.class.php');
 require_once('rooms/Nursery.class.php');
 require_once('rooms/SecretPassage.class.php');
 
-/**
- * Functions to manage rooms
- */
 class DontGoInThereRoomManager extends APP_GameClass
 {
     public $game;

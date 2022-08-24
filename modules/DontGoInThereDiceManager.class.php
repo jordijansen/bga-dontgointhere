@@ -1,10 +1,21 @@
 <?php
 
-require_once('DontGoInThereDie.class.php');
-
 /**
+ * ------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * DontGoInThere implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * DontGoInThereDiceManager.class.php
+ * 
  * Functions to manage dice
  */
+
+require_once('DontGoInThereDie.class.php');
+
 class DontGoInThereDiceManager extends APP_GameClass
 {
     public $game;

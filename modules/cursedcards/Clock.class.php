@@ -1,8 +1,19 @@
 <?php
 
 /**
- * A Clock Cursed Card object
+ * ------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * DontGoInThere implementation : © Evan Pulgino <evan.pulgino@gmail.com>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * Clock.class.php
+ * 
+ * Clock card object
  */
+
 class Clock extends DontGoInThereCursedCard
 {
     public function __construct($game, $row)
