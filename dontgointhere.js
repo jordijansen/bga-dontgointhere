@@ -62,7 +62,7 @@ define([
             // Setup player elements
             this.playerManager.setup(gamedatas, this.getActivePlayerId(), this.getCurrentPlayerId());
             // Setup room elements
-            this.roomManager.setup(gamedatas);
+            this.roomManager.setup(gamedatas, this.getCurrentPlayerId());
 
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
@@ -204,15 +204,29 @@ define([
         {
             debug('setupNotifications', 'Setting up notification subscriptions');
 
+            dojo.subscribe('changePlayer', this, 'notif_changePlayer');
             dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
         },
 
+        notif_changePlayer: function (notification)
+        { 
+            var nextPlayerId = notification.args.nextPlayer;
+            dojo.query('.dgit-active-player').addClass('dgit-hidden')
+            dojo.removeClass('dgit_player_' + nextPlayerId + '_active_player', 'dgit-hidden');
+        },
+
+        /**
+         * Handle placment of meeple in UI
+         * @param {Object} notification notification object
+         */
         notif_placeMeeple: function (notification)
         { 
+            console.log(notification);
+            var player = notification.args.player;
             var meeple = notification.args.meeple;
             var room = notification.args.room;
 
-            this.meepleManager.moveMeepleToRoom(meeple, room);
+            this.meepleManager.moveMeepleToRoom(player, meeple, room, this.getCurrentPlayerId());
         },
    });             
 });

@@ -156,13 +156,25 @@ class DontGoInThere extends Table
 
         self::notifyAllPlayers(
             PLACE_MEEPLE,
-            clienttranslate('${playerName} places a meeple in The ${roomName}'),
+            clienttranslate('${player_name} places a meeple in The ${roomName}'),
             array(
-                'playerName' => $player->getName(),
+                'player_name' => $this->getActivePlayerName(),
                 'roomName' => $room->getName(),
+                'player' => $player->getUiData(),
                 'room' => $room->getUiData(),
                 'meeple' => $meeple->getUiData(),
             ));
+
+        if($room->getType() == SECRET_PASSAGE)
+        {
+            self::notifyAllPlayers(
+                'secretPassagePeek',
+                clienttranslate('${player_name} can now see the hidden card in The Secret Passage'),
+                array(
+                    'player_name' => $this->getActivePlayerName(),
+                )
+            );
+        }
 
         $this->gamestate->nextState(NEXT_PLAYER);
     }
@@ -200,7 +212,16 @@ class DontGoInThere extends Table
      */
     function stNextPlayer()
     {
-        $this->activeNextPlayer();
+        $nextPlayer = $this->activeNextPlayer();
+
+        self::notifyAllPlayers(
+            'changePlayer',
+            '',
+            array(
+                'nextPlayer' => $nextPlayer,
+            )
+        );
+
         $this->gamestate->nextState(PLAYER_TURN);
     }
 

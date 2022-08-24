@@ -19,7 +19,7 @@ define([
          * Setup room info when view is loaded
          * @param {Object} gamedatas array of gamedata
          */
-        setup: function (gamedatas) {
+        setup: function (gamedatas, currentPlayerId) {
             // Create rooms
             for(var faceupRoomsKey in gamedatas.faceupRooms)
             {
@@ -38,9 +38,10 @@ define([
                     this.util.placeBlock(ROOM_CARD_TEMPLATE, 'dgit_room_' + room.uiPosition + '_cards',
                         { card_id: card.id, room_number: room.uiPosition, card_number: card.uiPosition, card_css_class: card.cssClass });
                     
-                    if (room.type == SECRET_PASSAGE && card.uiPosition == 3) {
+                    if (room.type == SECRET_PASSAGE && card.uiPosition == 3 && !this.isPlayerPresentInRoom(gamedatas.meeplesInRooms[room.uiPosition], currentPlayerId)) {
                         // If room is secret passage flip the 3rd card face down for everyone who has not placed a meeple here
                         dojo.addClass('dgit_room_' + room.uiPosition + '_card_' + card.id, 'dgit-card-back');
+                        dojo.setAttr('dgit_room_' + room.uiPosition + '_card_' + card.id, 'special', 'secret-passage');
                         dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
                     } else {
                         // If card is faceup show tooltip
@@ -66,6 +67,18 @@ define([
                     dojo.setAttr(roomHighlightDiv, 'meeple', meeple.owner);
                 }
             }
+        },
+
+        isPlayerPresentInRoom: function (meeplesInRoom, currentPlayerId)
+        {
+            for (var meepleKey in meeplesInRoom)
+            {
+                var meeple = meeplesInRoom[meepleKey];
+                if (meeple.owner == currentPlayerId) {
+                    return true;
+                }
+            }
+            return false;
         },
     });
 });

@@ -33,11 +33,13 @@ define([
         },
 
         /**
-         * Move a meeple from a players hand to a space on a room
+         * Move a meeple from a player's hand to a space on a room
+         * @param {Object} player Player object
          * @param {Object} meeple Meeple object
          * @param {Object} room Room object
+         * @param {int} currentPlayerId The ID of the current player
          */
-        moveMeepleToRoom: function (meeple, room)
+        moveMeepleToRoom: function (player, meeple, room, currentPlayerId)
         { 
             var meepleDiv = 'dgit_player_' + meeple.owner + '_meeple_' + meeple.id;
             var roomSpaceDiv = 'dgit_room_' + room.uiPosition + '_space_' + meeple.uiPosition;
@@ -45,6 +47,15 @@ define([
             this.attachToNewParent(meepleDiv, roomSpaceDiv);
             this.slideToObject(meepleDiv, roomSpaceDiv).play();
             dojo.setAttr(roomHighlightDiv, 'meeple', meeple.owner);
+
+            if (room.type == SECRET_PASSAGE && player.id == currentPlayerId) {
+                var secretPassageHiddenCard = dojo.query('div[special="secret-passage"')[0];
+                if (secretPassageHiddenCard) {
+                    dojo.removeClass(secretPassageHiddenCard.id, 'dgit-card-back');
+                    dojo.removeClass(secretPassageHiddenCard.firstElementChild.id, 'dgit-hidden');
+                }
+                
+            }
         },
     });
 });

@@ -25,4 +25,6 @@ class Attic extends DontGoInThereRoom
     {
         return clienttranslate('If you place a Meeple on the top space of the Attic immediately take a Ghost token.');
     }
+
+    public function onPlacement($meeple){}
 }

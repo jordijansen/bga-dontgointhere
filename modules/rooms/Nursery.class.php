@@ -25,4 +25,8 @@ class Nursery extends DontGoInThereRoom
     {
         return clienttranslate('If you place a Meeple on the bottom space of the Nursery, immediately discard a Ghost token.');
     }
+
+    public function onPlacement($meeple)
+    {
+    }
 }

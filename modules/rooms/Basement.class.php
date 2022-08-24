@@ -25,4 +25,6 @@ class Basement extends DontGoInThereRoom
     {
         return clienttranslate('After rolling the dice for the Attic, the player that placed the 3rd Meeple in the Attic may re-roll the dice 1 time.');
     }
+
+    public function onPlacement($meeple){}
 }
