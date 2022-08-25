@@ -29,6 +29,10 @@ class DontGoInThere extends Table
         
         self::initGameStateLabels( array(
             CLOCKS_COLLECTED => 10,
+            GHOSTS_ROLLED => 11,
+            ROOM_RESOLVER => 12,
+            ROOM_RESOLVING => 13,
+            SECRET_PASSAGE_REVEALED => 14,
         ) );
 
         $this->cardManager = new DontGoInThereCardManager($this);
@@ -69,6 +73,10 @@ class DontGoInThere extends Table
         
         // Initialize global variables
         self::setGameStateInitialValue(CLOCKS_COLLECTED, DGIT_FALSE);
+        self::setGameStateInitialValue(GHOSTS_ROLLED, -1);
+        self::setGameStateInitialValue(ROOM_RESOLVER, 0);
+        self::setGameStateInitialValue(ROOM_RESOLVING, 0);
+        self::setGameStateInitialValue(SECRET_PASSAGE_REVEALED, DGIT_FALSE);
         
         // Init game statistics
         // (note: statistics used in this file must be defined in your stats.inc.php file)
@@ -193,7 +201,7 @@ class DontGoInThere extends Table
         }
 
         // If space 4 of nursery player discards a ghost
-        if($room->getType() == ATTIC && $space == 4 && player->getGhostTokens() > 0) {
+        if($room->getType() == ATTIC && $space == 4 && $player->getGhostTokens() > 0) {
             $newTotal = $this->playerManager->adjustPlayerGhosts($player->getId(), -1);
             self::notifyAllPlayers(
                 ADJUST_GHOSTS,
@@ -208,10 +216,12 @@ class DontGoInThere extends Table
         }
 
         if(count($meeplesInRoom) == 3) {
-            // Go to card collection phase
+            $this->roomManager->setRoomResolver(self::getActivePlayerId());
+            $this->roomManager->setRoomResolving($room->getUiPosition());
+            $this->gamestate->nextState(RESOLVE_ROOM);
+        } else {
+            $this->gamestate->nextState(NEXT_PLAYER);
         }
-
-        $this->gamestate->nextState(NEXT_PLAYER);
     }
 
     
@@ -261,6 +271,55 @@ class DontGoInThere extends Table
         $this->gamestate->nextState(PLAYER_TURN);
     }
 
+    /**
+     * Handle transitions in resolve room phase
+     * @return void
+     */
+    function stResolveRoom()
+    {
+        $roomResolving = $this->roomManager->getRoomResolving();
+        $room = $this->roomManager->getFaceupRoomByUiPosition($roomResolving);
+
+        // If room is Secret Passage reveal hidden card if it hasn't already been revealed
+        if($room->getType() == SECRET_PASSAGE && !$this->roomManager->getSecretPassageRevealed()) {
+            $this->roomManager->setSecretPassageRevealed(DGIT_TRUE);
+            self::notifyAllPlayers(
+                SECRET_PASSAGE_REVEAL,
+                clienttranslate('All players can now see the hidden card in The Secret Passage'),
+                array()
+            );
+        }
+
+        // Roll dice if they haven't been rolled yet
+        if($this->diceManager->getGhostsRolled() < 0) {
+            $diceToRoll = $this->cardManager->countDiceIconsInRoom($roomResolving);
+            $diceRolled = $this->diceManager->rollDice($diceToRoll);
+
+            self::notifyAllPlayers(
+                ROLL_DICE,    
+                clienttranslate('${player_name} rolls ${ghostsRolled} Ghost(s) on ${diceToRoll} dice'),
+                array(
+                    'player_name' => self::getActivePlayerName(),
+                    'ghostsRolled' => $this->diceManager->getGhostsRolled(),
+                    'diceToRoll' => $diceToRoll,
+                    'diceRolled' => $diceRolled,
+                )
+            );
+        }
+
+        // Get next meeple in room
+        $nextMeeple = $this->meepleManager->getTopMeepleInRoom($roomResolving);
+
+        // Activate next meeple for card selection or move to next phase
+        if($nextMeeple) {
+            $this->gamestate->changeActivePlayer($nextMeeple->getOwner());
+            $this->gamestate->nextState(SELECT_CARD);
+        } else {
+            $this->gamestate->changeActivePlayer($this->roomManager->getRoomResolver());
+            $this->gamestate->nextState(NEXT_PLAYER);
+        }
+    }
+
 
     /***********************************************************************************************
     *    ZOMBIE::Functions to handle players in a zombie state                                     *
@@ -268,7 +327,7 @@ class DontGoInThere extends Table
 
     /**
      * called each time it is the turn of a player who has quit the game (= "zombie" player)
-     * @param object $state A game state ovhect
+     * @param object $state A game state object
      * @param int $active_player Database ID of a player
      * @throws feException 
      * @return void

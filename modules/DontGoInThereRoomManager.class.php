@@ -82,75 +82,6 @@ class DontGoInThereRoomManager extends APP_GameClass
     ];
 
     /**
-     * Factory to create a DontGoInThereRoom object
-     * @param mixed $room Room record from databas
-     * @throws BgaVisibleException 
-     * @return DontGoInThereRoom A DontGoInThereRoom object
-     */
-    public function getRoom($room)
-    {
-        $roomType = $room[TYPE];
-        if(!isset(self::$roomClasses[$roomType]))
-        {
-            throw new BgaVisibleException("getRoom: Unknown room type $roomType");
-        }
-        $className = self::$roomClasses[$roomType];
-        return new $className($this->game, $room);
-    }
-
-    /**
-     * Get all DontGoInThereRoom objects in specified location
-     * @param string $location Location value in database
-     * @return array<DontGoInThereRoom> An array of DontGoInThereRoom objects
-     */
-    public function getRooms($location)
-    {
-        $rooms = $this->rooms->getCardsInLocation($location);
-        return array_map(function($room) {
-            return $this->getRoom($room);
-        }, $rooms);
-    }
-
-    /**
-     * Get a gaceup room by its ui position
-     * @param int $uiPosition
-     * @return DontGoInThereRoom room object
-     */
-    public function getFaceupRoomByUiPosition($uiPosition)
-    {
-        return self::findRoomByUiPosition(self::getRooms(FACEUP), $uiPosition);
-    }
-
-    /**
-     * Get uiData of all rooms in specified location
-     * @param string $location Location value from database
-     * @return array An array of uiData for a room
-     */
-    public function getUiData($location)
-    {
-        $ui = [];
-        foreach($this->getRooms($location) as $room)
-        {
-            $ui[] = $room->getUiData();
-        }
-        return $ui;
-    }
-
-    /**
-     * Get the UI position of the Library if it is faceu[]
-     * @return mixed UI position of Library if its faceup otherwise return false
-     */
-    public function getLibraryPosition()
-    {
-        $faceupRooms = self::getRooms(FACEUP);
-        $library = self::findRoomByType($faceupRooms, LIBRARY);
-        if(!$library){
-            return 0;
-        }
-        return $library->getUiPosition();
-    }
-    
-    /**
      * Deal a starting room, put is flipside in waiting.
      * @param int $roomPosition The UI position of a room within its location
      * @return void
@@ -204,5 +135,128 @@ class DontGoInThereRoomManager extends APP_GameClass
             }
         }
         return false;
+    }
+
+    /**
+     * Get a faceup room by its ui position
+     * @param int $uiPosition
+     * @return DontGoInThereRoom room object
+     */
+    public function getFaceupRoomByUiPosition($uiPosition)
+    {
+        return self::findRoomByUiPosition(self::getRooms(FACEUP), $uiPosition);
+    }
+
+    /**
+     * Get the UI position of the Library if it is faceup
+     * @return mixed UI position of Library if its faceup otherwise return false
+     */
+    public function getLibraryPosition()
+    {
+        $faceupRooms = self::getRooms(FACEUP);
+        $library = self::findRoomByType($faceupRooms, LIBRARY);
+        if(!$library){
+            return 0;
+        }
+        return $library->getUiPosition();
+    }
+
+    /**
+     * Factory to create a DontGoInThereRoom object
+     * @param mixed $room Room record from databas
+     * @throws BgaVisibleException 
+     * @return DontGoInThereRoom A DontGoInThereRoom object
+     */
+    public function getRoom($room)
+    {
+        $roomType = $room[TYPE];
+        if(!isset(self::$roomClasses[$roomType]))
+        {
+            throw new BgaVisibleException("getRoom: Unknown room type $roomType");
+        }
+        $className = self::$roomClasses[$roomType];
+        return new $className($this->game, $room);
+    }
+
+    /**
+     * Get all DontGoInThereRoom objects in specified location
+     * @param string $location Location value in database
+     * @return array<DontGoInThereRoom> An array of DontGoInThereRoom objects
+     */
+    public function getRooms($location)
+    {
+        $rooms = $this->rooms->getCardsInLocation($location);
+        return array_map(function($room) {
+            return $this->getRoom($room);
+        }, $rooms);
+    }
+
+    /**
+     * Get the game state value for the player who triggered room resolution
+     * @return int Id of player who triggered current room resolution
+     */
+    public function getRoomResolver()
+    {
+        return $this->game->getGameStateValue(ROOM_RESOLVER);
+    }
+
+    /**
+     * Get the game state value for the room currently being resolved
+     * @return int Ui position of room being resolved
+     */
+    public function getRoomResolving()
+    {
+        return $this->game->getGameStateValue(ROOM_RESOLVING);
+    }
+
+    /**
+     * Get the game state value for whether the secret passage card has been revealed to all players
+     * @return int Boolean if secret passage has been revealed or not
+     */
+    public function getSecretPassageRevealed()
+    {
+        return $this->game->getGameStateValue(SECRET_PASSAGE_REVEALED);
+    }
+
+    /**
+     * Get uiData of all rooms in specified location
+     * @param string $location Location value from database
+     * @return array An array of uiData for a room
+     */
+    public function getUiData($location)
+    {
+        $ui = [];
+        foreach($this->getRooms($location) as $room)
+        {
+            $ui[] = $room->getUiData();
+        }
+        return $ui;
+    }
+
+    /**
+     * Set the game state value for the player who triggered room resolution
+     * @param int $playerId Id of player who triggered current room resolution
+     */
+    public function setRoomResolver($playerId)
+    {
+        $this->game->setGameStateValue(ROOM_RESOLVER, $playerId);
+    }
+
+    /**
+     * Set the game state value for the room currently being resolved
+     * @param int Ui position of room being resolved
+     */
+    public function setRoomResolving($roomUiPosition)
+    {
+        $this->game->setGameStateValue(ROOM_RESOLVING, $roomUiPosition);
+    }
+
+    /**
+     * Set the game state value for whether the secret passage card has been revealed to all players
+     * @return int Boolean if secret passage has been revealed or not
+     */
+    public function setSecretPassageRevealed($revealedStatus)
+    {
+        return $this->game->getGameStateValue(SECRET_PASSAGE_REVEALED, $revealedStatus);
     }
 }

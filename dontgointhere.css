@@ -148,6 +148,16 @@ div.player-board {
     align-items: center;
 }
 
+#dgit_dice_total {
+    position: absolute;
+    font-size: 4em;
+    font-weight: bolder;
+    color: darkslategray;
+    text-shadow: 5px 0 5px #8bc98a,0 -5px 5px #8bc98a,0 5px 5px #8bc98a,-5px 0 5px #8bc98a;
+    top: 5%;
+    right: 5%;
+}
+
 #dgit_rooms_panel {
     display: flex;
     flex-flow: row wrap;   

@@ -20,7 +20,6 @@ define([
     "dojo/_base/declare",
     "ebg/core/gamegui",
     g_gamethemeurl + 'modules/scripts/DontGoInThereCardManager.js',
-    g_gamethemeurl + 'modules/scripts/DontGoInThereCounterManager.js',
     g_gamethemeurl + 'modules/scripts/DontGoInThereDiceManager.js',
     g_gamethemeurl + 'modules/scripts/DontGoInThereMeepleManager.js',
     g_gamethemeurl + 'modules/scripts/DontGoInTherePlayerManager.js',
@@ -32,7 +31,6 @@ define([
             debug('game::constructor::', 'Starting constructor');
             
             this.cardManager = new dgit.cardManager(this);
-            this.counterManager = new dgit.counterManager(this);
             this.diceManager = new dgit.diceManager(this);
             this.meepleManager = new dgit.meepleManager(this);
             this.playerManager = new dgit.playerManager(this);
@@ -174,14 +172,19 @@ define([
             dojo.subscribe(ADJUST_GHOSTS, this, 'notif_adjustGhosts');
             dojo.subscribe(CHANGE_PLAYER, this, 'notif_changePlayer');
             dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
+            dojo.subscribe(ROLL_DICE, this, 'notif_rollDice');
+            dojo.subscribe(SECRET_PASSAGE_REVEAL, this, 'notif_secretPassageReveal');
         },
 
+        /**
+         * Adjust ghost total of current player
+         * @param {Object} notification notification object
+         */
         notif_adjustGhosts: function (notification)
         { 
             var playerId = notification.args.playerId;
             var amount = notification.args.amount;
             var newTotal = notification.args.newTotal;
-
             this.playerManager.adjustPlayerGhosts(playerId, amount, newTotal);
         },
 
@@ -192,8 +195,7 @@ define([
         notif_changePlayer: function (notification)
         { 
             var nextPlayerId = notification.args.nextPlayer;
-            dojo.query('.dgit-active-player').addClass('dgit-hidden')
-            dojo.removeClass('dgit_player_' + nextPlayerId + '_active_player', 'dgit-hidden');
+            this.playerManage.changeActivePlayer(nextPlayerId);
         },
 
         /**
@@ -202,12 +204,29 @@ define([
          */
         notif_placeMeeple: function (notification)
         { 
-            console.log(notification);
             var player = notification.args.player;
             var meeple = notification.args.meeple;
             var room = notification.args.room;
-
             this.meepleManager.moveMeepleToRoom(player, meeple, room);
+        },
+
+        /**
+         * Handle dice roll
+         * @param {Object} notification notification object
+         */
+        notif_rollDice: function (notification)
+        { 
+            var diceRolled = notification.args.diceRolled;
+            this.diceManager.rollDice(diceRolled);
+        },
+
+        /**
+         * Handle secret passage card reveal on room resolve
+         * @param {Object} notification notification object
+         */
+        notif_secretPassagePeek: function (notification)
+        { 
+            this.roomManager.revealSecretPassageCard();
         },
    });             
 });

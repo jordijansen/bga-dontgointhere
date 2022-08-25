@@ -75,12 +75,7 @@ class DontGoInThereCardManager extends APP_GameClass
             if($libraryPosition == $roomPosition) {
                 $nextThreeCards = self::getCursedCardsOnTopOfDeck(3);
 
-                usort($nextThreeCards, function(DontGoInThereCursedCard $a, DontGoInThereCursedCard $b) {
-                    if($a->getCurses() === $b->getCurses()) {
-                        return 0;
-                    }
-                    return $a->getCurses() < $b->getCurses() ? -1 : 1;
-                });
+                self::sortCardsByCurseValue($nextThreeCards);
 
                 for($cardSlot = 1; $cardSlot <= 3; $cardSlot++)
                 {
@@ -130,6 +125,22 @@ class DontGoInThereCardManager extends APP_GameClass
     public function countCursedCards($location, $locationArg = null)
     {
         return $this->cards->countCardsInLocation($location, $locationArg);
+    }
+
+    /**
+     * Add up the dice icons that appear on the cards in a room
+     * @param int $roomUiPosition UI position of room being checked
+     * @return int Total dice icons on all cards in the room
+     */
+    public function countDiceIconsInRoom($roomUiPosition)
+    {
+        $cards = self::getCursedCards(ROOM_PREPEND . $roomUiPosition);
+        $diceIcons = 0;
+        foreach($cards as $card) 
+        {
+            $diceIcons += $card->getDiceIcons();
+        }
+        return $diceIcons;
     }
 
     /**
@@ -230,5 +241,20 @@ class DontGoInThereCardManager extends APP_GameClass
         shuffle($possibleTypes);
 
         return array_slice($possibleTypes, 0, $numberOfTypes);
+    }
+
+    /**
+     * Sort cards by curse value in ascending order
+     * @param array<DontGoInThereCursedCard> $cards Array of cards to be sorted
+     * @return void
+     */
+    private function sortCardsByCurseValue($cards)
+    {
+        usort($cards, function(DontGoInThereCursedCard $a, DontGoInThereCursedCard $b) {
+            if($a->getCurses() === $b->getCurses()) {
+                return 0;
+            }
+            return $a->getCurses() < $b->getCurses() ? -1 : 1;
+        });
     }
 }

@@ -58,12 +58,7 @@ define([
             dojo.setAttr(roomHighlightDiv, 'meeple', meeple.owner);
 
             if (room.type == SECRET_PASSAGE && player.id == this.game.getCurrentPlayerId()) {
-                var secretPassageHiddenCard = dojo.query('div[special="secret-passage"')[0];
-                if (secretPassageHiddenCard) {
-                    dojo.removeClass(secretPassageHiddenCard.id, 'dgit-card-back');
-                    dojo.removeClass(secretPassageHiddenCard.firstElementChild.id, 'dgit-hidden');
-                }
-                
+                this.roomManager.revealSecretPassageCard()
             }
         },
     });

@@ -78,6 +78,11 @@ define([
             }
         },
 
+        /**
+         * Check if the current player has a meeple in a room
+         * @param {Object} meeplesInRoom List of meeple data in a room
+         * @returns {boolean} true = player in room; false = not
+         */
         isPlayerPresentInRoom: function (meeplesInRoom)
         {
             for (var meepleKey in meeplesInRoom)
@@ -89,5 +94,17 @@ define([
             }
             return false;
         },
+
+        /**
+         * Reveal the hidden card on the Secret Passage
+         */
+        revealSecretPassageCard: function ()
+        { 
+            var secretPassageHiddenCard = dojo.query('div[special="secret-passage"')[0];
+            if (secretPassageHiddenCard) {
+                dojo.removeClass(secretPassageHiddenCard.id, 'dgit-card-back');
+                dojo.removeClass(secretPassageHiddenCard.firstElementChild.id, 'dgit-hidden');
+            }
+         },
     });
 });

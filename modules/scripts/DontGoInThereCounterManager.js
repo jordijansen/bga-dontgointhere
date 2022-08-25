@@ -24,6 +24,7 @@ define([
             this.game = game;
             
             this.deckCounter = new ebg.counter();
+            this.ghostTotalCounter = new ebg.counter();
             this.playerCurseCounters = [];
             this.playerSidePanelCurseCounters = [];
             this.currentPlayerGhosts = new ebg.counter();
@@ -40,6 +41,16 @@ define([
             debug('counterManager::createDeckCounter', deckSize);
             this.deckCounter.create('dgit_deck_counter');
             this.deckCounter.setValue(deckSize);
+        },
+
+        /**
+         * Creates the counter for ghost total on rolled dice
+         * @param {int} ghostTotal Number of ghosts rolled
+         */
+        createGhostTotalCounter: function (ghostTotal)
+        {
+            this.ghostTotalCounter.create('dgit_dice_total');
+            this.ghostTotalCounter.setValue(ghostTotal);
         },
 
         /**
@@ -82,9 +93,22 @@ define([
             this.currentPlayerSidePanelGhosts.setValue(player.ghostTokens);
         },
 
+        /**
+         * Set the current players ghost counter to a new value
+         * @param {int} value To set ghost counter to
+         */
         ghostCounterToValue: function (value) { 
             this.currentPlayerGhosts.toValue(value);
             this.currentPlayerSidePanelGhosts.toValue(value);
+        },
+
+        /**
+         * Set the ghost total on rolled dice to a new value
+         * @param {int} value To set ghost counter to
+         */
+        ghostTotalCounterToValue: function (value)
+        { 
+            this.ghostTotalCounter.toValue(value);
         },
     });
   });

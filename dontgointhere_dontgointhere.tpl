@@ -35,6 +35,7 @@
                     <div id="dgit_die_{DIE_NUM}_face" class="dgit-die-face"></div>
                 </div>
                 <!-- END die -->
+                <span id="dgit_dice_total" class="dgit-hidden">0</span>
             </div>
         </div>
         <div id="dgit_rooms_panel">

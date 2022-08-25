@@ -67,7 +67,23 @@ $machinestates = array(
     	"descriptionmyturn" => clienttranslate('${you} must place a meeple into a room'),
     	"type" => "activeplayer",
     	"possibleactions" => array( PLACE_MEEPLE ),
-    	"transitions" => array( NEXT_PLAYER => STATE_NEXT_PLAYER )
+    	"transitions" => array( NEXT_PLAYER => STATE_NEXT_PLAYER, RESOLVE_ROOM => STATE_RESOLVE_ROOM )
+    ),
+
+    STATE_RESOLVE_ROOM => array(
+        "name" => RESOLVE_ROOM,
+        "type" => "game",
+        "action" => "stResolveRoom",
+        "transitions" => array( SELECT_CARD => STATE_SELECT_CARD, NEXT_PLAYER => STATE_NEXT_PLAYER )
+    ),
+
+    STATE_SELECT_CARD => array(
+        "name" => SELECT_CARD,
+        "description" => clienttranslate('${actplayer} must take a Cursed Card'),
+        "descriptionmyturn" => clienttranslate('${you} must take a Cursed Card'),
+        "type" => "activeplayer",
+        "possibleactions" => array( TAKE_CARD ),
+        "transitions" => array( RESOLVE_ROOM => STATE_RESOLVE_ROOM )
     ),
 
     STATE_NEXT_PLAYER => array(

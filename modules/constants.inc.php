@@ -20,7 +20,10 @@
 define('ADJUST_GHOSTS', 'adjustGhosts');
 define('CHANGE_PLAYER', 'changePlayer');
 define('PLACE_MEEPLE', 'placeMeeple');
+define('ROLL_DICE', 'rollDice');
 define('SECRET_PASSAGE_PEEK', 'secretPassagePeek');
+define('SECRET_PASSAGE_REVEAL', 'secretPassageReveal');
+define('TAKE_CARD', 'takeCard');
 
 /**
  * Card types
@@ -75,6 +78,10 @@ define('DGIT_TRUE', 1);
  * Global variables
  */
 define('CLOCKS_COLLECTED', 'clocks_collected');
+define('GHOSTS_ROLLED', 'ghosts_rolled');
+define('ROOM_RESOLVER', 'room_resolver');
+define('ROOM_RESOLVING', 'room_resolving');
+define('SECRET_PASSAGE_REVEALED', 'secretPassageRevealed');
 
 /**
  * JSTPL template names
@@ -110,7 +117,9 @@ define('SECRET_PASSAGE', 5);
  */
 define('STATE_GAME_SETUP', 1);
 define('STATE_PLAYER_TURN', 2);
-define('STATE_NEXT_PLAYER', 3);
+define('STATE_RESOLVE_ROOM', 10);
+define('STATE_SELECT_CARD', 11);
+define('STATE_NEXT_PLAYER', 20);
 define('STATE_GAME_END', 99);
 
 /**
@@ -120,3 +129,5 @@ define('GAME_END', 'gameEnd');
 define('GAME_SETUP', 'gameSetup');
 define('NEXT_PLAYER', 'nextPlayer');
 define('PLAYER_TURN', 'playerTurn');
+define('RESOLVE_ROOM', 'resolveRoom');
+define('SELECT_CARD', 'selectCard');

@@ -29,10 +29,72 @@ define([
          * @param {Object} gamedatas Array of game data
          */
         setup: function (gamedatas) {
-            for (var dieKey in gamedatas.dice)
-            {
-                var die = gamedatas.dice[dieKey];
-                dojo.addClass('dgit_die_'+die.id+'_face', die.cssClass);
+            this.setDice(gamedatas.dice);
+            this.game.counterManager.createGhostTotalCounter(this.getGhostTotal(gamedatas.dice));
+
+            if (this.diceVisible(gamedatas.dice)) {
+                dojo.removeClass('dgit_dice_total', 'dgit-hidden');
+            }            
+        },
+
+        /**
+         * Check if the dice should currently be visible on screen
+         * @param {Object} dice Array of dice data
+         * @returns {boolean} true = visible; false = not
+         */
+        diceVisible: function (dice)
+        {
+            for (var dieKey in dice) {
+                var die = dice[dieKey];
+                if (die.cssClass != 'dgit-hidden') {
+                    return true;
+                }
+            }
+            return false;
+        },
+         
+        /**
+         * Get total ghost faces on rolled dice
+         * @param {Object} dice Array of dice data
+         * @returns {int} Sum of ghost faces on dice
+         */
+        getGhostTotal: function (dice)
+        {
+            var ghostTotal = 0;
+            for (var dieKey in dice) {
+                var die = dice[dieKey];
+                if (die.face == GHOST) {
+                    ghostTotal++;
+                }
+            }
+            return ghostTotal;
+        },
+
+        /**
+         * When dice are rolled, handle all required UI changes
+         * @param {Object} dice Array of dice data
+         */
+        rollDice: function (dice)
+        { 
+            this.setDice(dice);
+            this.game.counterManager.ghostTotalCounterToValue(this.getGhostTotal(dice));
+            dojo.removeClass('dgit_dice_total', 'dgit-hidden');
+        },
+
+        /**
+         * Set dice elements to their correct faces
+         * @param {Object} dice Array of dice data
+         */
+        setDice: function (dice)
+        { 
+            for (var dieKey in dice) {
+                var die = dice[dieKey];
+                dojo.removeClass('dgit_die_' + die.id, 'dgit-hidden');
+                dojo.removeClass('dgit_die_' + die.id + '_face', 'dgit-hidden');
+                dojo.addClass('dgit_die_' + die.id + '_face', die.cssClass);
+                if (die.cssClass == 'dgit-hidden') {
+                    dojo.addClass('dgit_die_' + die.id, die.cssClass);
+                }
             }
         },
     });

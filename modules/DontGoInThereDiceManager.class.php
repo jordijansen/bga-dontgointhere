@@ -92,4 +92,59 @@ class DontGoInThereDiceManager extends APP_GameClass
 
         return $uiData;
     }
+
+    /**
+     * Roll all dice required for resolving a room
+     * @param int $numberOfDice How many dice need to be rolled
+     * @return array<array> Ui data of the rolled dice
+     */
+    public function rollDice($numberOfDice)
+    {
+        $ghostsRolled = 0;
+        $dice = [];
+
+        for($dieNumber = 1; $dieNumber <= $numberOfDice; $dieNumber++)
+        {
+            self::rollDie($dieNumber);
+            $die = self::getDie($dieNumber);
+            $dice[] = $die->getUiData();
+
+            if($die->getFace() == GHOST) {
+                $ghostsRolled++;
+            }
+        }
+
+        self::setGhostsRolled($ghostsRolled);
+        return $dice;
+    }
+
+    /**
+     * Roll a single D6 and persist value in database
+     * @param int $dieId Id of die being rolled
+     * @return void
+     */
+    private function rollDie($dieId) 
+    {
+        $rolledValue = rand(1, 6);
+        self::DbQuery("UPDATE die SET die_value='" . $rolledValue . "' WHERE die_id='" . $dieId . "'");
+    }
+
+    /**
+     * Get the game state value for ghosts rolled
+     * @return int Number of ghosts rolled on dice
+     */
+    public function getGhostsRolled()
+    {
+        return $this->game->getGameStateValue(GHOSTS_ROLLED);
+    }
+
+    /**
+     * Set the game state value for ghosts rolled
+     * @param int $value Number of ghosts rolled on dice
+     * @return void
+     */
+    public function setGhostsRolled($value)
+    {
+        $this->game->setGameStateValue(GHOSTS_ROLLED, $value);
+    }
 }

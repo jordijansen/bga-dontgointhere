@@ -58,15 +58,21 @@ define([
             }
         },
 
+        /**
+         * Handle when a player gains or discards ghost tokens
+         * @param {int} playerId Id of player gaining or discarding ghosts
+         * @param {int} amount Delta of ghost tokens
+         * @param {int} newTotal New total value of ghost tokens
+         */
         adjustPlayerGhosts: function (playerId, amount, newTotal)
         { 
-            // Animate ghosts to counter
+            // Animate gain ghosts
             if (amount > 0) {
                 this.game.util.placeBlock(GHOST_TEMPLATE, 'dgit_ghost_tokens', { ghost_type: Math.floor(Math.random() * 24) + 1 });
                 this.slideToObjectAndDestroy('dgit_moving_ghost', 'dgit_player_' + playerId + '_ghost_tracker');
             }
 
-            // Animate counter to ghosts
+            // Animate discard ghosts
             if (amount < 0) {
                 this.game.util.placeBlock(GHOST_TEMPLATE, 'dgit_player_' + playerId + '_ghost_tracker', { ghost_type: Math.floor(Math.random() * 24) + 1 });
                 this.slideToObjectAndDestroy('dgit_moving_ghost', 'dgit_ghost_tokens');
@@ -76,6 +82,16 @@ define([
             if (playerId == this.game.getCurrentPlayerId()) {
                 this.game.counterManager.ghostCounterToValue(newTotal);
             }
+        },
+
+        /**
+         * Move the active player marker
+         * @param {int} newActivePlayerId Id of new active player
+         */
+        changeActivePlayer: function (newActivePlayerId)
+        { 
+            dojo.query('.dgit-active-player').addClass('dgit-hidden')
+            dojo.removeClass('dgit_player_' + newActivePlayerId + '_active_player', 'dgit-hidden');
         },
     });
 });
