@@ -171,8 +171,18 @@ define([
         {
             debug('setupNotifications', 'Setting up notification subscriptions');
 
+            dojo.subscribe(ADJUST_GHOSTS, this, 'notif_adjustGhosts');
             dojo.subscribe(CHANGE_PLAYER, this, 'notif_changePlayer');
             dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
+        },
+
+        notif_adjustGhosts: function (notification)
+        { 
+            var playerId = notification.args.playerId;
+            var amount = notification.args.amount;
+            var newTotal = notification.args.newTotal;
+
+            this.playerManager.adjustPlayerGhosts(playerId, amount, newTotal);
         },
 
         /**

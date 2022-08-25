@@ -20,7 +20,7 @@ define([
     'ebg/counter',
 ], (dojo, declare) => {
     return declare('dgit.counterManager', null, {
-        constructor(game) {
+        constructor: function(game) {
             this.game = game;
             
             this.deckCounter = new ebg.counter();
@@ -35,7 +35,7 @@ define([
          * Creates the deck counter
          * @param {int} deckSize Number of cards in the deck
          */
-        createDeckCounter(deckSize)
+        createDeckCounter: function (deckSize)
         { 
             debug('counterManager::createDeckCounter', deckSize);
             this.deckCounter.create('dgit_deck_counter');
@@ -46,7 +46,7 @@ define([
          * Creates the counters used to track a player's curses
          * @param {Object} player A player object
          */
-        createPlayerCurseCounters(player)
+        createPlayerCurseCounters: function (player)
         {
             debug('counterManager::createPlayerCurseCounters', player);
             this.playerCurseCounters[player.id] = new ebg.counter();
@@ -61,7 +61,7 @@ define([
          * Creates the counter used to track a player's dispeled cards
          * @param {Object} player A player object
          */
-        createPlayerDispeledCounter(player)
+        createPlayerDispeledCounter: function (player)
         { 
             debug('counterManager::createPlayerDispeledCounter', player);
             this.playerDispeledCounters[player.id] = new ebg.counter();
@@ -73,13 +73,18 @@ define([
          * Creates the counters used to track a player's ghost tokens
          * @param {Object} player A player object
          */
-        createPlayerGhostCounters(player)
+        createPlayerGhostCounters: function (player)
         { 
             debug('counterManager::createPlayerGhostCounters', player);
             this.currentPlayerGhosts.create('dgit_player_' + player.id + '_ghost_counter');
             this.currentPlayerGhosts.setValue(player.ghostTokens);
             this.currentPlayerSidePanelGhosts.create('dgit_player_' + player.id + '_side_panel_ghost_counter');
             this.currentPlayerSidePanelGhosts.setValue(player.ghostTokens);
+        },
+
+        ghostCounterToValue: function (value) { 
+            this.currentPlayerGhosts.toValue(value);
+            this.currentPlayerSidePanelGhosts.toValue(value);
         },
     });
   });

@@ -17,6 +17,7 @@
 /**
  * Action names
  */
+define('ADJUST_GHOSTS', 'adjustGhosts');
 define('CHANGE_PLAYER', 'changePlayer');
 define('PLACE_MEEPLE', 'placeMeeple');
 define('SECRET_PASSAGE_PEEK', 'secretPassagePeek');
@@ -79,6 +80,7 @@ define('CLOCKS_COLLECTED', 'clocks_collected');
  * JSTPL template names
  */
 define('DECK_CARD_TEMPLATE', 'jstpl_deck_card');
+define('GHOST_TEMPLATE', 'jstpl_ghost_token');
 define('MEEPLE_TEMPLATE', 'jstpl_meeple');
 define('PLAYER_CARD_TEMPLATE', 'jstpl_player_card');
 define('PLAYER_SIDE_PANEL_TEMPLATE', 'jstpl_player_side_panel');

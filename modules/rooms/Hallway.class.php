@@ -35,6 +35,4 @@ class Hallway extends DontGoInThereRoom
     {
         return clienttranslate('After rolling the dice for the Hallway, the player that placed the 3rd Meeple in the Hallway may change 1 die result.');
     }
-
-    public function onPlacement($meeple) {}
 }

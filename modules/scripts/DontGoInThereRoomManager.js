@@ -20,7 +20,7 @@ define([
     'ebg/core/gamegui',
 ], (dojo, declare) => {
     return declare('dgit.roomManager', ebg.core.gamegui, {
-        constructor(game) {
+        constructor: function(game) {
             this.game = game;
         },
 

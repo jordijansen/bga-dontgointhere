@@ -18,13 +18,6 @@ abstract class DontGoInThereRoom extends APP_GameClass
 {
     protected $game;
 
-    /**
-     * Abstract for onPlacement fucntion
-     * @param DontGoInThereMeeple $meeple Meeple object being placed
-     * @return void
-     */
-    abstract public function onPlacement($meeple);
-
     public function __construct($game)
     {
         $this->game = $game;

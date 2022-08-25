@@ -153,6 +153,7 @@ class DontGoInThere extends Table
         $player = $this->playerManager->getPlayer(self::getActivePlayerId());
         $room = $this->roomManager->getFaceupRoomByUiPosition($roomPosition);
         $meeple = $this->meepleManager->moveMeepleToRoom($player, $roomPosition, $space);
+        $meeplesInRoom = $this->meepleManager->getMeeples(ROOM_PREPEND . $room->getUiPosition());
 
         self::notifyAllPlayers(
             PLACE_MEEPLE,
@@ -174,6 +175,40 @@ class DontGoInThere extends Table
                     'player_name' => $this->getActivePlayerName(),
                 )
             );
+        }
+
+        // If space 1 of attic player gains a ghost
+        if($room->getType() == ATTIC && $space == 1) {
+            $newTotal = $this->playerManager->adjustPlayerGhosts($player->getId(), 1);
+            self::notifyAllPlayers(
+                ADJUST_GHOSTS,
+                clienttranslate('${player_name} gains a Ghost token from placing a meeple in The Attic'),
+                array(
+                    'player_name' => $this->getActivePlayerName(),
+                    'playerId' => $player->getId(),
+                    'amount' => 1,
+                    'newTotal' => $newTotal,
+                )
+            );
+        }
+
+        // If space 4 of nursery player discards a ghost
+        if($room->getType() == ATTIC && $space == 4 && player->getGhostTokens() > 0) {
+            $newTotal = $this->playerManager->adjustPlayerGhosts($player->getId(), -1);
+            self::notifyAllPlayers(
+                ADJUST_GHOSTS,
+                clienttranslate('${player_name} discards a Ghost token from placing a meeple in The Nursery'),
+                array(
+                    'player_name' => $this->getActivePlayerName(),
+                    'playerId' => $player->getId(),
+                    'amount' => 1,
+                    'newTotal' => $newTotal,
+                )
+            );
+        }
+
+        if(count($meeplesInRoom) == 3) {
+            // Go to card collection phase
         }
 
         $this->gamestate->nextState(NEXT_PLAYER);

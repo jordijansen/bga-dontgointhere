@@ -20,7 +20,7 @@ define([
     'ebg/core/gamegui',
 ], (dojo, declare) => {
     return declare('dgit.playerManager', ebg.core.gamegui, {
-        constructor(game) {
+        constructor: function(game) {
             this.game = game;
         },
 
@@ -55,6 +55,26 @@ define([
                 if (player.cardsDispeled > 0) { 
                     dojo.removeClass('dgit_player_' + player.id + '_dispeled', 'dgit-hidden');
                 }
+            }
+        },
+
+        adjustPlayerGhosts: function (playerId, amount, newTotal)
+        { 
+            // Animate ghosts to counter
+            if (amount > 0) {
+                this.game.util.placeBlock(GHOST_TEMPLATE, 'dgit_ghost_tokens', { ghost_type: Math.floor(Math.random() * 24) + 1 });
+                this.slideToObjectAndDestroy('dgit_moving_ghost', 'dgit_player_' + playerId + '_ghost_tracker');
+            }
+
+            // Animate counter to ghosts
+            if (amount < 0) {
+                this.game.util.placeBlock(GHOST_TEMPLATE, 'dgit_player_' + playerId + '_ghost_tracker', { ghost_type: Math.floor(Math.random() * 24) + 1 });
+                this.slideToObjectAndDestroy('dgit_moving_ghost', 'dgit_ghost_tokens');
+            }
+
+            // Adjust counter if current player
+            if (playerId == this.game.getCurrentPlayerId()) {
+                this.game.counterManager.ghostCounterToValue(newTotal);
             }
         },
     });

@@ -20,7 +20,7 @@ define([
     'ebg/core/gamegui',
 ], (dojo, declare) => {
     return declare('dgit.cardManager', null, {
-        constructor(game) {
+        constructor: function(game) {
             this.game = game;
         },
 

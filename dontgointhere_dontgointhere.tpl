@@ -82,6 +82,7 @@
 <script type="text/javascript">
 
     var jstpl_deck_card = '<div id="dgit_deck_card_${card_num}" class="dgit-card dgit-card-back dgit-card-in-deck" style="bottom: ${card_num}%"></div>';
+    var jstpl_ghost_token = '<div id="dgit_moving_ghost" class="dgit-ghost-token dgit-ghost-token-${ghost_type}" style="top: 50%; left: 50%;"></div>';
     var jstpl_meeple = '<div id="dgit_player_${player_id}_meeple_${meeple_id}" class="dgit-meeple ${meeple_css_class}"></div>';
     var jstpl_player_card = '<div id="dgit_player_${player_id}_card_${card_id}" class="dgit-card ${card_css_class}">\
                                 <span id="dgit_card_${card_id}_tooltip" class="dgit-card-tooltip">i</span>\

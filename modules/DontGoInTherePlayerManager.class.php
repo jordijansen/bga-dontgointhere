@@ -49,6 +49,14 @@ class DontGoInTherePlayerManager extends APP_GameClass
         $this->game->reloadPlayersBasicInfos();
     }
 
+    public function adjustPlayerGhosts($playerId, $amount)
+    {
+        $player = self::getPlayer($playerId);
+        $newGhostTotal = ($player->getGhostTokens() + $amount) >= 0 ? $player->getGhostTokens() + $amount : 0;
+        self::DbQuery('UPDATE player SET player_score_aux="' . $newGhostTotal . '" WHERE player_id="' . $playerId . '"');
+        return $newGhostTotal;
+    }
+
     /**
      * Returns a DontGoInTherePlayer object for active/specified player ID
      * @param int $playerId Database ID of a plyer
