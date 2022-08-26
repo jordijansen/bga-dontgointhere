@@ -44,6 +44,32 @@ class DontGoInThereDiceManager extends APP_GameClass
     }
 
     /**
+     * Change the face of a die from BLANK to GHOST or vice versa
+     * @param int $dieId Id of die to changge
+     * @return DontGoInThereDie Updated die object
+     */
+    public function changeDieFace($dieId)
+    {
+        $die = self::getDie($dieId);
+        $newValue = 0;
+        $ghostTotal = self::getGhostsRolled();
+
+        // Change from blank to ghost
+        if($die->getFace() == BLANK) {
+            $newValue = rand(1, 5) | 1;
+            self::setGhostsRolled($ghostTotal + 1);
+        }
+        // Change from ghost to blanl
+        if($die->getFace() == GHOST ){
+            $newValue = 2;
+            self::setGhostsRolled($ghostTotal - 1);
+        }
+
+        self::DbQuery("UPDATE die SET die_value ='".$newValue."' WHERE die_id='".$dieId."'");
+        return self::getDie($dieId);
+    }
+
+    /**
      * Returns a DontGoInThereDie object for the specified die ID
      * @param int $dieId Database ID of a die
      * @return DontGoInThereDie A DontGoInThereDie object

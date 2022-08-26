@@ -117,7 +117,7 @@ class DontGoInThereMeepleManager extends APP_GameClass
 
         if(count($meeplesInRoom) > 0) {
             $sortedMeeples = self::sortMeeplesByUiPosition($meeplesInRoom);
-            return array_pop($sortedMeeples);
+            return $sortedMeeples[0];
         }
 
         return false;

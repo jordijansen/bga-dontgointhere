@@ -18,11 +18,13 @@
  * Action names
  */
 define('ADJUST_GHOSTS', 'adjustGhosts');
+define('CHANGE_DIE', 'changeDie');
 define('CHANGE_PLAYER', 'changePlayer');
 define('PLACE_MEEPLE', 'placeMeeple');
 define('ROLL_DICE', 'rollDice');
 define('SECRET_PASSAGE_PEEK', 'secretPassagePeek');
 define('SECRET_PASSAGE_REVEAL', 'secretPassageReveal');
+define('SKIP', 'skip');
 define('TAKE_CARD', 'takeCard');
 
 /**
@@ -79,6 +81,7 @@ define('DGIT_TRUE', 1);
  */
 define('CLOCKS_COLLECTED', 'clocks_collected');
 define('GHOSTS_ROLLED', 'ghosts_rolled');
+define('RESOLVED_ROOM_ABILITY', 'resolved_room_ability');
 define('ROOM_RESOLVER', 'room_resolver');
 define('ROOM_RESOLVING', 'room_resolving');
 define('SECRET_PASSAGE_REVEALED', 'secret_passage_revealed');
@@ -120,7 +123,8 @@ define('SECRET_PASSAGE', 5);
 define('STATE_GAME_SETUP', 1);
 define('STATE_PLAYER_TURN', 2);
 define('STATE_RESOLVE_ROOM', 10);
-define('STATE_SELECT_CARD', 11);
+define('STATE_ROOM_RESOLUTION_ABILITY', 11);
+define('STATE_SELECT_CARD', 12);
 define('STATE_NEXT_PLAYER', 20);
 define('STATE_GAME_END', 99);
 
@@ -132,4 +136,5 @@ define('GAME_SETUP', 'gameSetup');
 define('NEXT_PLAYER', 'nextPlayer');
 define('PLAYER_TURN', 'playerTurn');
 define('RESOLVE_ROOM', 'resolveRoom');
+define('ROOM_RESOLUTION_ABILITY', 'roomResolutionAbility');
 define('SELECT_CARD', 'selectCard');

@@ -95,6 +95,29 @@ define([
                         this.connectClass('dgit-room-space-highlight', 'onclick', 'onClickRoomSpace');
                     }
                     break;
+                case ROOM_RESOLUTION_ABILITY:
+                    if (this.isCurrentPlayerActive())
+                    {
+                        var room = args.args.room;
+
+                        // If basement
+                        if (room.type == BASEMENT) {
+                            dojo.removeClass('dgit_roll_dice_button', 'dgit-hidden');
+                            this.connect($('dgit_roll_dice_button'), 'onclick', 'onRollDice');
+                        }
+                        // If hallway
+                        if (room.type == HALLWAY) {
+                            var dice = args.args.dice;
+                            for (var dieKey in dice) {
+                                var die = dice[dieKey];
+                                if (die.cssClass != 'dgit-hidden') {
+                                    dojo.removeClass('dgit_change_die_button_' + die.id, 'dgit-hidden');
+                                }
+                            }
+                            this.connectClass('dgit-change-die-button', 'onclick', 'onDieChange');
+                        }       
+                    }
+                    break;
                 case 'dummmy':
                     break;
             }
@@ -114,6 +137,10 @@ define([
             
             switch( stateName )
             {
+                case ROOM_RESOLUTION_ABILITY:
+                    dojo.addClass('dgit_roll_dice_button', 'dgit-hidden');
+                    dojo.query('.dgit-change-die-button').addClass('dgit-hidden');
+                    break;
                 case 'dummmy':
                     break;
             }               
@@ -134,6 +161,12 @@ define([
             {            
                 switch( stateName )
                 {
+                    case ROOM_RESOLUTION_ABILITY:
+                        if (this.isCurrentPlayerActive()) {
+                            this.addActionButton('dgit_skip_ability_button', _('Skip'), 'onSkipAbility');
+                            dojo.addClass('dgit_skip_ability_button', 'dgit-important');
+                        }
+                        break;
                     case 'dummy':
                         break;
                 }
@@ -160,6 +193,35 @@ define([
             }
         },
 
+        /**
+         * Triggers when user changes a die to its oppposite face
+         * @param {Object} event onclick event
+         */
+        onDieChange: function (event) {
+            dojo.stopEvent(event);
+            this.util.triggerPlayerAction(CHANGE_DIE, { dieId: event.target.attributes.die.value });
+        },
+
+        /**
+         * Triggers when user initiates a dice roll
+         * @param {Object} event onclick event
+         */
+        onRollDice: function (event)
+        { 
+            dojo.stopEvent(event);
+            this.util.triggerPlayerAction(ROLL_DICE, {});
+        },
+
+        /**
+         * Triggers when user skips an optional acttion
+         * @param {Object} event onclick event
+         */
+        onSkipAbility: function (event)
+        {
+            dojo.stopEvent(event);
+            this.util.triggerPlayerAction(SKIP, {});
+        },
+
         /***********************************************************************************************
         *    NOTIFICATIONS::Handle notifications from backend                                          *
         ************************************************************************************************/
@@ -172,6 +234,7 @@ define([
             debug('setupNotifications', 'Setting up notification subscriptions');
 
             dojo.subscribe(ADJUST_GHOSTS, this, 'notif_adjustGhosts');
+            dojo.subscribe(CHANGE_DIE, this, 'notif_changeDie');
             dojo.subscribe(CHANGE_PLAYER, this, 'notif_changePlayer');
             dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
             dojo.subscribe(ROLL_DICE, this, 'notif_rollDice');
@@ -188,6 +251,18 @@ define([
             var amount = notification.args.amount;
             var newTotal = notification.args.newTotal;
             this.playerManager.adjustPlayerGhosts(playerId, amount, newTotal);
+        },
+
+        /**
+         * Handle change of die face
+         * @param {Object} notification notification object
+         */
+        notif_changeDie: function (notification)
+        { 
+            var die = notification.args.die;
+            this.diceManager.setDice({ die });
+            var delta = die.face == BLANK ? -1 : 1;
+            this.counterManager.adjustGhostTotalCounter(delta);
         },
 
         /**

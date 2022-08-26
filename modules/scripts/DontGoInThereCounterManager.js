@@ -33,6 +33,15 @@ define([
         },
 
         /**
+         * Adjust ghosts rolled counter by delta
+         * @param {int} delta delta to adjust by
+         */
+        adjustGhostTotalCounter: function (delta)
+        {
+            this.ghostTotalCounter.incValue(delta);
+        },
+
+        /**
          * Creates the deck counter
          * @param {int} deckSize Number of cards in the deck
          */

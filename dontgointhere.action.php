@@ -28,6 +28,17 @@ class action_dontgointhere extends APP_GameAction
     }
   }
 
+  public function changeDie()
+  {
+    self::setAjaxMode();
+
+    $dieId = self::getArg("dieId", AT_posint, true);
+
+    $this->game->changeDie($dieId);
+
+    self::ajaxResponse();
+  }
+
   public function placeMeeple()
   {
     self::setAjaxMode();
@@ -40,6 +51,23 @@ class action_dontgointhere extends APP_GameAction
     self::ajaxResponse();
   }
 
+  public function rollDice()
+  {
+    self::setAjaxMode();
+
+    $this->game->rollDice();
+
+    self::ajaxResponse();
+  }
+
+  public function skip()
+  {
+    self::setAjaxMode();
+
+    $this->game->skip();
+
+    self::ajaxResponse();
+  }
 }
   
 

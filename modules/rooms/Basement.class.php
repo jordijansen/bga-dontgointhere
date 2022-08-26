@@ -26,6 +26,18 @@ class Basement extends DontGoInThereRoom
         $this->tooltipText = self::buildTooltipText();;
         $this->flipSideRoom = HALLWAY;
         $this->uiPosition = $row[LOCATION_ARG];
+        $this->resolveAbility = true;
+        $this->abilityText = self::buildAbilityText();
+        $this->abilitySkipText = clienttranslate('skips re-rolling the dice');
+    }
+
+    /**
+     * Build ability text for ability used in ability resolution phase
+     * @return string Ability text
+     */
+    private function buildAbilityText()
+    {
+        return clienttranslate('may re-roll all the dice one time');
     }
 
     /**
@@ -34,6 +46,6 @@ class Basement extends DontGoInThereRoom
      */
     private function buildTooltipText()
     {
-        return clienttranslate('After rolling the dice for the Attic, the player that placed the 3rd Meeple in the Attic may re-roll the dice 1 time.');
+        return clienttranslate('After rolling the dice for the Basement, the player that placed the final Meeple in the Basement may re-roll the dice 1 time.');
     }
 }

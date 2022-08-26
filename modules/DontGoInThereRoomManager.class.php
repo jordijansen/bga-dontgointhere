@@ -192,6 +192,15 @@ class DontGoInThereRoomManager extends APP_GameClass
     }
 
     /**
+     * Get the game state value to determine if toom resolution ability has been triggered
+     * @return int Boolean if room ability has been resolve or not
+     */
+    public function getResolvedRoomAbility()
+    {
+        return $this->game->getGameStateValue(RESOLVED_ROOM_ABILITY);
+    }
+
+    /**
      * Get the game state value for the player who triggered room resolution
      * @return int Id of player who triggered current room resolution
      */
@@ -234,6 +243,15 @@ class DontGoInThereRoomManager extends APP_GameClass
     }
 
     /**
+     * Set the game state value to determine if toom resolution ability has been triggered
+     * @param int $abilityStatus tinyint boolean
+     */
+    public function setResolvedRoomAbility($abilityStatus)
+    {
+        $this->game->setGameStateValue(RESOLVED_ROOM_ABILITY, $abilityStatus);
+    }
+
+    /**
      * Set the game state value for the player who triggered room resolution
      * @param int $playerId Id of player who triggered current room resolution
      */
@@ -244,7 +262,7 @@ class DontGoInThereRoomManager extends APP_GameClass
 
     /**
      * Set the game state value for the room currently being resolved
-     * @param int Ui position of room being resolved
+     * @param int $roomUiPosition Ui position of room being resolved
      */
     public function setRoomResolving($roomUiPosition)
     {
@@ -253,10 +271,10 @@ class DontGoInThereRoomManager extends APP_GameClass
 
     /**
      * Set the game state value for whether the secret passage card has been revealed to all players
-     * @return int Boolean if secret passage has been revealed or not
+     * @param int $revealedStatus tinyint boolean
      */
     public function setSecretPassageRevealed($revealedStatus)
     {
-        return $this->game->setGameStateValue(SECRET_PASSAGE_REVEALED, $revealedStatus);
+        $this->game->setGameStateValue(SECRET_PASSAGE_REVEALED, $revealedStatus);
     }
 }

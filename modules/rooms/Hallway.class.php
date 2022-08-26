@@ -25,6 +25,18 @@ class Hallway extends DontGoInThereRoom
         $this->tooltipText = self::buildTooltipText();;
         $this->flipSideRoom = BASEMENT;
         $this->uiPosition = $row[LOCATION_ARG];
+        $this->resolveAbility = true;
+        $this->abilityText = self::buildAbilityText();
+        $this->abilitySkipText = clienttranslate('skips changing a die');
+    }
+
+    /**
+     * Build ability text for ability used in ability resolution phase
+     * @return string Ability text
+     */
+    private function buildAbilityText()
+    {
+        return clienttranslate('may change one die result');
     }
 
     /**
@@ -33,6 +45,6 @@ class Hallway extends DontGoInThereRoom
      */
     private function buildTooltipText()
     {
-        return clienttranslate('After rolling the dice for the Hallway, the player that placed the 3rd Meeple in the Hallway may change 1 die result.');
+        return clienttranslate('After rolling the dice for the Hallway, the player that placed the final Meeple in the Hallway may change 1 die result.');
     }
 }

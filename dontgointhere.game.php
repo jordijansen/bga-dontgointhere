@@ -30,11 +30,12 @@ class DontGoInThere extends Table
         self::initGameStateLabels( array(
             CLOCKS_COLLECTED => 10,
             GHOSTS_ROLLED => 11,
-            ROOM_RESOLVER => 12,
-            ROOM_RESOLVING => 13,
-            SECRET_PASSAGE_REVEALED => 14,
-            TOTAL_TURNS => 15,
-            TURN_COUNTER => 16,
+            RESOLVED_ROOM_ABILITY => 12,
+            ROOM_RESOLVER => 13,
+            ROOM_RESOLVING => 14,
+            SECRET_PASSAGE_REVEALED => 15,
+            TOTAL_TURNS => 16,
+            TURN_COUNTER => 17,
         ) );
 
         $this->cardManager = new DontGoInThereCardManager($this);
@@ -76,6 +77,7 @@ class DontGoInThere extends Table
         // Initialize global variables
         self::setGameStateInitialValue(CLOCKS_COLLECTED, DGIT_FALSE);
         self::setGameStateInitialValue(GHOSTS_ROLLED, -1);
+        self::setGameStateInitialValue(RESOLVED_ROOM_ABILITY, DGIT_FALSE);
         self::setGameStateInitialValue(ROOM_RESOLVER, 0);
         self::setGameStateInitialValue(ROOM_RESOLVING, 0);
         self::setGameStateInitialValue(SECRET_PASSAGE_REVEALED, DGIT_FALSE);
@@ -120,6 +122,7 @@ class DontGoInThere extends Table
             'playerCards' => $this->cardManager->getUiData(HAND),
             'playerInfo' => $this->playerManager->getUiData($currentPlayerId),
             'roomCards' => $roomCards,
+            'roomResolving' => $this->roomManager->getRoomResolving(),
             'secretPassageRevealed' => $this->roomManager->getSecretPassageRevealed(),
         ];
         return $data;
@@ -163,6 +166,29 @@ class DontGoInThere extends Table
     /***********************************************************************************************
     *    PLAYER ACTIONS::Methods when players trigger actions                                      *
     ************************************************************************************************/
+
+    /**
+     * Change the face of a die from BLANK to GHOST or vice versa
+     * @param int $dieId Id of die to change
+     * @return void
+     */
+    function changeDie($dieId)
+    {
+        $die = $this->diceManager->changeDieFace($dieId);
+        $this->roomManager->setResolvedRoomAbility(DGIT_TRUE);
+
+        self::notifyAllPlayers(
+            CHANGE_DIE,
+            clienttranslate('${player_name} changes a die to a ${face} face'),
+            array(
+                'player_name' => $this->getActivePlayerName(),
+                'face' => $die->getFace() == BLANK ? clienttranslate('Blank') : clienttranslate('Ghost'),
+                'die' => $die->getUiData(),
+            )
+        );
+
+        $this->gamestate->nextState(RESOLVE_ROOM);
+    }
 
     /**
      * Place a a meeple of the active player in the chosen room space
@@ -239,27 +265,82 @@ class DontGoInThere extends Table
         }
     }
 
+    /**
+     * Player inititated dice roll
+     * @return void
+     */
+    function rollDice()
+    {
+        $roomResolving = $this->roomManager->getRoomResolving();
+        $this->roomManager->setResolvedRoomAbility(DGIT_TRUE);
+
+        self::notifyAllPlayers(
+            'reroll',    
+            clienttranslate('${player_name} chooses to re-roll the dice'),
+            array(
+                'player_name' => self::getActivePlayerName(),
+            )
+        );
+
+        $diceToRoll = $this->cardManager->countDiceIconsInRoom($roomResolving);
+        $diceRolled = $this->diceManager->rollDice($diceToRoll);
+
+        self::notifyAllPlayers(
+            ROLL_DICE,    
+            clienttranslate('${player_name} rolls ${ghostsRolled} Ghost(s) on ${diceToRoll} dice'),
+            array(
+                'player_name' => self::getActivePlayerName(),
+                'ghostsRolled' => $this->diceManager->getGhostsRolled(),
+                'diceToRoll' => $diceToRoll,
+                'diceRolled' => $diceRolled,
+            )
+        );
+
+        $this->gamestate->nextState(RESOLVE_ROOM);
+    }
+
+    /**
+     * Skip an optional action
+     * @return void
+     */
+    function skip()
+    {
+        $roomUiPosition = $this->roomManager->getRoomResolving();
+        $room = $this->roomManager->getFaceupRoomByUiPosition($roomUiPosition);
+        $this->roomManager->setResolvedRoomAbility(DGIT_TRUE);
+
+        self::notifyAllPlayers(
+            SKIP,
+            clienttranslate('${player_name} ${skipText}'),
+            array(
+                'player_name' => $this->getActivePlayerName(),
+                'skipText' => $room->getAbilitySkipText(),
+            )
+        );
+
+        $this->gamestate->nextState(RESOLVE_ROOM);
+    }
+
     
     /***********************************************************************************************
     *    GAME STATE ARGUMENTS::Methods to pass arguments required for a game state                 *
     ************************************************************************************************/
 
-    /*
-    
-    Example for game state "MyGameState":
-    
-    function argMyGameState()
+    /**
+     * Args for room ability state
+     * @return array Array of args
+     */
+    function argsRoomAbility()
     {
-        // Get some values from the current game situation in database...
-    
-        // return values:
+        $roomUiPosition = $this->roomManager->getRoomResolving();
+        $room = $this->roomManager->getFaceupRoomByUiPosition($roomUiPosition);
+
         return array(
-            'variable1' => $value1,
-            'variable2' => $value2,
-            ...
+            'ability' => $room->getAbilityText(),
+            'dice' => $this->diceManager->getUiData(),
+            'room' => $room->getUiData(),
         );
-    }    
-    */
+    }
 
 
     /***********************************************************************************************
@@ -322,16 +403,21 @@ class DontGoInThere extends Table
             );
         }
 
-        // Get next meeple in room
-        $nextMeeple = $this->meepleManager->getTopMeepleInRoom($roomResolving);
-
-        // Activate next meeple for card selection or move to next phase
-        if($nextMeeple) {
-            $this->gamestate->changeActivePlayer($nextMeeple->getOwner());
-            $this->gamestate->nextState(SELECT_CARD);
+        // If room has a resolve ability we need to handle it
+        if($room->hasResolveAbility() && $this->roomManager->getResolvedRoomAbility() == DGIT_FALSE) {
+            $this->gamestate->nextState(ROOM_RESOLUTION_ABILITY);
         } else {
-            $this->gamestate->changeActivePlayer($this->roomManager->getRoomResolver());
-            $this->gamestate->nextState(NEXT_PLAYER);
+            // Get next meeple in room
+            $nextMeeple = $this->meepleManager->getTopMeepleInRoom($roomResolving);
+
+            // Activate next meeple for card selection or move to next phase
+            if($nextMeeple) {
+                $this->gamestate->changeActivePlayer($nextMeeple->getOwner());
+                $this->gamestate->nextState(SELECT_CARD);
+            } else {
+                $this->gamestate->changeActivePlayer($this->roomManager->getRoomResolver());
+                $this->gamestate->nextState(NEXT_PLAYER);
+            }
         }
     }
 

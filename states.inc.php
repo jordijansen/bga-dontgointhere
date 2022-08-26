@@ -74,7 +74,17 @@ $machinestates = array(
         "name" => RESOLVE_ROOM,
         "type" => "game",
         "action" => "stResolveRoom",
-        "transitions" => array( SELECT_CARD => STATE_SELECT_CARD, NEXT_PLAYER => STATE_NEXT_PLAYER )
+        "transitions" => array( ROOM_RESOLUTION_ABILITY => STATE_ROOM_RESOLUTION_ABILITY, SELECT_CARD => STATE_SELECT_CARD, NEXT_PLAYER => STATE_NEXT_PLAYER )
+    ),
+
+    STATE_ROOM_RESOLUTION_ABILITY => array(
+        "name" => ROOM_RESOLUTION_ABILITY,
+        "description" => clienttranslate('${actplayer} ${ability}'),
+        "descriptionmyturn" => clienttranslate('${you} ${ability}'),
+        "type" => "activeplayer",
+        "args" => "argsRoomAbility",
+        "possibleactions" => array( CHANGE_DIE, ROLL_DICE, SKIP ),
+        "transitions" => array( RESOLVE_ROOM => STATE_RESOLVE_ROOM )
     ),
 
     STATE_SELECT_CARD => array(

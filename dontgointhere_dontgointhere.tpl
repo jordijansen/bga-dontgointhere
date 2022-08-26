@@ -33,9 +33,11 @@
                 <!-- BEGIN die -->
                 <div id="dgit_die_{DIE_NUM}" class="dgit-die">
                     <div id="dgit_die_{DIE_NUM}_face" class="dgit-die-face"></div>
+                    <a id="dgit_change_die_button_{DIE_NUM}" die="{DIE_NUM}" class="dgit-change-die-button dgit-hidden" href="#">{CHANGE}</a>
                 </div>
                 <!-- END die -->
                 <span id="dgit_dice_total" class="dgit-hidden">0</span>
+                <a id="dgit_roll_dice_button" class="action-button bgabutton dgit-hidden" href="#">{ROLL}</a>
             </div>
         </div>
         <div id="dgit_rooms_panel">

@@ -39,6 +39,10 @@ div.player-board {
     border: 5px solid #8bc98a;
 }
 
+.dgit-important {
+    background-color: orangered !important;
+}
+
 .dgit-header {
     display: inline-block;
     border-radius: 5px;
@@ -156,6 +160,42 @@ div.player-board {
     text-shadow: 5px 0 5px #8bc98a,0 -5px 5px #8bc98a,0 5px 5px #8bc98a,-5px 0 5px #8bc98a;
     top: 5%;
     right: 5%;
+}
+
+#dgit_roll_dice_button {
+    position: absolute;
+    right: 5%;
+    bottom: 5%;
+    font-size: xx-large;
+    color: #000;
+    border: 4px outset;
+    background-color: #8bc98a;
+    box-shadow: 0px 0px 10px 10px rgba(139, 201, 138, .9);
+    -webkit-box-shadow: 0px 0px 10px 10px rgba(139, 201, 138, .9);
+    -moz-box-shadow: 0px 0px 10px 10px rgba(139, 201, 138, .9);
+}
+
+.dgit-change-die-button {
+    position: absolute;
+    z-index: 10;
+    bottom: -45%;
+    font-size: medium;
+    font-weight: 700;
+    padding: 5px;
+    color: #8bc98a !important;
+    background-color: #000;
+    border: 4px outset;
+    border-radius: 6px;
+    box-shadow: 0 1px 0 #000;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: rgba(0,0,0,.4) 0 1px 0;
+    white-space: nowrap;
+}
+
+.dgit-change-die-button, .notouch-device .dgit-change-die-button:hover {
+    text-decoration: none !important;
 }
 
 #dgit_rooms_panel {
