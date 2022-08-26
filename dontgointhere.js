@@ -249,8 +249,7 @@ define([
         { 
             var playerId = notification.args.playerId;
             var amount = notification.args.amount;
-            var newTotal = notification.args.newTotal;
-            this.playerManager.adjustPlayerGhosts(playerId, amount, newTotal);
+            this.playerManager.adjustPlayerGhosts(playerId, amount);
         },
 
         /**

@@ -33,6 +33,16 @@ define([
         },
 
         /**
+         * Adjust current player's ghost counter by delta
+         * @param {int} delta delta to adjust by
+         */
+        adjustGhostCounter: function (delta)
+        { 
+            this.currentPlayerGhosts.incValue(delta);
+            this.currentPlayerSidePanelGhosts.incValue(delta);
+        },
+
+        /**
          * Adjust ghosts rolled counter by delta
          * @param {int} delta delta to adjust by
          */

@@ -62,9 +62,8 @@ define([
          * Handle when a player gains or discards ghost tokens
          * @param {int} playerId Id of player gaining or discarding ghosts
          * @param {int} amount Delta of ghost tokens
-         * @param {int} newTotal New total value of ghost tokens
          */
-        adjustPlayerGhosts: function (playerId, amount, newTotal)
+        adjustPlayerGhosts: function (playerId, amount)
         { 
             // Animate gain ghosts
             if (amount > 0) {
@@ -80,7 +79,7 @@ define([
 
             // Adjust counter if current player
             if (playerId == this.game.getCurrentPlayerId()) {
-                this.game.counterManager.ghostCounterToValue(newTotal);
+                this.game.counterManager.adjustGhostCounter(amount);
             }
         },
 

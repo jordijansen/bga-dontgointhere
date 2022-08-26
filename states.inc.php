@@ -92,6 +92,7 @@ $machinestates = array(
         "description" => clienttranslate('${actplayer} must take a Cursed Card'),
         "descriptionmyturn" => clienttranslate('${you} must take a Cursed Card'),
         "type" => "activeplayer",
+        "action" => "stSelectCard",
         "possibleactions" => array( TAKE_CARD ),
         "transitions" => array( RESOLVE_ROOM => STATE_RESOLVE_ROOM )
     ),

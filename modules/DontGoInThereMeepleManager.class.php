@@ -80,6 +80,26 @@ class DontGoInThereMeepleManager extends APP_GameClass
     }
 
     /**
+     * Get the number of flashlights a meeple has based on their location within a room
+     * @param int $playerId owner of meeple
+     * @param mixed $roomUiPosition ui position of room
+     * @return bool|int Number of flashlights value or false if no meeple
+     */
+    public function getMeepleFlashlights($playerId, $roomUiPosition)
+    {
+        $meeplesInRoom = self::getMeeples(ROOM_PREPEND . $roomUiPosition);
+        $sortedMeeples = self::sortMeeplesByUiPosition($meeplesInRoom);
+        foreach($sortedMeeples as $meeple)
+        {
+            if($playerId == $meeple->getOwner()) {
+                return $meeple->getUiPosition() - 1;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Grab any of a player's unused meeples
      * @param DontGoInTherePlayer $player A player object
      * @return DontGoInThereMeeple A meeple object
