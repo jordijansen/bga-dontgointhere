@@ -20,6 +20,7 @@ define([
     "dojo/_base/declare",
     "ebg/core/gamegui",
     g_gamethemeurl + 'modules/scripts/DontGoInThereCardManager.js',
+    g_gamethemeurl + 'modules/scripts/DontGoInThereCounterManager.js',
     g_gamethemeurl + 'modules/scripts/DontGoInThereDiceManager.js',
     g_gamethemeurl + 'modules/scripts/DontGoInThereMeepleManager.js',
     g_gamethemeurl + 'modules/scripts/DontGoInTherePlayerManager.js',
@@ -31,6 +32,7 @@ define([
             debug('game::constructor::', 'Starting constructor');
             
             this.cardManager = new dgit.cardManager(this);
+            this.counterManager = new dgit.counterManager(this);
             this.diceManager = new dgit.diceManager(this);
             this.meepleManager = new dgit.meepleManager(this);
             this.playerManager = new dgit.playerManager(this);
@@ -195,7 +197,7 @@ define([
         notif_changePlayer: function (notification)
         { 
             var nextPlayerId = notification.args.nextPlayer;
-            this.playerManage.changeActivePlayer(nextPlayerId);
+            this.playerManager.changeActivePlayer(nextPlayerId);
         },
 
         /**
@@ -224,7 +226,7 @@ define([
          * Handle secret passage card reveal on room resolve
          * @param {Object} notification notification object
          */
-        notif_secretPassagePeek: function (notification)
+        notif_secretPassageReveal: function (notification)
         { 
             this.roomManager.revealSecretPassageCard();
         },

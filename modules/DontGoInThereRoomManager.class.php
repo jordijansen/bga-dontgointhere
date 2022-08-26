@@ -257,6 +257,6 @@ class DontGoInThereRoomManager extends APP_GameClass
      */
     public function setSecretPassageRevealed($revealedStatus)
     {
-        return $this->game->getGameStateValue(SECRET_PASSAGE_REVEALED, $revealedStatus);
+        return $this->game->setGameStateValue(SECRET_PASSAGE_REVEALED, $revealedStatus);
     }
 }

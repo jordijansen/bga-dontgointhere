@@ -33,6 +33,8 @@ class DontGoInThere extends Table
             ROOM_RESOLVER => 12,
             ROOM_RESOLVING => 13,
             SECRET_PASSAGE_REVEALED => 14,
+            TOTAL_TURNS => 15,
+            TURN_COUNTER => 16,
         ) );
 
         $this->cardManager = new DontGoInThereCardManager($this);
@@ -77,6 +79,8 @@ class DontGoInThere extends Table
         self::setGameStateInitialValue(ROOM_RESOLVER, 0);
         self::setGameStateInitialValue(ROOM_RESOLVING, 0);
         self::setGameStateInitialValue(SECRET_PASSAGE_REVEALED, DGIT_FALSE);
+        self::setGameStateInitialValue(TOTAL_TURNS, $this->playerManager->getPlayerCount() * 12);
+        self::setGameStateInitialValue(TURN_COUNTER, 0);
         
         // Init game statistics
         // (note: statistics used in this file must be defined in your stats.inc.php file)
@@ -116,6 +120,7 @@ class DontGoInThere extends Table
             'playerCards' => $this->cardManager->getUiData(HAND),
             'playerInfo' => $this->playerManager->getUiData($currentPlayerId),
             'roomCards' => $roomCards,
+            'secretPassageRevealed' => $this->roomManager->getSecretPassageRevealed(),
         ];
         return $data;
     }
@@ -126,9 +131,7 @@ class DontGoInThere extends Table
      */
     function getGameProgression()
     {
-        // TODO: compute and return the game progression
-
-        return 0;
+        return self::getGameStateValue(TURN_COUNTER) / self::getGameStateValue(TOTAL_TURNS) * 100;
     }
 
 
@@ -143,6 +146,17 @@ class DontGoInThere extends Table
     function getViewingPlayerId()
     {
         return self::getCurrentPlayerId();
+    }
+
+    /**
+     * Increment turn counter for game progression calculation
+     * @return void
+     */
+    function incrementTurnCounter()
+    {
+        $turnCounter = self::getGameStateValue(TURN_COUNTER);
+        $turnCounter += 1;
+        self::setGameStateValue(TURN_COUNTER, $turnCounter);
     }
 
 
@@ -220,6 +234,7 @@ class DontGoInThere extends Table
             $this->roomManager->setRoomResolving($room->getUiPosition());
             $this->gamestate->nextState(RESOLVE_ROOM);
         } else {
+            self::incrementTurnCounter();
             $this->gamestate->nextState(NEXT_PLAYER);
         }
     }
@@ -281,7 +296,7 @@ class DontGoInThere extends Table
         $room = $this->roomManager->getFaceupRoomByUiPosition($roomResolving);
 
         // If room is Secret Passage reveal hidden card if it hasn't already been revealed
-        if($room->getType() == SECRET_PASSAGE && !$this->roomManager->getSecretPassageRevealed()) {
+        if($room->getType() == SECRET_PASSAGE && $this->roomManager->getSecretPassageRevealed() == DGIT_FALSE) {
             $this->roomManager->setSecretPassageRevealed(DGIT_TRUE);
             self::notifyAllPlayers(
                 SECRET_PASSAGE_REVEAL,

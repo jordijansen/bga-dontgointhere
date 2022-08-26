@@ -23,7 +23,7 @@ class Attic extends DontGoInThereRoom
         $this->name = clienttranslate('Attic');
         $this->type = ATTIC;
         $this->cssClass = "dgit-room-attic";
-        $this->tooltipText = '';
+        $this->tooltipText = self::buildTooltipText();
         $this->flipSideRoom = NURSERY;
         $this->uiPosition = $row[LOCATION_ARG];
     }

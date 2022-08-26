@@ -47,7 +47,7 @@ define([
                     this.game.util.placeBlock(ROOM_CARD_TEMPLATE, 'dgit_room_' + room.uiPosition + '_cards',
                         { card_id: card.id, room_number: room.uiPosition, card_number: card.uiPosition, card_css_class: card.cssClass });
                     
-                    if (room.type == SECRET_PASSAGE && card.uiPosition == 3 && !this.isPlayerPresentInRoom(gamedatas.meeplesInRooms[room.uiPosition], this.game.getCurrentPlayerId())) {
+                    if (room.type == SECRET_PASSAGE && card.uiPosition == 3 && gamedatas.secretPassageRevealed == DGIT_FALSE && !this.isPlayerPresentInRoom(gamedatas.meeplesInRooms[room.uiPosition], this.game.getCurrentPlayerId())) {
                         // If room is secret passage flip the 3rd card face down for everyone who has not placed a meeple here
                         dojo.addClass('dgit_room_' + room.uiPosition + '_card_' + card.id, 'dgit-card-back');
                         dojo.setAttr('dgit_room_' + room.uiPosition + '_card_' + card.id, 'special', 'secret-passage');

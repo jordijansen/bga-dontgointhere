@@ -81,7 +81,9 @@ define('CLOCKS_COLLECTED', 'clocks_collected');
 define('GHOSTS_ROLLED', 'ghosts_rolled');
 define('ROOM_RESOLVER', 'room_resolver');
 define('ROOM_RESOLVING', 'room_resolving');
-define('SECRET_PASSAGE_REVEALED', 'secretPassageRevealed');
+define('SECRET_PASSAGE_REVEALED', 'secret_passage_revealed');
+define('TOTAL_TURNS', 'total_turns');
+define('TURN_COUNTER', 'turn_counter');
 
 /**
  * JSTPL template names

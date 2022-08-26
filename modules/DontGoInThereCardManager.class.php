@@ -75,11 +75,11 @@ class DontGoInThereCardManager extends APP_GameClass
             if($libraryPosition == $roomPosition) {
                 $nextThreeCards = self::getCursedCardsOnTopOfDeck(3);
 
-                self::sortCardsByCurseValue($nextThreeCards);
+                $sortedCards = self::sortCardsByCurseValue($nextThreeCards);
 
                 for($cardSlot = 1; $cardSlot <= 3; $cardSlot++)
                 {
-                    $nextCard = array_shift($nextThreeCards);
+                    $nextCard = array_shift($sortedCards);
                     $this->cards->moveCard($nextCard->getId(), ROOM_PREPEND . $roomPosition, $cardSlot);
                 }
             } else {
@@ -246,7 +246,7 @@ class DontGoInThereCardManager extends APP_GameClass
     /**
      * Sort cards by curse value in ascending order
      * @param array<DontGoInThereCursedCard> $cards Array of cards to be sorted
-     * @return void
+     * @return array<DontGoInThereCursedCard> Sorted array of cards
      */
     private function sortCardsByCurseValue($cards)
     {
@@ -256,5 +256,7 @@ class DontGoInThereCardManager extends APP_GameClass
             }
             return $a->getCurses() < $b->getCurses() ? -1 : 1;
         });
+
+        return $cards;
     }
 }

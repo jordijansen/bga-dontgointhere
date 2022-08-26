@@ -58,7 +58,7 @@ define([
             dojo.setAttr(roomHighlightDiv, 'meeple', meeple.owner);
 
             if (room.type == SECRET_PASSAGE && player.id == this.game.getCurrentPlayerId()) {
-                this.roomManager.revealSecretPassageCard()
+                this.game.roomManager.revealSecretPassageCard()
             }
         },
     });

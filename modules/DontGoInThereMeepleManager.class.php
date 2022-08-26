@@ -116,8 +116,8 @@ class DontGoInThereMeepleManager extends APP_GameClass
         $meeplesInRoom = self::getMeeples(ROOM_PREPEND . $roomUiPosition);
 
         if(count($meeplesInRoom) > 0) {
-            self::sortMeeplesByUiPosition($meeplesInRoom);
-            return array_pop($meeplesInRoom);
+            $sortedMeeples = self::sortMeeplesByUiPosition($meeplesInRoom);
+            return array_pop($sortedMeeples);
         }
 
         return false;
@@ -156,7 +156,7 @@ class DontGoInThereMeepleManager extends APP_GameClass
     /**
      * Sort a list of meeples in ascending order of ui position
      * @param array<DontGoInThereMeeple> $meeples Array of meeple objects
-     * @return void
+     * @return array<DontGoInThereMeeple> Sorted array of meeple objects
      */
     private function sortMeeplesByUiPosition($meeples)
     {
@@ -167,5 +167,7 @@ class DontGoInThereMeepleManager extends APP_GameClass
             }
             return $a->getUiPosition() < $b->getUiPosition() ? -1 : 1;
         });
+
+        return $meeples;
     }
 }
