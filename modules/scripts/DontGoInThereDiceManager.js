@@ -71,6 +71,20 @@ define([
         },
 
         /**
+         * Reset dice to an unrolled state
+         * @param {Object} dice 
+         */
+        resetDice: function (dice)
+        { 
+            this.setDice(dice);
+            for (dieValue = 1; dieValue <= 6; dieValue++) {
+                dojo.query('.dgit-face-' + dieValue).removeClass('dgit-face-' + dieValue);
+            }
+            this.game.counterManager.ghostTotalCounterToValue(0);
+            dojo.addClass('dgit_dice_total', 'dgit-hidden');
+        },
+
+        /**
          * When dice are rolled, handle all required UI changes
          * @param {Object} dice Array of dice data
          */

@@ -496,6 +496,18 @@ class DontGoInThere extends Table
             }
             else
             {
+                // Reset Dice
+                $this->diceManager->resetDice();
+                self::notifyAllPlayers(
+                    RESET_DICE,
+                    '',
+                    array(
+                        'dice' => $this->diceManager->getUiData(),
+                    )
+                );
+
+                // Flip Room
+                // Draw New Cards
                 $this->gamestate->changeActivePlayer($this->roomManager->getRoomResolver());
                 $this->gamestate->nextState(NEXT_PLAYER);
             }

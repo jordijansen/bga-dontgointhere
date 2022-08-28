@@ -120,6 +120,16 @@ class DontGoInThereDiceManager extends APP_GameClass
     }
 
     /**
+     * Reset all dice to an unrolled value
+     * @return void
+     */
+    public function resetDice()
+    {
+        self::DbQuery("UPDATE die SET die_value='0'");
+        self::setGhostsRolled(-1);
+    }
+
+    /**
      * Roll all dice required for resolving a room
      * @param int $numberOfDice How many dice need to be rolled
      * @return array<array> Ui data of the rolled dice

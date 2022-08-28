@@ -259,6 +259,7 @@ define([
             dojo.subscribe(CHANGE_DIE, this, 'notif_changeDie');
             dojo.subscribe(CHANGE_PLAYER, this, 'notif_changePlayer');
             dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
+            dojo.subscribe(RESET_DICE, this, 'notif_resetDice');
             dojo.subscribe(ROLL_DICE, this, 'notif_rollDice');
             dojo.subscribe(SECRET_PASSAGE_REVEAL, this, 'notif_secretPassageReveal');
             dojo.subscribe(TAKE_CARD, this, 'notif_takeCard');
@@ -307,6 +308,16 @@ define([
             var meeple = notification.args.meeple;
             var room = notification.args.room;
             this.meepleManager.moveMeepleToRoom(player, meeple, room);
+        },
+
+        /**
+         * Handle resetting dice to unrolled
+         * @param {Object} notification notification object
+         */
+        notif_resetDice: function (notification)
+        { 
+            var dice = notification.args.dice;
+            this.diceManager.resetDice(dice);
         },
 
         /**
