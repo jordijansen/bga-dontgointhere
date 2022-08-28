@@ -190,4 +190,19 @@ class DontGoInThereMeepleManager extends APP_GameClass
 
         return $meeples;
     }
+
+    /**
+     * Activate a meeple on a room
+     * @param int $playerId ID of player's meepls
+     * @param int $roomUiPosition ui position of room
+     * @return DontGoInThereMeeple|bool
+     */
+    public function triggerMeeple($playerId, $roomUiPosition)
+    {
+        $meeple = self::getTopMeepleInRoom($roomUiPosition);
+        if ($playerId == $meeple->getOwner()) {
+            $this->meeples->moveCard($meeple->getId(), HAND);
+        }
+        return $meeple;
+    }
 }

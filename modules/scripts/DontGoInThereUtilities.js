@@ -50,15 +50,6 @@ define([
         },
 
         /**
-         * Add CSS styling to make an element interactive
-         * @param {string} elementId Id of the element
-         */
-        makeElementInteractive: function (elementId)
-        { 
-            dojo.addClass(elementId, ['dgit-clickable', 'dgit-highlight']);
-        },
-
-        /**
          * Create an html block from a jstpl template and place in parent div
          * @param {string} template Name of template (aka jstpl variable)
          * @param {string} parentDiv Id of div to place block into
@@ -80,6 +71,7 @@ define([
         { 
             dojo.query('.dgit-clickable').removeClass('dgit-clickable');
             dojo.query('.dgit-highlight').removeClass('dgit-highlight');
+            dojo.query('.dgit-highlight-card').removeClass('dgit-highlight-card');
         },
 
         /**

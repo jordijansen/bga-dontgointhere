@@ -68,6 +68,17 @@ class action_dontgointhere extends APP_GameAction
 
     self::ajaxResponse();
   }
+
+  public function takeCard()
+  {
+    self::setAjaxMode();
+
+    $cardId = self::getArg("cardId", AT_posint, true);
+
+    $this->game->takeCard($cardId);
+
+    self::ajaxResponse();
+  }
 }
   
 

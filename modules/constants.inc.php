@@ -91,12 +91,11 @@ define('TURN_COUNTER', 'turn_counter');
 /**
  * JSTPL template names
  */
+define('CURSED_CARD_TEMPLATE', 'jstpl_cursed_card');
 define('DECK_CARD_TEMPLATE', 'jstpl_deck_card');
 define('GHOST_TEMPLATE', 'jstpl_ghost_token');
 define('MEEPLE_TEMPLATE', 'jstpl_meeple');
-define('PLAYER_CARD_TEMPLATE', 'jstpl_player_card');
 define('PLAYER_SIDE_PANEL_TEMPLATE', 'jstpl_player_side_panel');
-define('ROOM_CARD_TEMPLATE', 'jstpl_room_card');
 
 /**
  * Meeple types

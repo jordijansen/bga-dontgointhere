@@ -44,13 +44,13 @@ define([
                 {
                     // Create card
                     var card = gamedatas.roomCards[room.uiPosition][roomCardsKey];
-                    this.game.util.placeBlock(ROOM_CARD_TEMPLATE, 'dgit_room_' + room.uiPosition + '_cards',
-                        { card_id: card.id, room_number: room.uiPosition, card_number: card.uiPosition, card_css_class: card.cssClass });
+                    this.game.util.placeBlock(CURSED_CARD_TEMPLATE, 'dgit_room_' + room.uiPosition + '_card_slot_' + card.uiPosition,
+                        { card_id: card.id, room_ui_position: room.uiPosition, card_ui_position: card.uiPosition, card_css_class: card.cssClass });
                     
                     if (room.type == SECRET_PASSAGE && card.uiPosition == 3 && gamedatas.secretPassageRevealed == DGIT_FALSE && !this.isPlayerPresentInRoom(gamedatas.meeplesInRooms[room.uiPosition], this.game.getCurrentPlayerId())) {
                         // If room is secret passage flip the 3rd card face down for everyone who has not placed a meeple here
-                        dojo.addClass('dgit_room_' + room.uiPosition + '_card_' + card.id, 'dgit-card-back');
-                        dojo.setAttr('dgit_room_' + room.uiPosition + '_card_' + card.id, 'special', 'secret-passage');
+                        dojo.addClass('dgit_card_' + card.id, 'dgit-card-back');
+                        dojo.setAttr('dgit_card_' + card.id, 'special', 'secret-passage');
                         dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
                     } else {
                         // If card is faceup show tooltip
@@ -67,11 +67,11 @@ define([
                 for (var roomMeeplesKey in gamedatas.meeplesInRooms[room.uiPosition])
                 {
                     var meeple = gamedatas.meeplesInRooms[room.uiPosition][roomMeeplesKey];
-                    var meepleDiv = 'dgit_player_' + meeple.owner + '_meeple_' + meeple.id;
+                    var meepleDiv = 'dgit_meeple_' + meeple.id;
                     var roomSpaceDiv = 'dgit_room_' + room.uiPosition + '_space_' + meeple.uiPosition;
                     var roomHighlightDiv = 'dgit_room_' + room.uiPosition + '_space_highlight_' + meeple.uiPosition;
                     this.game.util.placeBlock(MEEPLE_TEMPLATE, roomSpaceDiv,
-                        { player_id: meeple.owner, meeple_id: meeple.id, meeple_css_class: meeple.cssClass });
+                        { meeple_id: meeple.id, meeple_css_class: meeple.cssClass, meeple_type: meeple.type, meeple_owner: meeple.owner });
                     this.placeOnObject(meepleDiv, roomSpaceDiv);
                     dojo.setAttr(roomHighlightDiv, 'meeple', meeple.owner);
                 }

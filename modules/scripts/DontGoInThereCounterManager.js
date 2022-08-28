@@ -52,6 +52,17 @@ define([
         },
 
         /**
+         * Adjust player curse counters by delta
+         * @param {Object} player 
+         * @param {int} delta 
+         */
+        adjustPlayerCurses: function (player, delta)
+        { 
+            this.playerCurseCounters[player.id].incValue(delta);
+            this.playerSidePanelCurseCounters[player.id].incValue(delta);
+        },
+
+        /**
          * Creates the deck counter
          * @param {int} deckSize Number of cards in the deck
          */

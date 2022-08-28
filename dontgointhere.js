@@ -84,6 +84,9 @@ define([
         {
             debug('onEnteringState', stateName);
             debug('onEnteringState', args);
+
+            this.util.removeAllTemporaryStyles();
+            this.disconnectAll();
             
             switch( stateName )
             {
@@ -116,6 +119,15 @@ define([
                             }
                             this.connectClass('dgit-change-die-button', 'onclick', 'onDieChange');
                         }       
+                    }
+                    break;
+                case SELECT_CARD:
+                    if (this.isCurrentPlayerActive())
+                    {
+                        var roomResolving = args.args.roomResolving;
+                        dojo.query('.dgit-card[room-number="'+ roomResolving + '"]').addClass('dgit-clickable');
+                        dojo.query('.dgit-card[room-number="'+ roomResolving + '"]').addClass('dgit-highlight-card');
+                        this.connectClass('dgit-clickable', 'onclick', 'onSelectCard');
                     }
                     break;
                 case 'dummmy':
@@ -213,6 +225,16 @@ define([
         },
 
         /**
+         * Triggers when user clicks on a card in a room
+         * @param {Object} event onclick event
+         */
+        onSelectCard: function (event)
+        { 
+            dojo.stopEvent(event);
+            this.util.triggerPlayerAction(TAKE_CARD, { cardId: event.target.attributes['card-id'].value });
+        },
+
+        /**
          * Triggers when user skips an optional acttion
          * @param {Object} event onclick event
          */
@@ -239,6 +261,7 @@ define([
             dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
             dojo.subscribe(ROLL_DICE, this, 'notif_rollDice');
             dojo.subscribe(SECRET_PASSAGE_REVEAL, this, 'notif_secretPassageReveal');
+            dojo.subscribe(TAKE_CARD, this, 'notif_takeCard');
         },
 
         /**
@@ -303,6 +326,21 @@ define([
         notif_secretPassageReveal: function (notification)
         { 
             this.roomManager.revealSecretPassageCard();
+        },
+
+        /**
+         * Handle a player taking a card from a room
+         * @param {Object} notification notification object
+         */
+        notif_takeCard: function (notification)
+        { 
+            var player = notification.args.player;
+            var card = notification.args.card;
+            var meeple = notification.args.meeple;
+            var amount = notification.args.meeple;
+            this.cardManager.moveCardToPlayer(player, card);
+            this.meepleManager.moveMeepleToHand(meeple);
+            this.counterManager.adjustPlayerCurses(player, amount);
         },
    });             
 });

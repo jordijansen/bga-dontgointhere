@@ -49,10 +49,18 @@ class DontGoInTherePlayerManager extends APP_GameClass
         $this->game->reloadPlayersBasicInfos();
     }
 
+    public function adjustPlayerCurses($playerId, $amount)
+    {
+        $player = self::getPlayer($playerId);
+        $newCurseTotal = ($player->getCurses() - $amount) <= 0 ? $player->getCurses() - $amount : 0;
+        self::DbQuery('UPDATE player SET player_score="' . $newCurseTotal . '" WHERE player_id="' . $playerId . '"');
+        return $newCurseTotal;
+    }
+
     public function adjustPlayerGhosts($playerId, $amount)
     {
         $player = self::getPlayer($playerId);
-        $newGhostTotal = ($player->getGhostTokens() + $amount) >= 0 ? $player->getGhostTokens() + $amount : 0;
+        $newGhostTotal = ($player->getGhostTokens() - $amount) <= 0 ? $player->getGhostTokens() - $amount : 0;
         self::DbQuery('UPDATE player SET player_score_aux="' . $newGhostTotal . '" WHERE player_id="' . $playerId . '"');
         return $newGhostTotal;
     }

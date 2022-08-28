@@ -324,6 +324,34 @@ class DontGoInThere extends Table
         $this->gamestate->nextState(RESOLVE_ROOM);
     }
 
+    /**
+     * Player takes a card from a room
+     * @param int $cardId Id of card being taken
+     * @return void
+     */
+    function takeCard($cardId)
+    {
+        $player = $this->playerManager->getPlayer();
+        $card = $this->cardManager->takeCardFromRoom($cardId, $player);
+        $this->playerManager->adjustPlayerCurses($player->getId(), $card->getCurses());
+        $meeple = $this->meepleManager->triggerMeeple($player->getId(), $this->roomManager->getRoomResolving());
+
+        self::notifyAllPlayers(
+            TAKE_CARD,
+            clienttranslate('${player_name} takes the ${cardName} and collects ${amount} curses'),
+            array(
+                'player_name' => self::getActivePlayerName(),
+                'cardName' => $card->getName(),
+                'amount' => $card->getCurses(),
+                'player' => $player->getUiData(),
+                'card' => $card->getUiData(),
+                'meeple' => $meeple->getUiData(),
+            )
+        );
+
+        $this->gamestate->nextState(RESOLVE_ROOM);
+    }
+
 
     /***********************************************************************************************
      *    GAME STATE ARGUMENTS::Methods to pass arguments required for a game state                 *
@@ -342,6 +370,19 @@ class DontGoInThere extends Table
             'ability' => $room->getAbilityText(),
             'dice' => $this->diceManager->getUiData(),
             'room' => $room->getUiData(),
+        );
+    }
+
+    /**
+     * Args for select card state
+     * @return array Array of args
+     */
+    function argsSelectCard()
+    {
+        $roomUiPosition = $this->roomManager->getRoomResolving();
+
+        return array(
+            'roomResolving' => $roomUiPosition,
         );
     }
 

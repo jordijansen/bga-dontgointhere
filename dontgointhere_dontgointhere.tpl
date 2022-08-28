@@ -43,7 +43,11 @@
         <div id="dgit_rooms_panel">
             <!-- BEGIN room -->
             <div id="dgit_room_panel_{ROOM_NUM}" class="dgit-room-panel">
-                <div id="dgit_room_{ROOM_NUM}_cards" class="dgit-room-cards"></div>
+                <div id="dgit_room_{ROOM_NUM}_cards" class="dgit-room-cards">
+                    <div id="dgit_room_{ROOM_NUM}_card_slot_1" room-number="{ROOM_NUM}" card-slot="1" class="dgit-card-slot"></div>
+                    <div id="dgit_room_{ROOM_NUM}_card_slot_2" room-number="{ROOM_NUM}" card-slot="2" class="dgit-card-slot"></div>
+                    <div id="dgit_room_{ROOM_NUM}_card_slot_3" room-number="{ROOM_NUM}" card-slot="3" class="dgit-card-slot"></div>
+                </div>
                 <div id="dgit_room_{ROOM_NUM}" class="dgit-room" style="order: {ROOM_NUM}">
                     <!-- BEGIN roomspace -->
                     <div id="dgit_room_{ROOM_NUM}_space_{SPACE_NUM}" class="dgit-room-space dgit-room-space-{SPACE_NUM}"></div>
@@ -84,12 +88,12 @@
 
 <script type="text/javascript">
 
-    var jstpl_deck_card = '<div id="dgit_deck_card_${card_num}" class="dgit-card dgit-card-back dgit-card-in-deck" style="bottom: ${card_num}%"></div>';
-    var jstpl_ghost_token = '<div id="dgit_moving_ghost" class="dgit-ghost-token dgit-ghost-token-${ghost_type}" style="top: 50%; left: 50%;"></div>';
-    var jstpl_meeple = '<div id="dgit_player_${player_id}_meeple_${meeple_id}" class="dgit-meeple ${meeple_css_class}"></div>';
-    var jstpl_player_card = '<div id="dgit_player_${player_id}_card_${card_id}" class="dgit-card ${card_css_class}">\
+    var jstpl_cursed_card = '<div id="dgit_card_${card_id}" class="dgit-card ${card_css_class}" card-id="${card_id}" room-number="${room_ui_position}" special="false" style="order: ${card_ui_position}">\
                                 <span id="dgit_card_${card_id}_tooltip" class="dgit-card-tooltip">i</span>\
                             </div>';
+    var jstpl_deck_card = '<div id="dgit_deck_card_${card_num}" class="dgit-card dgit-card-back dgit-card-in-deck" style="bottom: ${card_num}%"></div>';
+    var jstpl_ghost_token = '<div id="dgit_moving_ghost" class="dgit-ghost-token dgit-ghost-token-${ghost_type}" style="top: 50%; left: 50%;"></div>';
+    var jstpl_meeple = '<div id="dgit_meeple_${meeple_id}" type="${meeple_type}" owner="${meeple_owner}" class="dgit-meeple ${meeple_css_class}"></div>';
     var jstpl_player_side_panel = '<div id="dgit_player_${player_id}_side_panel" class="dgit-player-side-panel">\
                                         <div id="dgit_player_${player_id}_active_player" class="dgit-active-player dgit-hidden"></div>\
                                         <div id="dgit_player_${player_id}_curse_count" class="dgit-curse-icon">\
@@ -99,9 +103,6 @@
                                             <span id="dgit_player_${player_id}_side_panel_ghost_counter" class="dgit-player-ghost-counter" style="text-shadow: 2px 0 2px #${player_color},0 -2px 2px #${player_color},0 2px 2px #${player_color},-2px 0 2px #${player_color};">?</span>\
                                         </div>\
                                    </div>';
-    var jstpl_room_card = '<div id="dgit_room_${room_number}_card_${card_id}" class="dgit-card ${card_css_class}" special="false" style="order: ${card_number}">\
-                            <span id="dgit_card_${card_id}_tooltip" class="dgit-card-tooltip">i</span>\
-                      </div>';
 
 </script>  
 

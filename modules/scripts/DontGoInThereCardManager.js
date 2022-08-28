@@ -51,18 +51,31 @@ define([
             {
                 // Place card
                 var playerCard = gamedatas.playerCards[playerCardsKey];
-                this.game.util.placeBlock(PLAYER_CARD_TEMPLATE, 'dgit_player_' + playerCard.uiPosition + '_cards',
-                    { card_id: playerCard.id, player_id: playerCard.uiPosition, card_css_class: playerCard.cssClass } );
+                this.game.util.placeBlock(CURSED_CARD_TEMPLATE, 'dgit_player_' + playerCard.uiPosition + '_cards',
+                    { card_id: playerCard.id, player_id: playerCard.uiPosition, card_css_class: playerCard.cssClass, room_ui_position: -1, card_ui_position: -1 } );
 
                 // Create tooltip
                 if (playerCard.tooltipText.length > 0) {
                     // If card has a tooltip, create it
-                    this.addTooltip('dgit_card_' + playerCard.id + '_tooltip', playerCard.tooltipText, '');
+                    this.game.addTooltip('dgit_card_' + playerCard.id + '_tooltip', playerCard.tooltipText, '');
                 } else {
                     // Else hide tooltip element
                     dojo.addClass('dgit_card_' + playerCard.id + '_tooltip', 'dgit-hidden');
                 }
             }
+        },
+
+        /**
+         * Move a card to a players tableau
+         * @param {Object} player 
+         * @param {Object} card 
+         */
+        moveCardToPlayer: function (player, card)
+        { 
+            var cardDiv = 'dgit_card_' + card.id;
+            var playerCardDiv = 'dgit_player_' + player.id + '_cards';
+            this.game.attachToNewParent(cardDiv, playerCardDiv);
+            this.game.slideToObject(cardDiv, playerCardDiv).play();
         },
     });
 });

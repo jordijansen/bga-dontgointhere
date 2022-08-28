@@ -259,4 +259,16 @@ class DontGoInThereCardManager extends APP_GameClass
 
         return $cards;
     }
+
+    /**
+     * A player takes a card from a romm
+     * @param int $cardId Id of card being taken
+     * @param DontGoInTherePlayer $player player taking the card
+     * @return DontGoInThereCursedCard
+     */
+    public function takeCardFromRoom($cardId, $player) {
+        $card = self::getCursedCard($this->cards->getCard($cardId));
+        self::moveCard($card, HAND, $player->getId());
+        return self::getCursedCard($this->cards->getCard($cardId));
+    }
 }

@@ -36,8 +36,8 @@ class DontGoInTherePlayer extends APP_GameClass
         $this->name = $row['name'];
         $this->avatar = $row['avatar'];
         $this->color = $row['color'];
-        $this->curses = $row['curses'];
-        $this->ghostTokens = $row['ghostTokens'];
+        $this->curses = $row['curses'] * -1;
+        $this->ghostTokens = $row['ghostTokens'] * -1;
         $this->cardsDispeled = $row['cardsDispeled'];
         $this->eliminated = $row['eliminated'] == 1;
         $this->zombie = $row['zombie'] == 1;
@@ -48,7 +48,7 @@ class DontGoInTherePlayer extends APP_GameClass
     public function getName(){ return $this->name; }
     public function getAvatar(){ return $this->avatar; }
     public function getColor(){ return $this->color; }
-    public function getCurses(){ return $this->sccursesore; }
+    public function getCurses(){ return $this->curses; }
     public function getGhostTokens(){ return $this->ghostTokens; }
     public function getCardsDispeled(){ return $this->cardsDispeled; }
     public function isEliminated(){ return $this->eliminated; }

@@ -39,6 +39,10 @@ div.player-board {
     border: 5px solid #8bc98a;
 }
 
+.dgit-highlight-card {
+    border: 3px solid #8bc98a !important;
+}
+
 .dgit-important {
     background-color: orangered !important;
 }
@@ -216,6 +220,11 @@ div.player-board {
     margin-bottom: -15px;
     z-index: 1;
     justify-items: center;
+}
+
+.dgit-card-slot {
+    width: 200px;
+    height: 280px;
 }
 
 #dgit_bottom_panel {
