@@ -160,6 +160,11 @@ class DontGoInThereCardManager extends APP_GameClass
         return new $className($this->game, $card);
     }
 
+    public function getCursedCardById($cardId)
+    {
+        return self::getCursedCard($this->cards->getCard($cardId));
+    }
+
     /**
      * Get all DontGoInThereCursedCard objects in a specified location
      * @param string $location Location value in database
@@ -267,7 +272,7 @@ class DontGoInThereCardManager extends APP_GameClass
      * @return DontGoInThereCursedCard
      */
     public function takeCardFromRoom($cardId, $player) {
-        $card = self::getCursedCard($this->cards->getCard($cardId));
+        $card = self::getCursedCardById($cardId);
         self::moveCard($card, HAND, $player->getId());
         return self::getCursedCard($this->cards->getCard($cardId));
     }

@@ -332,9 +332,11 @@ class DontGoInThere extends Table
     function takeCard($cardId)
     {
         $player = $this->playerManager->getPlayer();
+        $room = $this->roomManager->getFaceupRoomByUiPosition($this->roomManager->getRoomResolving());
+        $cardPosition = $this->cardManager->getCursedCardById($cardId)->getUiPosition();
         $card = $this->cardManager->takeCardFromRoom($cardId, $player);
         $this->playerManager->adjustPlayerCurses($player->getId(), $card->getCurses());
-        $meeple = $this->meepleManager->triggerMeeple($player->getId(), $this->roomManager->getRoomResolving());
+        $meeple = $this->meepleManager->triggerMeeple($player->getId(), $room->getUiPosition());
 
         self::notifyAllPlayers(
             TAKE_CARD,
@@ -348,6 +350,33 @@ class DontGoInThere extends Table
                 'meeple' => $meeple->getUiData(),
             )
         );
+
+        if($room->getType() == LIBRARY) {
+            if($cardPosition == 1) {
+                $this->playerManager->adjustPlayerGhosts($player->getId(), 1);
+                self::notifyAllPlayers(
+                    ADJUST_GHOSTS,
+                    clienttranslate('${player_name} gains a Ghost token from taking the first card in The Library'),
+                    array(
+                        'player_name' => $this->getActivePlayerName(),
+                        'playerId' => $player->getId(),
+                        'amount' => 1,
+                    )
+                );
+            }
+            if($cardPosition == 3 && $player->getGhostTokens() > 0) {
+                $this->playerManager->adjustPlayerGhosts($player->getId(), -1);
+                self::notifyAllPlayers(
+                    ADJUST_GHOSTS,
+                    clienttranslate('${player_name} discards a Ghost token from taking the third card in The Library'),
+                    array(
+                        'player_name' => $this->getActivePlayerName(),
+                        'playerId' => $player->getId(),
+                        'amount' => -1,
+                    )
+                );
+            }
+        }
 
         $this->gamestate->nextState(RESOLVE_ROOM);
     }

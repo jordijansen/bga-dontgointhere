@@ -337,7 +337,7 @@ define([
             var player = notification.args.player;
             var card = notification.args.card;
             var meeple = notification.args.meeple;
-            var amount = notification.args.meeple;
+            var amount = notification.args.amount;
             this.cardManager.moveCardToPlayer(player, card);
             this.meepleManager.moveMeepleToHand(meeple);
             this.counterManager.adjustPlayerCurses(player, amount);
