@@ -258,6 +258,7 @@ define([
             dojo.subscribe(ADJUST_GHOSTS, this, 'notif_adjustGhosts');
             dojo.subscribe(CHANGE_DIE, this, 'notif_changeDie');
             dojo.subscribe(CHANGE_PLAYER, this, 'notif_changePlayer');
+            dojo.subscribe(FLIP_ROOM, this, 'notif_flipRoom');
             dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
             dojo.subscribe(RESET_DICE, this, 'notif_resetDice');
             dojo.subscribe(ROLL_DICE, this, 'notif_rollDice');
@@ -296,6 +297,13 @@ define([
         { 
             var nextPlayerId = notification.args.nextPlayer;
             this.playerManager.changeActivePlayer(nextPlayerId);
+        },
+
+        notif_flipRoom: function (notification)
+        { 
+            var currentRoom = notification.args.currentRoom;
+            var newRoom = notification.args.newRoom;
+            this.roomManager.flipRoom(currentRoom, newRoom);
         },
 
         /**

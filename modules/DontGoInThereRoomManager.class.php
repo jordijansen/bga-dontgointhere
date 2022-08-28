@@ -137,6 +137,16 @@ class DontGoInThereRoomManager extends APP_GameClass
         return false;
     }
 
+    public function flipRoom($roomUiPosition)
+    {
+        $room = self::getFaceupRoomByUiPosition($roomUiPosition);
+        $facedownRooms = self::getRooms(FACEDOWN);
+        $flipsideRoom = self::findRoomByType($facedownRooms, $room->getFlipSideRoom());
+        $this->rooms->moveCard($room->getId(), FACEDOWN, $roomUiPosition);
+        $this->rooms->moveCard($flipsideRoom->getId(), FACEUP, $roomUiPosition);
+        return self::getFaceupRoomByUiPosition($roomUiPosition);
+    }
+
     /**
      * Get a faceup room by its ui position
      * @param int $uiPosition

@@ -20,6 +20,7 @@
 define('ADJUST_GHOSTS', 'adjustGhosts');
 define('CHANGE_DIE', 'changeDie');
 define('CHANGE_PLAYER', 'changePlayer');
+define('FLIP_ROOM', 'flipRoom');
 define('PLACE_MEEPLE', 'placeMeeple');
 define('RESET_DICE', 'resetDice');
 define('ROLL_DICE', 'rollDice');

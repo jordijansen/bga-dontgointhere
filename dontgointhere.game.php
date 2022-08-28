@@ -500,15 +500,32 @@ class DontGoInThere extends Table
                 $this->diceManager->resetDice();
                 self::notifyAllPlayers(
                     RESET_DICE,
-                    '',
+                    clienttranslate('Resetting dice'),
                     array(
                         'dice' => $this->diceManager->getUiData(),
                     )
                 );
 
                 // Flip Room
+                $currentRoom = $this->roomManager->getFaceupRoomByUiPosition($roomResolving);
+                $newRoom = $this->roomManager->flipRoom($roomResolving);
+                self::notifyAllPlayers(
+                    FLIP_ROOM, 
+                    clienttranslate('The ${currentName} flips over to ${newName}'),
+                    array(
+                        'currentName' => $currentRoom->getName(),
+                        'newName' => $newRoom->getName(),
+                        'currentRoom' => $currentRoom->getUiData(),
+                        'newRoom' => $newRoom->getUiData(),
+                    )
+                );
+
                 // Draw New Cards
+
+                // Change back to active player, reset resolution globals, go to next state
                 $this->gamestate->changeActivePlayer($this->roomManager->getRoomResolver());
+                $this->roomManager->setRoomResolver(0);
+                $this->roomManager->setRoomResolving(0);
                 $this->gamestate->nextState(NEXT_PLAYER);
             }
         }

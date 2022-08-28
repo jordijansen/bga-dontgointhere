@@ -78,6 +78,13 @@ define([
             }
         },
 
+        flipRoom: function (currentRoom, newRoom)
+        { 
+            var uiPosition = currentRoom.uiPosition;
+            dojo.removeClass('dgit_room_' + uiPosition, currentRoom.cssClass);
+            dojo.addClass('dgit_room_' + uiPosition, newRoom.cssClass);
+        },
+
         /**
          * Check if the current player has a meeple in a room
          * @param {Object} meeplesInRoom List of meeple data in a room
