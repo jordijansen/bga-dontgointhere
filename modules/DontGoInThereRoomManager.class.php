@@ -137,6 +137,11 @@ class DontGoInThereRoomManager extends APP_GameClass
         return false;
     }
 
+    /**
+     * Flip a room to its opposite side
+     * @param int $roomUiPosition
+     * @return DontGoInThereRoom
+     */
     public function flipRoom($roomUiPosition)
     {
         $room = self::getFaceupRoomByUiPosition($roomUiPosition);
@@ -145,6 +150,15 @@ class DontGoInThereRoomManager extends APP_GameClass
         $this->rooms->moveCard($room->getId(), FACEDOWN, $roomUiPosition);
         $this->rooms->moveCard($flipsideRoom->getId(), FACEUP, $roomUiPosition);
         return self::getFaceupRoomByUiPosition($roomUiPosition);
+    }
+
+    /**
+     * Move a room tile out of the game
+     * @param DontGoInThereRoom $room
+     * @return void
+     */
+    public function flipRoomFacedown($room) {
+        $this->rooms->moveCard($room->getId(), FACEDOWN);
     }
 
     /**

@@ -29,6 +29,15 @@ define([
          * @param {Object} gamedatas array of gamedata
          */
         setup: function (gamedatas) {
+
+            // Delete room panels without cards
+            for (var uiPosition = 1; uiPosition <= 3; uiPosition++)
+            { 
+                if (gamedatas.roomCards[uiPosition].length == 0) {
+                    dojo.destroy('dgit_room_panel_' + uiPosition);
+                }
+            }
+
             // Create rooms
             for(var faceupRoomsKey in gamedatas.faceupRooms)
             {
@@ -59,7 +68,6 @@ define([
                         } else {
                             dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
                         }
-                        
                     }
                 }
 
@@ -78,11 +86,63 @@ define([
             }
         },
 
+        /**
+         * Draw cards for a new room
+         * @param {Object} room room object
+         * @param {Object} cards list of card objects
+         */
+        createNewRoomCards: function (room, cards)
+        { 
+            for (var cardsKey in cards)
+            {
+                var card = cards[cardsKey];
+                this.game.util.placeBlock(CURSED_CARD_TEMPLATE, 'dgit_deck',
+                    { card_id: card.id, room_ui_position: room.uiPosition, card_ui_position: card.uiPosition, card_css_class: card.cssClass });
+                if (room.type == SECRET_PASSAGE && card.uiPosition == 3) {
+                    // If room is secret passage flip the 3rd card face down for everyone who has not placed a meeple here
+                    dojo.addClass('dgit_card_' + card.id, 'dgit-card-back');
+                    dojo.setAttr('dgit_card_' + card.id, 'special', 'secret-passage');
+                    dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
+                } else {
+                    // If card is faceup show tooltip
+                    if (card.tooltipText.length > 0) {
+                        this.addTooltip('dgit_card_' + card.id + '_tooltip', card.tooltipText, '');
+                    } else {
+                        dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
+                    }
+                }
+                this.game.attachToNewParent('dgit_card_' + card.id, 'dgit_room_' + room.uiPosition + '_card_slot_' + card.uiPosition);
+                this.game.slideToObject('dgit_card_' + card.id, 'dgit_room_' + room.uiPosition + '_card_slot_' + card.uiPosition).play();
+            }
+
+            // Adjust deck
+            this.game.counterManager.adjustDeckCounter(-3);
+            var deckSize = this.game.counterManager.getDeckCounterValue();
+            dojo.destroy('dgit_deck_card_' + deckSize / 3);
+            if (deckSize == 0) {
+                dojo.addClass('dgit_deck', 'dgit-hidden');
+                dojo.addClass('dgit_deck_counter', 'dgit-hidden');
+            }
+        },
+
+        /**
+         * Flip a room to its opposite side
+         * @param {Object} currentRoom current room object
+         * @param {Object} newRoom new room object
+         */
         flipRoom: function (currentRoom, newRoom)
         { 
             var uiPosition = currentRoom.uiPosition;
             dojo.removeClass('dgit_room_' + uiPosition, currentRoom.cssClass);
             dojo.addClass('dgit_room_' + uiPosition, newRoom.cssClass);
+            var roomspaces = dojo.query('div[room="' + uiPosition + '"]');
+            for (var roomspacesKey in roomspaces)
+            {
+                var roomspace = roomspaces[roomspacesKey];
+                if (typeof roomspace === 'object') {            
+                    dojo.setAttr(roomspace.id, 'meeple', 'none');
+                }
+            }
         },
 
         /**

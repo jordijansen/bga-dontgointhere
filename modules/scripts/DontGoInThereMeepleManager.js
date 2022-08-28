@@ -17,8 +17,9 @@ var debug = isDebug ? console.info.bind(window.console) : function(){};
 define([
     'dojo',
     'dojo/_base/declare',
+    'dojo/on',
     'ebg/core/gamegui',
-], (dojo, declare) => {
+], (dojo, declare, on) => {
     return declare('dgit.meepleManager', ebg.core.gamegui, {
         constructor: function(game) {
             this.game = game;
@@ -49,7 +50,12 @@ define([
             var meepleDiv = 'dgit_meeple_' + meeple.id;
             var playerHandDiv = 'dgit_player_' + meeple.owner + '_meeples';
             this.game.attachToNewParent(meepleDiv, playerHandDiv);
-            this.game.slideToObject(meepleDiv, playerHandDiv).play();
+            var moveMeeple = this.game.slideToObject(meepleDiv, playerHandDiv).play();
+
+            on(moveMeeple, "End", function () {
+                $(meepleDiv).style.removeProperty('top');
+                $(meepleDiv).style.removeProperty('left');
+            })
         },
 
         /**

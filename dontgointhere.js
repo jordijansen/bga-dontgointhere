@@ -210,6 +210,7 @@ define([
          * @param {Object} event onclick event
          */
         onDieChange: function (event) {
+            console.log(event);
             dojo.stopEvent(event);
             this.util.triggerPlayerAction(CHANGE_DIE, { dieId: event.target.attributes.die.value });
         },
@@ -259,11 +260,17 @@ define([
             dojo.subscribe(CHANGE_DIE, this, 'notif_changeDie');
             dojo.subscribe(CHANGE_PLAYER, this, 'notif_changePlayer');
             dojo.subscribe(FLIP_ROOM, this, 'notif_flipRoom');
+            dojo.subscribe(FLIP_ROOM_FACEDOWN, this, 'notif_flipRoomFacedown');
+            dojo.subscribe(NEW_CARDS, this, 'notif_newCards');
             dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
             dojo.subscribe(RESET_DICE, this, 'notif_resetDice');
             dojo.subscribe(ROLL_DICE, this, 'notif_rollDice');
             dojo.subscribe(SECRET_PASSAGE_REVEAL, this, 'notif_secretPassageReveal');
             dojo.subscribe(TAKE_CARD, this, 'notif_takeCard');
+
+            this.notifqueue.setSynchronous(FLIP_ROOM, 500);
+            this.notifqueue.setSynchronous(NEW_CARDS, 500);
+            this.notifqueue.setSynchronous(RESET_DICE, 500);
         },
 
         /**
@@ -299,11 +306,36 @@ define([
             this.playerManager.changeActivePlayer(nextPlayerId);
         },
 
+        /**
+         * Handle flipping room to its opposite side
+         * @param {Object} notification notification object
+         */
         notif_flipRoom: function (notification)
         { 
             var currentRoom = notification.args.currentRoom;
             var newRoom = notification.args.newRoom;
             this.roomManager.flipRoom(currentRoom, newRoom);
+        },
+
+        /**
+         * Handle removing a room out of the game
+         * @param {Object} notification notification object
+         */
+        notif_flipRoomFacedown: function (notification)
+        { 
+            var room = notification.args.room;
+            dojo.destroy('dgit_room_panel_' + room.uiPosition);
+        },
+
+        /**
+         * Handle drawing cards for new room
+         * @param {Object} notification notification object
+         */
+        notif_newCards: function (notification)
+        { 
+            var room = notification.args.room;
+            var cards = notification.args.cards;
+            this.roomManager.createNewRoomCards(room, cards);
         },
 
         /**

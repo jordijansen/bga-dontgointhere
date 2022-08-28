@@ -17,8 +17,9 @@ var debug = isDebug ? console.info.bind(window.console) : function(){};
 define([
     'dojo',
     'dojo/_base/declare',
+    'dojo/on',
     'ebg/core/gamegui',
-], (dojo, declare) => {
+], (dojo, declare, on) => {
     return declare('dgit.cardManager', null, {
         constructor: function(game) {
             this.game = game;
@@ -43,16 +44,13 @@ define([
                 }
             }
 
-            // Sort player cards by type so cards of same type are adjacent
-            gamedatas.playerCards.sort((a, b) => (a.type > b.type) ? 1 : -1);
-
             // Create player cards
             for(var playerCardsKey in gamedatas.playerCards)
             {
                 // Place card
                 var playerCard = gamedatas.playerCards[playerCardsKey];
                 this.game.util.placeBlock(CURSED_CARD_TEMPLATE, 'dgit_player_' + playerCard.uiPosition + '_cards',
-                    { card_id: playerCard.id, player_id: playerCard.uiPosition, card_css_class: playerCard.cssClass, room_ui_position: -1, card_ui_position: -1 } );
+                    { card_id: playerCard.id, player_id: playerCard.uiPosition, card_css_class: playerCard.cssClass, room_ui_position: -1, card_ui_position: playerCard.type } );
 
                 // Create tooltip
                 if (playerCard.tooltipText.length > 0) {
@@ -75,7 +73,13 @@ define([
             var cardDiv = 'dgit_card_' + card.id;
             var playerCardDiv = 'dgit_player_' + player.id + '_cards';
             this.game.attachToNewParent(cardDiv, playerCardDiv);
-            this.game.slideToObject(cardDiv, playerCardDiv).play();
+            var moveCard = this.game.slideToObject(cardDiv, playerCardDiv).play();
+            dojo.setStyle(cardDiv, 'order', card.type);
+            on(moveCard, "End", function () {
+                $(cardDiv).style.removeProperty('top');
+                $(cardDiv).style.removeProperty('left');
+            })
+            dojo.setAttr(cardDiv, 'room_number', -1);
         },
     });
 });

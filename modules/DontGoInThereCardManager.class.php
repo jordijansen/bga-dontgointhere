@@ -144,6 +144,30 @@ class DontGoInThereCardManager extends APP_GameClass
     }
 
     /**
+     * Draw three new cards for a room
+     * @param DontGoInThereRoom $room room object
+     */
+    public function drawNewCardsForRoom($room)
+    {
+        if($room->getType() == LIBRARY) {
+            $nextThreeCards = self::getCursedCardsOnTopOfDeck(3);
+
+            $sortedCards = self::sortCardsByCurseValue($nextThreeCards);
+
+            for($cardSlot = 1; $cardSlot <= 3; $cardSlot++)
+            {
+                $nextCard = array_shift($sortedCards);
+                $this->cards->moveCard($nextCard->getId(), ROOM_PREPEND . $room->getUiPosition(), $cardSlot);
+            }
+        } else {
+            for($cardSlot = 1; $cardSlot <= 3; $cardSlot++)
+            {
+                $this->cards->pickCardForLocation(DECK, ROOM_PREPEND . $room->getUiPosition(), $cardSlot);
+            }
+        }
+    }
+
+    /**
      * Factory to create a DontGoInThereCursedCard object
      * @param mixed $card DB record of card
      * @throws BgaVisibleSystemException 

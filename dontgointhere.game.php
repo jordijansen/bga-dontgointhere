@@ -241,7 +241,7 @@ class DontGoInThere extends Table
         }
 
         // If space 4 of nursery player discards a ghost
-        if ($room->getType() == ATTIC && $space == 4 && $player->getGhostTokens() > 0)
+        if ($room->getType() == NURSERY && $space == 4 && $player->getGhostTokens() > 0)
         {
             $this->playerManager->adjustPlayerGhosts($player->getId(), -1);
             self::notifyAllPlayers(
@@ -426,18 +426,22 @@ class DontGoInThere extends Table
      */
     function stNextPlayer()
     {
-        $nextPlayer = $this->activeNextPlayer();
+        if(self::getGameStateValue(TURN_COUNTER) == self::getGameStateValue(TOTAL_TURNS)) {
+            $this->gamestate->nextState(GAME_END);
+        } else {
+            $nextPlayer = $this->activeNextPlayer();
 
-        self::notifyAllPlayers(
-            CHANGE_PLAYER,
-            clienttranslate('${player_name} is now the active player'),
-            array(
-                'player_name' => self::getActivePlayerName(),
-                'nextPlayer' => $nextPlayer,
-            )
-        );
+            self::notifyAllPlayers(
+                CHANGE_PLAYER,
+                clienttranslate('${player_name} is now the active player'),
+                array(
+                    'player_name' => self::getActivePlayerName(),
+                    'nextPlayer' => $nextPlayer,
+                )
+            );
 
-        $this->gamestate->nextState(PLAYER_TURN);
+            $this->gamestate->nextState(PLAYER_TURN);
+        }
     }
 
     /**
@@ -506,23 +510,59 @@ class DontGoInThere extends Table
                     )
                 );
 
-                // Flip Room
-                $currentRoom = $this->roomManager->getFaceupRoomByUiPosition($roomResolving);
-                $newRoom = $this->roomManager->flipRoom($roomResolving);
-                self::notifyAllPlayers(
-                    FLIP_ROOM, 
-                    clienttranslate('The ${currentName} flips over to ${newName}'),
-                    array(
-                        'currentName' => $currentRoom->getName(),
-                        'newName' => $newRoom->getName(),
-                        'currentRoom' => $currentRoom->getUiData(),
-                        'newRoom' => $newRoom->getUiData(),
-                    )
-                );
+                // Draw new room and cards if there are enough cards left
+                if($this->cardManager->countCursedCards(DECK) >= 3) {
+                    // Flip Room
+                    $currentRoom = $this->roomManager->getFaceupRoomByUiPosition($roomResolving);
+                    if($currentRoom->hasResolveAbility()) {
+                        $this->roomManager->setResolvedRoomAbility(DGIT_FALSE);
+                    }
+                    if($currentRoom->getType() == SECRET_PASSAGE) {
+                        $this->roomManager->setSecretPassageRevealed(DGIT_FALSE);
+                    }
+                    $newRoom = $this->roomManager->flipRoom($roomResolving);
+                    self::notifyAllPlayers(
+                        FLIP_ROOM, 
+                        clienttranslate('The ${currentName} flips over to ${newName}'),
+                        array(
+                            'currentName' => $currentRoom->getName(),
+                            'newName' => $newRoom->getName(),
+                            'currentRoom' => $currentRoom->getUiData(),
+                            'newRoom' => $newRoom->getUiData(),
+                        )
+                    );
 
-                // Draw New Cards
-
+                    // Draw New Cards
+                    $this->cardManager->drawNewCardsForRoom($newRoom);
+                    self::notifyAllPlayers(
+                        NEW_CARDS,
+                        clienttranslate('Three new cards drawn for ${roomName}'),
+                        array(
+                            'roomName' => $newRoom->getName(),
+                            'room' => $newRoom->getUiData(),
+                            'cards' => $this->cardManager->getUiData(ROOM_PREPEND.$newRoom->getUiPosition()),
+                        )
+                    );
+                } else {
+                    $currentRoom = $this->roomManager->getFaceupRoomByUiPosition($roomResolving);
+                    if($currentRoom->hasResolveAbility()) {
+                        $this->roomManager->setResolvedRoomAbility(DGIT_FALSE);
+                    }
+                    if($currentRoom->getType() == SECRET_PASSAGE) {
+                        $this->roomManager->setSecretPassageRevealed(DGIT_FALSE);
+                    }
+                    $this->roomManager->flipRoomFacedown($currentRoom);
+                    self::notifyAllPlayers(
+                        FLIP_ROOM_FACEDOWN,
+                        '',
+                        array(
+                            'room' => $currentRoom->getUiData(),
+                        )
+                    );
+                }
+                
                 // Change back to active player, reset resolution globals, go to next state
+                self::incrementTurnCounter();
                 $this->gamestate->changeActivePlayer($this->roomManager->getRoomResolver());
                 $this->roomManager->setRoomResolver(0);
                 $this->roomManager->setRoomResolving(0);

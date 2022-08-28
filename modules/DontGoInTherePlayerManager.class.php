@@ -49,19 +49,31 @@ class DontGoInTherePlayerManager extends APP_GameClass
         $this->game->reloadPlayersBasicInfos();
     }
 
+    /**
+     * Adjust player curses. Since low score wins we need to save the value as negative
+     * @param int $playerId
+     * @param int $amount
+     * @return int
+     */
     public function adjustPlayerCurses($playerId, $amount)
     {
         $player = self::getPlayer($playerId);
-        $newCurseTotal = ($player->getCurses() - $amount) <= 0 ? $player->getCurses() - $amount : 0;
-        self::DbQuery('UPDATE player SET player_score="' . $newCurseTotal . '" WHERE player_id="' . $playerId . '"');
+        $newCurseTotal = ($player->getCurses() + $amount) >= 0 ? $player->getCurses() + $amount : 0;
+        self::DbQuery('UPDATE player SET player_score="' . $newCurseTotal * -1 . '" WHERE player_id="' . $playerId . '"');
         return $newCurseTotal;
     }
 
+    /**
+     * Adjust player ghosts. Since low value breaks we need to save the value as negative
+     * @param mixed $playerId
+     * @param mixed $amount
+     * @return int
+     */
     public function adjustPlayerGhosts($playerId, $amount)
     {
         $player = self::getPlayer($playerId);
-        $newGhostTotal = ($player->getGhostTokens() - $amount) <= 0 ? $player->getGhostTokens() - $amount : 0;
-        self::DbQuery('UPDATE player SET player_score_aux="' . $newGhostTotal . '" WHERE player_id="' . $playerId . '"');
+        $newGhostTotal = ($player->getGhostTokens() + $amount) >= 0 ? $player->getGhostTokens() + $amount : 0;
+        self::DbQuery('UPDATE player SET player_score_aux="' . $newGhostTotal * -1 . '" WHERE player_id="' . $playerId . '"');
         return $newGhostTotal;
     }
 

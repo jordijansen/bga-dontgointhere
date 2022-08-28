@@ -33,6 +33,15 @@ define([
         },
 
         /**
+         * Adjust deck counter by delta
+         * @param {int} delta delta to adjust by
+         */
+        adjustDeckCounter: function (delta)
+        { 
+            this.deckCounter.incValue(delta);
+        },
+
+        /**
          * Adjust current player's ghost counter by delta
          * @param {int} delta delta to adjust by
          */
@@ -121,6 +130,15 @@ define([
             this.currentPlayerGhosts.setValue(player.ghostTokens);
             this.currentPlayerSidePanelGhosts.create('dgit_player_' + player.id + '_side_panel_ghost_counter');
             this.currentPlayerSidePanelGhosts.setValue(player.ghostTokens);
+        },
+
+        /**
+         * Get value of deck counter
+         * @returns {int} current value of deck counter
+         */
+        getDeckCounterValue: function ()
+        {
+            return this.deckCounter.getValue();
         },
 
         /**
