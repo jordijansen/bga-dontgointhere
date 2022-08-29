@@ -347,6 +347,13 @@ class DontGoInThere extends Table
                 'amount' => $card->getCurses(),
                 'player' => $player->getUiData(),
                 'card' => $card->getUiData(),
+            )
+        );
+
+        self::notifyAllPlayers(
+            RETURN_MEEPLE,
+            '',
+            array(
                 'meeple' => $meeple->getUiData(),
             )
         );

@@ -264,13 +264,16 @@ define([
             dojo.subscribe(NEW_CARDS, this, 'notif_newCards');
             dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
             dojo.subscribe(RESET_DICE, this, 'notif_resetDice');
+            dojo.subscribe(RETURN_MEEPLE, this, 'notif_returnMeeple');
             dojo.subscribe(ROLL_DICE, this, 'notif_rollDice');
             dojo.subscribe(SECRET_PASSAGE_REVEAL, this, 'notif_secretPassageReveal');
             dojo.subscribe(TAKE_CARD, this, 'notif_takeCard');
 
             this.notifqueue.setSynchronous(FLIP_ROOM, 500);
             this.notifqueue.setSynchronous(NEW_CARDS, 500);
-            this.notifqueue.setSynchronous(RESET_DICE, 500);
+            this.notifqueue.setSynchronous(RETURN_MEEPLE, 500);
+            this.notifqueue.setSynchronous(ROLL_DICE, 500);
+            this.notifqueue.setSynchronous(TAKE_CARD, 500);
         },
 
         /**
@@ -351,6 +354,16 @@ define([
         },
 
         /**
+         * Handle return of meeple in UI
+         * @param {Object} notification notification object
+         */
+        notif_returnMeeple: function (notification)
+        { 
+            var meeple = notification.args.meeple;
+            this.meepleManager.moveMeepleToHand(meeple);
+        },
+
+        /**
          * Handle resetting dice to unrolled
          * @param {Object} notification notification object
          */
@@ -390,7 +403,6 @@ define([
             var meeple = notification.args.meeple;
             var amount = notification.args.amount;
             this.cardManager.moveCardToPlayer(player, card);
-            this.meepleManager.moveMeepleToHand(meeple);
             this.counterManager.adjustPlayerCurses(player, amount);
         },
    });             
