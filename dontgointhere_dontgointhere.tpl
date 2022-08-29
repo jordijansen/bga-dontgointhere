@@ -79,7 +79,11 @@
                     <span id="dgit_player_{PLAYER_ID}_dispeled_counter" class="dgit-player-dispeled-counter" style="text-shadow: 5px 0 5px #{PLAYER_COLOR},0 -5px 5px #{PLAYER_COLOR},0 5px 5px #{PLAYER_COLOR},-5px 0 5px #{PLAYER_COLOR};">0</span>
                     <div id="dgit_player_{PLAYER_ID}_dispeled_cards" class="dgit-card dgit-card-back"></div>
                 </div>
-                <div id="dgit_player_{PLAYER_ID}_cards" class="dgit-player-cards"></div>
+                <div id="dgit_player_{PLAYER_ID}_cards" class="dgit-player-cards">
+                    <!-- BEGIN playercardtype -->
+                    <div id="dgit_player_{PLAYER_ID}_{CARD_TYPE}_cards" class="dgit-player-card-type-section dgit-hidden" style="order: {CARD_TYPE}"></div>
+                    <!-- END playercardtype -->
+                </div>
             </div>
         </div>
         <!-- END playerarea -->
@@ -88,7 +92,7 @@
 
 <script type="text/javascript">
 
-    var jstpl_cursed_card = '<div id="dgit_card_${card_id}" class="dgit-card ${card_css_class}" card-id="${card_id}" room-number="${room_ui_position}" special="false" style="order: ${card_ui_position}">\
+    var jstpl_cursed_card = '<div id="dgit_card_${card_id}" class="dgit-card ${card_css_class}" card-id="${card_id}" roomnumber="${room_ui_position}" special="false" style="order: ${card_ui_position}">\
                                 <span id="dgit_card_${card_id}_tooltip" class="dgit-card-tooltip">i</span>\
                             </div>';
     var jstpl_deck_card = '<div id="dgit_deck_card_${card_num}" class="dgit-card dgit-card-back dgit-card-in-deck" style="bottom: ${card_num}%"></div>';

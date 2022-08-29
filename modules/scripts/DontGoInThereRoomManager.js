@@ -119,6 +119,7 @@ define([
             this.game.counterManager.adjustDeckCounter(-3);
             var deckSize = this.game.counterManager.getDeckCounterValue();
             dojo.destroy('dgit_deck_card_' + deckSize / 3);
+            dojo.setStyle('dgit_deck_counter', 'bottom', deckSize / 3 + '%');
             if (deckSize == 0) {
                 dojo.addClass('dgit_deck', 'dgit-hidden');
                 dojo.addClass('dgit_deck_counter', 'dgit-hidden');

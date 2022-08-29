@@ -38,9 +38,23 @@ require_once( APP_BASE_PATH."view/common/game.view.php" );
 
     // Inflate players
     $players = $this->game->playerManager->getPlayersInViewOrder();
+    $this->page->begin_block($template, 'playercardtype');
     $this->page->begin_block($template, 'playerarea');
     foreach($players as $playerKey => $player)
     {
+      $this->page->reset_subblocks('playercardtype');
+
+      for ($cardType = AMULET; $cardType <= TWIN; $cardType++)
+      {
+        $this->page->insert_block(
+          'playercardtype',
+          array(
+            'PLAYER_ID' => $player->getId(),
+            'CARD_TYPE' => $cardType,
+          )
+        );
+      }
+
       $this->page->insert_block(
         'playerarea',
         array(

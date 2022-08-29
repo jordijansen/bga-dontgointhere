@@ -68,7 +68,7 @@ div.player-board {
     font-weight: bold;
     text-align: center;
     color: #8bc98a;
-    right: 2%;
+    left: 2%;
     bottom: 2%;
     border: 2px solid #8bc98a;
     border-radius: 20px;
@@ -129,8 +129,7 @@ div.player-board {
     font-weight: bolder;
     color: darkslategray;
     text-shadow: 5px 0 5px #8bc98a,0 -5px 5px #8bc98a,0 5px 5px #8bc98a,-5px 0 5px #8bc98a;
-    right: 10%;
-    bottom: 20%;
+    right: 5%;
 }
 
 #dgit_ghost_tokens {
@@ -307,7 +306,19 @@ div.player-board {
     position: relative;
     display: flex;
     flex-flow: row wrap;
-    gap: 5px;
+    gap: 2px;
+}
+
+.dgit-player-card-type-section {
+    --gap: -9.5rem;
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    margin-left: calc(-1 * var(--gap));
+}
+
+.dgit-player-card-type-section > * {
+    margin-left: var(--gap);
 }
 
 .dgit-player-dispeled {
@@ -328,7 +339,7 @@ div.player-board {
     display: flex;
     flex-flow: row wrap;
     position: relative;
-    gap: 5px;
+    gap: 2px;
 }
 
 /***** ACTIVE PLAYER MARKER *****/

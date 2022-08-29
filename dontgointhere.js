@@ -125,8 +125,8 @@ define([
                     if (this.isCurrentPlayerActive())
                     {
                         var roomResolving = args.args.roomResolving;
-                        dojo.query('.dgit-card[room-number="'+ roomResolving + '"]').addClass('dgit-clickable');
-                        dojo.query('.dgit-card[room-number="'+ roomResolving + '"]').addClass('dgit-highlight-card');
+                        dojo.query('div[roomnumber="'+ roomResolving + '"]').addClass('dgit-clickable');
+                        dojo.query('div[roomnumber="'+ roomResolving + '"]').addClass('dgit-highlight-card');
                         this.connectClass('dgit-clickable', 'onclick', 'onSelectCard');
                     }
                     break;
@@ -400,7 +400,6 @@ define([
         { 
             var player = notification.args.player;
             var card = notification.args.card;
-            var meeple = notification.args.meeple;
             var amount = notification.args.amount;
             this.cardManager.moveCardToPlayer(player, card);
             this.counterManager.adjustPlayerCurses(player, amount);

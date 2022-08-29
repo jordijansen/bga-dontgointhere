@@ -42,6 +42,8 @@ define([
                 {
                     this.game.util.placeBlock(DECK_CARD_TEMPLATE, 'dgit_deck', { card_num: cardNumber });
                 }
+
+                dojo.setStyle('dgit_deck_counter', 'bottom', gamedatas.deckSize / 3 + '%');
             }
 
             // Create player cards
@@ -49,8 +51,9 @@ define([
             {
                 // Place card
                 var playerCard = gamedatas.playerCards[playerCardsKey];
-                this.game.util.placeBlock(CURSED_CARD_TEMPLATE, 'dgit_player_' + playerCard.uiPosition + '_cards',
-                    { card_id: playerCard.id, player_id: playerCard.uiPosition, card_css_class: playerCard.cssClass, room_ui_position: -1, card_ui_position: playerCard.type } );
+                this.game.util.placeBlock(CURSED_CARD_TEMPLATE, 'dgit_player_' + playerCard.uiPosition + '_' + playerCard.type + '_cards',
+                    { card_id: playerCard.id, player_id: playerCard.uiPosition, card_css_class: playerCard.cssClass, room_ui_position: -1, card_ui_position: playerCard.curses });
+                dojo.removeClass('dgit_player_' + playerCard.uiPosition + '_' + playerCard.type + '_cards', 'dgit-hidden');
 
                 // Create tooltip
                 if (playerCard.tooltipText.length > 0) {
@@ -71,15 +74,16 @@ define([
         moveCardToPlayer: function (player, card)
         { 
             var cardDiv = 'dgit_card_' + card.id;
-            var playerCardDiv = 'dgit_player_' + player.id + '_cards';
+            var playerCardDiv = 'dgit_player_' + player.id + '_' + card.type + '_cards';
+            dojo.setAttr(cardDiv, 'roomnumber', -1);
+            dojo.setStyle(cardDiv, 'order', card.curses);
+            dojo.removeClass(playerCardDiv, 'dgit-hidden');
             this.game.attachToNewParent(cardDiv, playerCardDiv);
             var moveCard = this.game.slideToObject(cardDiv, playerCardDiv).play();
-            dojo.setStyle(cardDiv, 'order', card.type);
             on(moveCard, "End", function () {
                 $(cardDiv).style.removeProperty('top');
                 $(cardDiv).style.removeProperty('left');
             })
-            dojo.setAttr(cardDiv, 'room_number', -1);
         },
     });
 });
