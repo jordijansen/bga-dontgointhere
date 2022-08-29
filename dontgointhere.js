@@ -116,8 +116,8 @@ define([
                                 if (die.cssClass != 'dgit-hidden') {
                                     dojo.removeClass('dgit_change_die_button_' + die.id, 'dgit-hidden');
                                 }
+                                this.connect($('dgit_change_die_button_' + die.id), 'onclick', this.onDieChange(die.id));
                             }
-                            this.connectClass('dgit-change-die-button', 'onclick', 'onDieChange');
                         }       
                     }
                     break;
@@ -209,10 +209,11 @@ define([
          * Triggers when user changes a die to its oppposite face
          * @param {Object} event onclick event
          */
-        onDieChange: function (event) {
-            console.log(event);
-            dojo.stopEvent(event);
-            this.util.triggerPlayerAction(CHANGE_DIE, { dieId: event.target.attributes.die.value });
+        onDieChange: function (dieId, event) {
+            return function (event) { 
+                dojo.stopEvent(event);
+                this.util.triggerPlayerAction(CHANGE_DIE, { dieId: dieId });
+            };
         },
 
         /**

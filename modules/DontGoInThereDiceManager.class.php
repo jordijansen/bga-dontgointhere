@@ -56,12 +56,12 @@ class DontGoInThereDiceManager extends APP_GameClass
 
         // Change from blank to ghost
         if($die->getFace() == BLANK) {
-            $newValue = rand(1, 5) | 1;
-            self::setGhostsRolled($ghostTotal + 1);
+            $newValue = $die->getValue() - 1;
+            self::setGhostsRolled($ghostTotal - 1);
         }
-        // Change from ghost to blanl
+        // Change from ghost to blank
         if($die->getFace() == GHOST ){
-            $newValue = 2;
+            $newValue = $die->getValue() + 1;
             self::setGhostsRolled($ghostTotal - 1);
         }
 

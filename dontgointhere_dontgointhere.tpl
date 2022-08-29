@@ -33,7 +33,7 @@
                 <!-- BEGIN die -->
                 <div id="dgit_die_{DIE_NUM}" class="dgit-die">
                     <div id="dgit_die_{DIE_NUM}_face" class="dgit-die-face"></div>
-                    <a id="dgit_change_die_button_{DIE_NUM}" die="{DIE_NUM}" class="dgit-change-die-button dgit-hidden" href="#">{CHANGE}</a>
+                    <button id="dgit_change_die_button_{DIE_NUM}" die="{DIE_NUM}" class="dgit-change-die-button dgit-hidden" href="#">{CHANGE}</button>
                 </div>
                 <!-- END die -->
                 <span id="dgit_dice_total" class="dgit-hidden">0</span>

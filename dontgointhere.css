@@ -182,7 +182,7 @@ div.player-board {
     position: absolute;
     z-index: 10;
     bottom: -45%;
-    font-size: medium;
+    font-size: small;
     font-weight: 700;
     padding: 5px;
     color: #8bc98a !important;
