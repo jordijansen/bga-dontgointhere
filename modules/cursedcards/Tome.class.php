@@ -29,6 +29,11 @@ class Tome extends DontGoInThereCursedCard
         $this->uiPosition = $row[LOCATION_ARG];
     }
 
+    private function buildAbilityText()
+    {
+        return clienttranslate('must dispel all cards of one type');
+    }
+
     /**
      * Build tooltip text for Tome
      * @return string Tooltip text

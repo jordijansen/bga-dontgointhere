@@ -30,12 +30,13 @@ class DontGoInThere extends Table
         self::initGameStateLabels(array(
             CLOCKS_COLLECTED => 10,
             GHOSTS_ROLLED => 11,
-            RESOLVED_ROOM_ABILITY => 12,
-            ROOM_RESOLVER => 13,
-            ROOM_RESOLVING => 14,
-            SECRET_PASSAGE_REVEALED => 15,
-            TOTAL_TURNS => 16,
-            TURN_COUNTER => 17,
+            LAST_SELECTED_CARD => 12,
+            RESOLVED_ROOM_ABILITY => 13,
+            ROOM_RESOLVER => 14,
+            ROOM_RESOLVING => 15,
+            SECRET_PASSAGE_REVEALED => 16,
+            TOTAL_TURNS => 17,
+            TURN_COUNTER => 18,
         ));
 
         $this->cardManager = new DontGoInThereCardManager($this);
@@ -77,6 +78,7 @@ class DontGoInThere extends Table
         // Initialize global variables
         self::setGameStateInitialValue(CLOCKS_COLLECTED, DGIT_FALSE);
         self::setGameStateInitialValue(GHOSTS_ROLLED, -1);
+        self::setGameStateInitialValue(LAST_SELECTED_CARD, -1);
         self::setGameStateInitialValue(RESOLVED_ROOM_ABILITY, DGIT_FALSE);
         self::setGameStateInitialValue(ROOM_RESOLVER, 0);
         self::setGameStateInitialValue(ROOM_RESOLVING, 0);
@@ -385,7 +387,8 @@ class DontGoInThere extends Table
             }
         }
 
-        $this->gamestate->nextState(RESOLVE_ROOM);
+        $this->cardManager->setLastSelectedCard($cardId);
+        $this->gamestate->nextState(TRIGGER_CARD_EFFECT);
     }
 
 
@@ -419,6 +422,19 @@ class DontGoInThere extends Table
 
         return array(
             'roomResolving' => $roomUiPosition,
+        );
+    }
+
+    /**
+     * Args for trigger card effect state
+     * @return array Array of args
+     */
+    function argsTriggerCardEffect()
+    {
+        $card = $this->cardManager->getLastSelectedCard();
+        return array(
+            'ability' => $card->getAbilityText(),
+            'card' => $card->getUiData(),
         );
     }
 
@@ -602,6 +618,41 @@ class DontGoInThere extends Table
                 'playerId' => $player->getId(),
             )
         );
+    }
+
+    /**
+     * Check that the active player should do something in this phase.
+     * This will only be if the effect of the Clock or the Tome need to be triggered.
+     * If card has in game ability trigger it and move to next phase
+     * @return void
+     */
+    function stTriggerCardEffect()
+    {
+        $args = [];
+        $player = $this->playerManager->getPlayer();
+        $card = $this->cardManager->getLastSelectedCard();
+        $args['player'] = $player;
+        $args['selectedCard'] = $card;
+
+        // If card is end game trigger, ignore it
+        if($card->isEndGameTrigger()) {
+            $this->gamestate->nextState(RESOLVE_ROOM);
+        } else {
+            // If card is a clock check if the effect should be triggered
+            if($card->getType() == CLOCK && !$this->cardManager->triggerClock($player->getId())) {
+                $this->gamestate->nextState(RESOLVE_ROOM);
+            }
+            // If card is a tome check if the effect should be triggered
+            if($card->getType() == TOME && !$this->cardManager->triggerTome($player->getId())) {
+                $this->gamestate->nextState(RESOLVE_ROOM);
+            }
+            // Handle card types without choices
+            if($card->getType() != CLOCK && $card->getType() != TOME) {
+
+                $card->triggerEffect($args);
+                $this->gamestate->nextState(RESOLVE_ROOM);
+            }
+        }
     }
 
 

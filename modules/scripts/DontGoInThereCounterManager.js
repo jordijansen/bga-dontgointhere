@@ -72,6 +72,16 @@ define([
         },
 
         /**
+         * Adjust player dispeled counter by delta
+         * @param {Object} player 
+         * @param {int} delta 
+         */
+        adjustPlayerDispeledCounter: function (player, delta)
+        { 
+            this.playerDispeledCounters[player.id].incValue(delta);
+        },
+
+        /**
          * Creates the deck counter
          * @param {int} deckSize Number of cards in the deck
          */

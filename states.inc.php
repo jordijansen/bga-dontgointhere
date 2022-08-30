@@ -95,6 +95,17 @@ $machinestates = array(
         "args" => "argsSelectCard",
         "action" => "stSelectCard",
         "possibleactions" => array( TAKE_CARD ),
+        "transitions" => array( TRIGGER_CARD_EFFECT => STATE_TRIGGER_CARD_EFFECT )
+    ),
+
+    STATE_TRIGGER_CARD_EFFECT => array(
+        "name" => TRIGGER_CARD_EFFECT,
+        "description" => clienttranslate('${actplayer} ${ability}'),
+        "descriptionmyturn" => clienttranslate('${you} ${ability}'),
+        "type" => "activeplayer",
+        "args" => "argsTriggerCardEffect",
+        "action" => "stTriggerCardEffect",
+        "possibleactions" => array("something"),
         "transitions" => array( RESOLVE_ROOM => STATE_RESOLVE_ROOM )
     ),
 

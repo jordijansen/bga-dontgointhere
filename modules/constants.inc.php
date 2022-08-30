@@ -31,6 +31,7 @@ define('SECRET_PASSAGE_PEEK', 'secretPassagePeek');
 define('SECRET_PASSAGE_REVEAL', 'secretPassageReveal');
 define('SKIP', 'skip');
 define('TAKE_CARD', 'takeCard');
+define('TRIGGER_DOLL', 'triggerDoll');
 
 /**
  * Card types
@@ -52,6 +53,7 @@ define('TWIN', 11);
  * Component locations
  */
 define('DECK', 'deck');
+define('DISPELED', 'dispeled');
 define('FACEDOWN', 'facedown');
 define('FACEUP', 'faceup');
 define('HAND', 'hand');
@@ -86,6 +88,7 @@ define('DGIT_TRUE', 1);
  */
 define('CLOCKS_COLLECTED', 'clocks_collected');
 define('GHOSTS_ROLLED', 'ghosts_rolled');
+define('LAST_SELECTED_CARD', 'last_selected_card');
 define('RESOLVED_ROOM_ABILITY', 'resolved_room_ability');
 define('ROOM_RESOLVER', 'room_resolver');
 define('ROOM_RESOLVING', 'room_resolving');
@@ -129,6 +132,7 @@ define('STATE_PLAYER_TURN', 2);
 define('STATE_RESOLVE_ROOM', 10);
 define('STATE_ROOM_RESOLUTION_ABILITY', 11);
 define('STATE_SELECT_CARD', 12);
+define('STATE_TRIGGER_CARD_EFFECT', 13);
 define('STATE_NEXT_PLAYER', 20);
 define('STATE_GAME_END', 99);
 
@@ -142,3 +146,4 @@ define('PLAYER_TURN', 'playerTurn');
 define('RESOLVE_ROOM', 'resolveRoom');
 define('ROOM_RESOLUTION_ABILITY', 'roomResolutionAbility');
 define('SELECT_CARD', 'selectCard');
+define('TRIGGER_CARD_EFFECT', 'triggerCardEffect');

@@ -67,6 +67,35 @@ define([
         },
 
         /**
+         * Dispel a list of cards from a player area
+         * @param {Object} player player object
+         * @param {Object} cards list of cards to dispel
+         */
+        dispelCards: function (player, cards)
+        { 
+            var dispeledCardsDiv = 'dgit_player_' + player.id + '_dispeled';
+            dojo.removeClass(dispeledCardsDiv, 'dgit-hidden');
+            var delay = 0;
+            var moveCard = {};
+            for (var cardKey in cards) {
+                var card = cards[cardKey];
+                var cardDiv = 'dgit_card_' + card.id;
+                moveCard[cardKey] = this.game.slideToObject(cardDiv, dispeledCardsDiv, 500, delay).play();
+                on(moveCard[cardKey], "End", function (cardDiv) {
+                    dojo.destroy(cardDiv);
+                });
+                delay = delay + 200;
+            }
+            var cardType = cards[0].type;
+            var cardTypeDiv = 'dgit_player_' + player.id + '_' + cardType + '_cards';
+            var cardTypeElement = $(cardTypeDiv);
+            if (cardTypeElement.children.length == 0) {
+                dojo.addClass(cardTypeDiv, 'dgit-hidden');
+            }
+            this.game.counterManager.adjustPlayerDispeledCounter(player, cards.length);
+        },
+
+        /**
          * Move a card to a players tableau
          * @param {Object} player 
          * @param {Object} card 
@@ -83,7 +112,7 @@ define([
             on(moveCard, "End", function () {
                 $(cardDiv).style.removeProperty('top');
                 $(cardDiv).style.removeProperty('left');
-            })
+            });
         },
     });
 });

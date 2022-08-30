@@ -64,6 +64,20 @@ class DontGoInTherePlayerManager extends APP_GameClass
     }
 
     /**
+     * Adjust oplayer dispeled value
+     * @param int $playerId
+     * @param mixed $amount
+     * @return float|int
+     */
+    public function adjustPlayerDispeled($playerId, $amount)
+    {
+        $player = self::getPlayer($playerId);
+        $newDispeledTotal = $player->getCardsDispeled() + $amount;
+        self::DbQuery('UPDATE player SET player_cards_dispeled="' . $newDispeledTotal . '" WHERE player_id="' . $playerId . '"');
+        return $newDispeledTotal;
+    }
+
+    /**
      * Adjust player ghosts. Since low value breaks we need to save the value as negative
      * @param mixed $playerId
      * @param mixed $amount

@@ -32,6 +32,7 @@ abstract class DontGoInThereCursedCard extends APP_GameClass
     protected $diceIcons = 0;
     protected $endGameTrigger = false;
     protected $uiPosition = 0;
+    protected $abilityText = '';
 
     public function getId() { return $this->id; }
     public function getName() { return $this->name; }
@@ -42,6 +43,7 @@ abstract class DontGoInThereCursedCard extends APP_GameClass
     public function getDiceIcons() { return $this->diceIcons; }
     public function isEndGameTrigger() { return $this->endGameTrigger; }
     public function getUiPosition() { return $this->uiPosition; }
+    public function getAbilityText() { return $this->abilityText; }
 
     /**
      * Get ui data of CursedCard visible by current player
@@ -60,6 +62,16 @@ abstract class DontGoInThereCursedCard extends APP_GameClass
             'endGameTrigger' => $this->endGameTrigger,
             'uiPosition' => $this->uiPosition,
         ];
+    }
+
+    /**
+     * Abstract for trigger effect function
+     * @param mixed $args
+     * @return void
+     */
+    public function triggerEffect($args) 
+    {
+        return;
     }
 
     // Map of curse value to number of dice icons on a card

@@ -216,6 +216,22 @@ class DontGoInThereCardManager extends APP_GameClass
     }
 
     /**
+     * Get the last card selected by a player
+     * @return DontGoInThereCursedCard
+     */
+    public function getLastSelectedCard()
+    {
+        return self::getCursedCardById($this->game->getGameStateValue(LAST_SELECTED_CARD));
+    }
+
+    public function getPlayerCardsOfType($playerId, $type) {
+        $cards = $this->cards->getCardsOfTypeInLocation($type, null, HAND, $playerId);
+        return array_map(function($card) {
+            return $this->getCursedCard($card);
+        }, $cards);
+    }
+
+    /**
      * Get ui data of all cards in specified location
      * @param string $location Location value in database
      * @return array<mixed> An array of ui data for CursedCards
@@ -224,6 +240,21 @@ class DontGoInThereCardManager extends APP_GameClass
     {
         $ui = [];
         foreach($this->getCursedCards($location) as $card)
+        {
+            $ui[] = $card->getUiData();
+        }
+        return $ui;
+    }
+
+    /**
+     * Get ui data of cards in a list
+     * @param array<DontGoInThereCard> $cards list of card objects
+     * @return array
+     */
+    public function getUiDataFromCards($cards)
+    {
+        $ui = [];
+        foreach($cards as $card)
         {
             $ui[] = $card->getUiData();
         }
@@ -273,11 +304,21 @@ class DontGoInThereCardManager extends APP_GameClass
     }
 
     /**
+     * Store the id of the last card selected by a player
+     * @param int $cardId
+     * @return void
+     */
+    public function setLastSelectedCard($cardId)
+    {
+        $this->game->setGameStateValue(LAST_SELECTED_CARD, $cardId);
+    }
+
+    /**
      * Sort cards by curse value in ascending order
      * @param array<DontGoInThereCursedCard> $cards Array of cards to be sorted
      * @return array<DontGoInThereCursedCard> Sorted array of cards
      */
-    private function sortCardsByCurseValue($cards)
+    public function sortCardsByCurseValue($cards)
     {
         usort($cards, function(DontGoInThereCursedCard $a, DontGoInThereCursedCard $b) {
             if($a->getCurses() === $b->getCurses()) {
@@ -299,5 +340,45 @@ class DontGoInThereCardManager extends APP_GameClass
         $card = self::getCursedCardById($cardId);
         self::moveCard($card, HAND, $player->getId());
         return self::getCursedCard($this->cards->getCard($cardId));
+    }
+
+    /**
+     * Checks if the conditions to trigger the clock are in effect
+     * @param int $playerId
+     * @return bool
+     */
+    public function triggerClock($playerId) 
+    {
+        $isClockCollected = $this->game->getGameStateValue(CLOCKS_COLLECTED);
+
+        if($isClockCollected == DGIT_TRUE) {
+            return false;
+        }
+
+        $clockCards = self::getPlayerCardsOfType($playerId, CLOCK);
+        $totalCurseValue = 0;
+        foreach($clockCards as $clockCard) {
+            $totalCurseValue += $clockCard->getCurses();
+        }
+
+        if($totalCurseValue >= 8) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if the conditions to trigger the tome are in effect
+     * @param int $playerId
+     * @return bool
+     */
+    public function triggerTome($playerId)
+    {
+        $tomeCards = self::getPlayerCardsOfType($playerId, TOME);
+        if(count($tomeCards) % 2 == 0) {
+            return true;
+        }
+        return false;
     }
 }
