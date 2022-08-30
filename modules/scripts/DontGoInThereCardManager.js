@@ -74,9 +74,12 @@ define([
         dispelCards: function (player, cards)
         { 
             var dispeledCardsDiv = 'dgit_player_' + player.id + '_dispeled';
+            var cardType = cards[0].type;
+            var cardTypeDiv = 'dgit_player_' + player.id + '_' + cardType + '_cards';
             dojo.removeClass(dispeledCardsDiv, 'dgit-hidden');
             var delay = 0;
             var moveCard = {};
+            var currentCardsOfType = $(cardTypeDiv).children.length;
             for (var cardKey in cards) {
                 var card = cards[cardKey];
                 var cardDiv = 'dgit_card_' + card.id;
@@ -86,10 +89,8 @@ define([
                 });
                 delay = delay + 200;
             }
-            var cardType = cards[0].type;
-            var cardTypeDiv = 'dgit_player_' + player.id + '_' + cardType + '_cards';
-            var cardTypeElement = $(cardTypeDiv);
-            if (cardTypeElement.children.length == 0) {
+            
+            if (currentCardsOfType == cards.length) {
                 dojo.addClass(cardTypeDiv, 'dgit-hidden');
             }
             this.game.counterManager.adjustPlayerDispeledCounter(player, cards.length);

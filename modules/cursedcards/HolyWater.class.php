@@ -38,4 +38,37 @@ class HolyWater extends DontGoInThereCursedCard
     {
         return clienttranslate('When you collect 2 Holy Water cards, immediately discard half of your Ghost tokens, rounded down.');
     }
+
+    /**
+     * Trigger effect of taking a holy water card
+     * @param mixed $args
+     * @return void
+     */
+    public function triggerEffect($args)
+    {
+        $player = $args['player'];
+        $holyWaterCards = $this->game->cardManager->getPlayerCardsOfType($player->getId(), HOLY_WATER);
+
+        // echo(count($holyWaterCards) % 2);
+        // die('ok');
+        
+        if(count($holyWaterCards) % 2 == 0) {
+            $currentGhosts = $player->getGhostTokens();
+            $ghostsToDiscard = floor($currentGhosts / 2) * -1;
+            
+            if($ghostsToDiscard != 0) {
+                $this->game->playerManager->adjustPlayerGhosts($player->getId(), $ghostsToDiscard);
+                $this->game->notifyAllPlayers(
+                    ADJUST_GHOSTS,    
+                    clienttranslate('${player_name} collects a set of 2 Holy Water cards and discards ${number} ghosts'),
+                    array(
+                        'player_name' => $this->game->getActivePlayerName(),
+                        'number' => $ghostsToDiscard * -1,
+                        'playerId' => $player->getId(),
+                        'amount' => $ghostsToDiscard,
+                    )
+                );
+            }
+        }
+    }
 }

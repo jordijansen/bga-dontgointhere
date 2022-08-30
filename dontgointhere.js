@@ -417,6 +417,7 @@ define([
             var player = notification.args.player;
             var cards = notification.args.cards;
 
+            this.counterManager.adjustPlayerCurses(player, -6);
             this.cardManager.dispelCards(player, cards);
         },
    });             

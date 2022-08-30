@@ -73,6 +73,7 @@ class Doll extends DontGoInThereCursedCard
         // If a valid set exists move those cards dispeled
         if($validSet != false) {
             $this->game->playerManager->adjustPlayerDispeled($player->getId(), count($validSet));
+            $this->game->playerManager->adjustPlayerCurses($player->getId(), -6);
             $this->game->cardManager->moveCards($validSet, DISPELED);
             $this->game->notifyAllPlayers(
                 TRIGGER_DOLL,    
