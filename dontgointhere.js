@@ -260,6 +260,7 @@ define([
             dojo.subscribe(ADJUST_GHOSTS, this, 'notif_adjustGhosts');
             dojo.subscribe(CHANGE_DIE, this, 'notif_changeDie');
             dojo.subscribe(CHANGE_PLAYER, this, 'notif_changePlayer');
+            dojo.subscribe(DISPEL_CARDS, this, 'notif_dispelCards');
             dojo.subscribe(FLIP_ROOM, this, 'notif_flipRoom');
             dojo.subscribe(FLIP_ROOM_FACEDOWN, this, 'notif_flipRoomFacedown');
             dojo.subscribe(NEW_CARDS, this, 'notif_newCards');
@@ -269,15 +270,15 @@ define([
             dojo.subscribe(ROLL_DICE, this, 'notif_rollDice');
             dojo.subscribe(SECRET_PASSAGE_REVEAL, this, 'notif_secretPassageReveal');
             dojo.subscribe(TAKE_CARD, this, 'notif_takeCard');
-            dojo.subscribe(TRIGGER_DOLL, this, 'notif_triggerDoll');
             dojo.subscribe(TRIGGER_MASK, this, 'notif_triggerMask');
 
+            this.notifqueue.setSynchronous(ADJUST_GHOSTS, 500);
+            this.notifqueue.setSynchronous(DISPEL_CARDS, 500);
             this.notifqueue.setSynchronous(FLIP_ROOM, 500);
             this.notifqueue.setSynchronous(NEW_CARDS, 500);
             this.notifqueue.setSynchronous(RETURN_MEEPLE, 500);
             this.notifqueue.setSynchronous(ROLL_DICE, 500);
             this.notifqueue.setSynchronous(TAKE_CARD, 500);
-            this.notifqueue.setSynchronous(TRIGGER_DOLL, 500);
             this.notifqueue.setSynchronous(TRIGGER_MASK, 500);
         },
 
@@ -312,6 +313,20 @@ define([
         { 
             var nextPlayerId = notification.args.nextPlayer;
             this.playerManager.changeActivePlayer(nextPlayerId);
+        },
+
+        /**
+         * Handle dispeling of cards
+         * @param {Object} notification notification object
+         */
+        notif_dispelCards: function (notification)
+        { 
+            var player = notification.args.player;
+            var cards = notification.args.cards;
+            var curseTotal = notification.args.curseTotal;
+ 
+            this.counterManager.adjustPlayerCurses(player, curseTotal);
+            this.cardManager.dispelCards(player, cards);
         },
 
         /**
@@ -408,19 +423,6 @@ define([
             var amount = notification.args.amount;
             this.cardManager.moveCardToPlayer(player, card);
             this.counterManager.adjustPlayerCurses(player, amount);
-        },
-
-        /**
-         * Handle triggering of doll effect
-         * @param {Object} notification notification object
-         */
-        notif_triggerDoll: function (notification)
-        { 
-            var player = notification.args.player;
-            var cards = notification.args.cards;
-
-            this.counterManager.adjustPlayerCurses(player, -6);
-            this.cardManager.dispelCards(player, cards);
         },
 
         /**

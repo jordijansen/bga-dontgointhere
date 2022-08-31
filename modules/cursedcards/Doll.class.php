@@ -76,11 +76,12 @@ class Doll extends DontGoInThereCursedCard
             $this->game->playerManager->adjustPlayerCurses($player->getId(), -6);
             $this->game->cardManager->moveCards($validSet, DISPELED);
             $this->game->notifyAllPlayers(
-                TRIGGER_DOLL,    
+                DISPEL_CARDS,    
                 clienttranslate('${player_name} dispels ${amount} Doll cards '),
                 array(
                     'player_name' => $this->game->getActivePlayerName(),
                     'amount' => count($validSet),
+                    'curseTotal' => -6,
                     'player' => $player->getUiData(),
                     'cards' => $this->game->cardManager->getUiDataFromCards($validSet),
                 )

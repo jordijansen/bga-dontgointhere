@@ -20,6 +20,7 @@
 define('ADJUST_GHOSTS', 'adjustGhosts');
 define('CHANGE_DIE', 'changeDie');
 define('CHANGE_PLAYER', 'changePlayer');
+define('DISPEL_CARDS', 'dispelCards');
 define('FLIP_ROOM', 'flipRoom');
 define('FLIP_ROOM_FACEDOWN', 'flipRoomFacedown');
 define('NEW_CARDS', 'newCards');
@@ -31,7 +32,6 @@ define('SECRET_PASSAGE_PEEK', 'secretPassagePeek');
 define('SECRET_PASSAGE_REVEAL', 'secretPassageReveal');
 define('SKIP', 'skip');
 define('TAKE_CARD', 'takeCard');
-define('TRIGGER_DOLL', 'triggerDoll');
 define('TRIGGER_MASK', 'triggerMask');
 
 /**
