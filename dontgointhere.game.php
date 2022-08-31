@@ -638,16 +638,12 @@ class DontGoInThere extends Table
         if($card->isEndGameTrigger()) {
             $this->gamestate->nextState(RESOLVE_ROOM);
         } else {
-            // If card is a clock check if the effect should be triggered
-            if($card->getType() == CLOCK && !$this->cardManager->triggerClock($player->getId())) {
-                $this->gamestate->nextState(RESOLVE_ROOM);
-            }
             // If card is a tome check if the effect should be triggered
             if($card->getType() == TOME && !$this->cardManager->triggerTome($player->getId())) {
                 $this->gamestate->nextState(RESOLVE_ROOM);
             }
             // Handle card types without choices
-            if($card->getType() != CLOCK && $card->getType() != TOME) {
+            if($card->getType() != TOME) {
 
                 $card->triggerEffect($args);
                 $this->gamestate->nextState(RESOLVE_ROOM);

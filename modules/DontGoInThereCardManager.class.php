@@ -331,6 +331,23 @@ class DontGoInThereCardManager extends APP_GameClass
     }
 
     /**
+     * Sort cards by curse value in descending order
+     * @param array<DontGoInThereCursedCard> $cards Array of cards to be sorted
+     * @return array<DontGoInThereCursedCard> Sorted array of cards
+     */
+    public function sortCardsByCurseValueDesc($cards)
+    {
+        usort($cards, function(DontGoInThereCursedCard $a, DontGoInThereCursedCard $b) {
+            if($a->getCurses() === $b->getCurses()) {
+                return 0;
+            }
+            return $a->getCurses() > $b->getCurses() ? -1 : 1;
+        });
+
+        return $cards;
+    }
+
+    /**
      * A player takes a card from a romm
      * @param int $cardId Id of card being taken
      * @param DontGoInTherePlayer $player player taking the card
@@ -340,32 +357,6 @@ class DontGoInThereCardManager extends APP_GameClass
         $card = self::getCursedCardById($cardId);
         self::moveCard($card, HAND, $player->getId());
         return self::getCursedCard($this->cards->getCard($cardId));
-    }
-
-    /**
-     * Checks if the conditions to trigger the clock are in effect
-     * @param int $playerId
-     * @return bool
-     */
-    public function triggerClock($playerId) 
-    {
-        $isClockCollected = $this->game->getGameStateValue(CLOCKS_COLLECTED);
-
-        if($isClockCollected == DGIT_TRUE) {
-            return false;
-        }
-
-        $clockCards = self::getPlayerCardsOfType($playerId, CLOCK);
-        $totalCurseValue = 0;
-        foreach($clockCards as $clockCard) {
-            $totalCurseValue += $clockCard->getCurses();
-        }
-
-        if($totalCurseValue >= 8) {
-            return true;
-        }
-
-        return false;
     }
 
     /**

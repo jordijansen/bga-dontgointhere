@@ -45,4 +45,42 @@ class Clock extends DontGoInThereCursedCard
         return clienttranslate('If you are the 1st player to collect a set of Clock cards whose Curse values add up to 8 or more, immediately dispel 2 Clock cards of your choice. After that, collecting a set of clocks has no effect.');
     }
 
+    public function triggerEffect($args)
+    {
+        $player = $args['player'];
+        $isClockCollected = $this->game->getGameStateValue(CLOCKS_COLLECTED);
+
+        if($isClockCollected == DGIT_FALSE) {
+            $clockCards = $this->cardManager->getPlayerCardsOfType($player->getId(), CLOCK);
+            
+            $totalCurseValue = 0;
+            foreach($clockCards as $clockCard) {
+                $totalCurseValue += $clockCard->getCurses();
+            }
+
+            if($totalCurseValue >= 8) {
+                $sortedClocks = $this->cardManger->sortCardsByCurseValueDesc($clockCards);
+                $clocksToDispel = [];
+                $clocksToDispel[] = $sortedClocks[0];
+                $clocksToDispel[] = $sortedClocks[1];
+                $curseValueDispeled = $sortedClocks[0]->getCurses() + $sortedClocks[1]->getCurses();
+
+                $this->game->playerManager->adjustPlayerCurses($player->getId(), $curseValueDispeled * -1);
+                $this->game->cardManager->moveCards($clocksToDispel, DISPELED);
+
+                $this->game->notifyAllPlayers(
+                    DISPEL_CARDS,    
+                    clienttranslate('${player_name} dispels ${amount} Clock cards '),
+                    array(
+                        'player_name' => $this->game->getActivePlayerName(),
+                        'amount' => 2,
+                        'curseTotal' => $curseValueDispeled * -1,
+                        'player' => $player->getUiData(),
+                        'cards' => $this->game->cardManager->getUiDataFromCards($clocksToDispel),
+                    )
+                );
+            }
+        }
+    }
+
 }
