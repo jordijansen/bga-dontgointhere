@@ -80,6 +80,10 @@ define([
             var delay = 0;
             var moveCard = {};
             var currentCardsOfType = $(cardTypeDiv).children.length;
+            if ($(cardTypeDiv).querySelector('.dgit-dispel-card-type-button') !== null) {
+                currentCardsOfType = currentCardsOfType - 1;
+            }
+            
             for (var cardKey in cards) {
                 var card = cards[cardKey];
                 var cardDiv = 'dgit_card_' + card.id;
@@ -93,6 +97,7 @@ define([
             if (currentCardsOfType == cards.length) {
                 dojo.addClass(cardTypeDiv, 'dgit-hidden');
             }
+            
             this.game.counterManager.adjustPlayerDispeledCounter(player, cards.length);
         },
 

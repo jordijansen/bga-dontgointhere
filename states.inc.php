@@ -105,7 +105,7 @@ $machinestates = array(
         "type" => "activeplayer",
         "args" => "argsTriggerCardEffect",
         "action" => "stTriggerCardEffect",
-        "possibleactions" => array("something"),
+        "possibleactions" => array(DISPEL_SET),
         "transitions" => array( RESOLVE_ROOM => STATE_RESOLVE_ROOM )
     ),
 

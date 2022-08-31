@@ -123,6 +123,7 @@ require_once( APP_BASE_PATH."view/common/game.view.php" );
 
     // Populate variables
     $this->tpl['CHANGE'] = self::_("Change");
+    $this->tpl['DISPEL'] = self::_("Dispel");
     $this->tpl['ROLL'] = self::_("Roll");
 
     /*********** Do not change anything below this line  ************/

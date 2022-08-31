@@ -81,7 +81,9 @@
                 </div>
                 <div id="dgit_player_{PLAYER_ID}_cards" class="dgit-player-cards">
                     <!-- BEGIN playercardtype -->
-                    <div id="dgit_player_{PLAYER_ID}_{CARD_TYPE}_cards" class="dgit-player-card-type-section dgit-hidden" style="order: {CARD_TYPE}"></div>
+                    <div id="dgit_player_{PLAYER_ID}_{CARD_TYPE}_cards" class="dgit-player-card-type-section dgit-hidden" style="order: {CARD_TYPE}">
+                        <button id="dgit_dipel_card_type_button_{PLAYER_ID}_{CARD_TYPE}" cardtype="{CARD_TYPE}" class="dgit-dispel-card-type-button dgit-hidden" href="#">{DISPEL}</button>
+                    </div>
                     <!-- END playercardtype -->
                 </div>
             </div>

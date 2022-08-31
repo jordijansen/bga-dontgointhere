@@ -56,7 +56,7 @@ class Twin extends DontGoInThereCursedCard
         if($matchingTwin != false) {
             $twins[] = $matchingTwin;
             $this->game->playerManager->adjustPlayerDispeled($player->getId(), 2);
-            $this->game->playerManager->adjustPlayerCurses($player->getId(), $selectedCard->getCurses * -2);
+            $this->game->playerManager->adjustPlayerCurses($player->getId(), $selectedCard->getCurses() * -2);
             $this->game->cardManager->moveCards($twins, DISPELED);
             $this->game->notifyAllPlayers(
                 DISPEL_CARDS,    
@@ -64,7 +64,7 @@ class Twin extends DontGoInThereCursedCard
                 array(
                     'player_name' => $this->game->getActivePlayerName(),
                     'amount' => $twins,
-                    'curseTotal' => - $selectedCard->getCurses * -2,
+                    'curseTotal' => $selectedCard->getCurses() * -2,
                     'player' => $player->getUiData(),
                     'cards' => $this->game->cardManager->getUiDataFromCards($twins),
                 )

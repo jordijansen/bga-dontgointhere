@@ -51,7 +51,7 @@ class Clock extends DontGoInThereCursedCard
         $isClockCollected = $this->game->getGameStateValue(CLOCKS_COLLECTED);
 
         if($isClockCollected == DGIT_FALSE) {
-            $clockCards = $this->cardManager->getPlayerCardsOfType($player->getId(), CLOCK);
+            $clockCards = $this->game->cardManager->getPlayerCardsOfType($player->getId(), CLOCK);
             
             $totalCurseValue = 0;
             foreach($clockCards as $clockCard) {
@@ -59,14 +59,16 @@ class Clock extends DontGoInThereCursedCard
             }
 
             if($totalCurseValue >= 8) {
-                $sortedClocks = $this->cardManger->sortCardsByCurseValueDesc($clockCards);
+                $sortedClocks = $this->game->cardManager->sortCardsByCurseValueDesc($clockCards);
                 $clocksToDispel = [];
                 $clocksToDispel[] = $sortedClocks[0];
                 $clocksToDispel[] = $sortedClocks[1];
                 $curseValueDispeled = $sortedClocks[0]->getCurses() + $sortedClocks[1]->getCurses();
 
+                $this->game->playerManager->adjustPlayerDispeled($player->getId(), 2);
                 $this->game->playerManager->adjustPlayerCurses($player->getId(), $curseValueDispeled * -1);
                 $this->game->cardManager->moveCards($clocksToDispel, DISPELED);
+                $this->game->setGameStateValue(CLOCKS_COLLECTED, DGIT_TRUE);
 
                 $this->game->notifyAllPlayers(
                     DISPEL_CARDS,    

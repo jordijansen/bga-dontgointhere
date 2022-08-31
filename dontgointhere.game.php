@@ -192,6 +192,37 @@ class DontGoInThere extends Table
         $this->gamestate->nextState(RESOLVE_ROOM);
     }
 
+    function dispelSet($cardType)
+    {
+        $player = $this->playerManager->getPlayer();
+        $cards = $this->cardManager->getPlayerCardsOfType($player->getId(), $cardType);
+        $this->cardManager->moveCards($cards, DISPELED);
+        $this->playerManager->adjustPlayerDispeled($player->getId(), count($cards));
+        $totalCurseValue = 0;
+        $cardName = '';
+        foreach($cards as $card)
+        {
+            $totalCurseValue += $card->getCurses();
+            $cardName = $card->getName();
+        }
+        $this->playerManager->adjustPlayerCurses($player->getId(), $totalCurseValue * -1);
+
+        self::notifyAllPlayers(
+            DISPEL_CARDS,    
+            clienttranslate('${player_name} dispels ${amount} ${cardName} cards '),
+            array(
+                'player_name' => self::getActivePlayerName(),
+                'amount' => count($cards),
+                'cardName' => $cardName,
+                'curseTotal' => $totalCurseValue * -1,
+                'player' => $player->getUiData(),
+                'cards' => $this->cardManager->getUiDataFromCards($cards),
+            )
+        );
+
+        $this->gamestate->nextState(RESOLVE_ROOM);
+    }
+
     /**
      * Place a a meeple of the active player in the chosen room space
      * @param int $roomPosition UI position of target room

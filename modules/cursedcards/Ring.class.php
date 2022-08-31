@@ -49,7 +49,7 @@ class Ring extends DontGoInThereCursedCard
 
         $ringCards = $this->game->cardManager->getPlayerCardsOfType($player->getId(), RING);
         if(count($ringCards) == 4) {
-            $this->game->playerManager->adjustPlayerDispeled($player->getId(), 3);
+            $this->game->playerManager->adjustPlayerDispeled($player->getId(), 4);
             $curseTotal = 0;
             foreach($ringCards as $ringCard) {
                 $curseTotal += $ringCard->getCurses();

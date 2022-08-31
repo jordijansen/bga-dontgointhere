@@ -21,6 +21,7 @@ define('ADJUST_GHOSTS', 'adjustGhosts');
 define('CHANGE_DIE', 'changeDie');
 define('CHANGE_PLAYER', 'changePlayer');
 define('DISPEL_CARDS', 'dispelCards');
+define('DISPEL_SET', 'dispelSet');
 define('FLIP_ROOM', 'flipRoom');
 define('FLIP_ROOM_FACEDOWN', 'flipRoomFacedown');
 define('NEW_CARDS', 'newCards');

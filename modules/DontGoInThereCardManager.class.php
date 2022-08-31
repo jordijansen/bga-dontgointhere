@@ -142,7 +142,7 @@ class DontGoInThereCardManager extends APP_GameClass
         }
         return $diceIcons;
     }
-
+    
     /**
      * Draw three new cards for a room
      * @param DontGoInThereRoom $room room object
@@ -367,7 +367,8 @@ class DontGoInThereCardManager extends APP_GameClass
     public function triggerTome($playerId)
     {
         $tomeCards = self::getPlayerCardsOfType($playerId, TOME);
-        if(count($tomeCards) % 2 == 0) {
+        // If player has a number of tomes divisible by two and has other cards to dispel
+        if(count($tomeCards) % 2 == 0 && self::countCursedCards(HAND, $playerId) > count($tomeCards)) {
             return true;
         }
         return false;

@@ -130,6 +130,23 @@ define([
                         this.connectClass('dgit-clickable', 'onclick', 'onSelectCard');
                     }
                     break;
+                case TRIGGER_CARD_EFFECT:
+                    if (this.isCurrentPlayerActive())
+                    { 
+                        var card = args.args.card;
+                        var playerId = card.uiPosition;
+                        if (card.type == TOME) {
+                            for (var type = AMULET; type <= TWIN; type++)
+                            { 
+                                var dispelButtonDiv = 'dgit_dipel_card_type_button_' + playerId + '_' + type;
+                                if (type != TOME) {
+                                    dojo.removeClass(dispelButtonDiv, 'dgit-hidden');
+                                    this.connect($(dispelButtonDiv), 'onclick', this.onDispelSet(type));
+                                }
+                            }
+                        }
+                    }
+                    break;
                 case 'dummmy':
                     break;
             }
@@ -214,6 +231,25 @@ define([
                 dojo.stopEvent(event);
                 this.util.triggerPlayerAction(CHANGE_DIE, { dieId: dieId });
             };
+        },
+
+        /**
+         * Triggers when user dispels a set of cards from Tome effect
+         */
+        onDispelSet: function (cardType, event) {
+            return function (event) {
+                dojo.stopEvent(event);
+
+                for (var type = AMULET; type <= TWIN; type++)
+                { 
+                    var dispelButtonDiv = 'dgit_dipel_card_type_button_' + this.getCurrentPlayerId() + '_' + type;
+                    if (type != TOME) {
+                        dojo.addClass(dispelButtonDiv, 'dgit-hidden');
+                    }
+                }
+
+                this.util.triggerPlayerAction(DISPEL_SET, { cardType: cardType });
+            }
         },
 
         /**
@@ -324,6 +360,8 @@ define([
             var player = notification.args.player;
             var cards = notification.args.cards;
             var curseTotal = notification.args.curseTotal;
+
+            debug('curseTotal', curseTotal);
  
             this.counterManager.adjustPlayerCurses(player, curseTotal);
             this.cardManager.dispelCards(player, cards);

@@ -39,6 +39,17 @@ class action_dontgointhere extends APP_GameAction
     self::ajaxResponse();
   }
 
+  public function dispelSet()
+  {
+    self::setAjaxMode();
+
+    $cardType = self::getArg("cardType", AT_posint, true);
+
+    $this->game->dispelSet($cardType);
+
+    self::ajaxResponse();
+  }
+
   public function placeMeeple()
   {
     self::setAjaxMode();
