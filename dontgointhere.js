@@ -270,6 +270,7 @@ define([
             dojo.subscribe(SECRET_PASSAGE_REVEAL, this, 'notif_secretPassageReveal');
             dojo.subscribe(TAKE_CARD, this, 'notif_takeCard');
             dojo.subscribe(TRIGGER_DOLL, this, 'notif_triggerDoll');
+            dojo.subscribe(TRIGGER_MASK, this, 'notif_triggerMask');
 
             this.notifqueue.setSynchronous(FLIP_ROOM, 500);
             this.notifqueue.setSynchronous(NEW_CARDS, 500);
@@ -277,6 +278,7 @@ define([
             this.notifqueue.setSynchronous(ROLL_DICE, 500);
             this.notifqueue.setSynchronous(TAKE_CARD, 500);
             this.notifqueue.setSynchronous(TRIGGER_DOLL, 500);
+            this.notifqueue.setSynchronous(TRIGGER_MASK, 500);
         },
 
         /**
@@ -419,6 +421,20 @@ define([
 
             this.counterManager.adjustPlayerCurses(player, -6);
             this.cardManager.dispelCards(player, cards);
+        },
+
+        /**
+         * Handle triggering of mask effect
+         * @param {Object} notification notification object
+         */
+        notif_triggerMask: function (notification)
+        { 
+            var currentPlayer = notification.args.currentPlayer;
+            var otherPlayer = notification.args.otherPlayer;
+            var ghostAmount = notification.args.ghostAmount;
+
+            this.playerManager.adjustPlayerGhosts(currentPlayer.id, ghostAmount * -1);
+            this.playerManager.adjustPlayerGhosts(otherPlayer.id, ghostAmount);
         },
    });             
 });

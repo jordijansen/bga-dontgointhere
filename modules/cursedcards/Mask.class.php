@@ -38,4 +38,32 @@ class Mask extends DontGoInThereCursedCard
     {
         return clienttranslate('When you collect a Mask, immediately pass 1 Ghost token per Mask card in your set to the player to your right.');
     }
+
+    /**
+     * Trigger effect of mask card
+     * @param mixed $args
+     * @return void
+     */
+    public function triggerEffect($args)
+    {
+        $player = $args['player'];
+        $maskCards = $this->game->cardManager->getPlayerCardsOfType($player->getId(), MASK);
+        $playerOnRight = $this->game->playerManager->getPlayerOnRight($player);
+        $ghostsToPass = min(count($maskCards), $player->getGhostTokens());
+
+        $this->game->playerManager->adjustPlayerGhosts($player->getId(), $ghostsToPass * -1);
+        $this->game->playerManager->adjustPlayerGhosts($playerOnRight->getId(), $ghostsToPass);
+
+        $this->game->notifyAllPlayers(    
+            TRIGGER_MASK,    
+            clienttranslate('${player_name} passes ${ghostAmount} ghosts to ${other_player_name} from collecting a Mask'),
+            array(
+                'player_name' => $this->game->getActivePlayerName(),
+                'ghostAmount' => $ghostsToPass,
+                'other_player_name' => $this->game->getPlayerNameById($playerOnRight->getId()),
+                'currentPlayer' => $player->getUiData(),
+                'otherPlayer' => $playerOnRight->getUiData(),
+            )
+        );
+    }
 }

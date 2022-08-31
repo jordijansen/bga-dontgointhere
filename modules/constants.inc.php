@@ -32,6 +32,7 @@ define('SECRET_PASSAGE_REVEAL', 'secretPassageReveal');
 define('SKIP', 'skip');
 define('TAKE_CARD', 'takeCard');
 define('TRIGGER_DOLL', 'triggerDoll');
+define('TRIGGER_MASK', 'triggerMask');
 
 /**
  * Card types

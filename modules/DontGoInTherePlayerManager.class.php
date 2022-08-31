@@ -104,6 +104,31 @@ class DontGoInTherePlayerManager extends APP_GameClass
     }
 
     /**
+     * Get a player based on their natrual order
+     * @param mixed $naturalOrder
+     * @return DontGoInTherePlayer
+     */
+    public function getPlayerByNaturalOrder($naturalOrder)
+    {
+        $sql = "SELECT player_id id, player_no naturalOrder, player_name name, player_avatar avatar, player_color color, player_score curses, player_score_aux ghostTokens, player_cards_dispeled cardsDispeled, player_eliminated eliminated, player_zombie zombie FROM player WHERE player_no='".$naturalOrder."'";
+        $rows = self::getObjectListFromDb($sql);
+        return new DontGoInTherePlayer($this->game, $rows[0]);
+    }
+
+    /**
+     * Get the player to the right of a player
+     * @param mixed $player
+     * @return DontGoInTherePlayer
+     */
+    public function getPlayerOnRight($player) 
+    {
+        $playerCount = self::getPlayerCount();
+        $playerNaturalOrder = $player->getNaturalOrder();
+        $orderOfPlayerOnRight = ($playerNaturalOrder == $playerCount) ? 1 : $playerNaturalOrder - 1;
+        return self::getPlayerByNaturalOrder($orderOfPlayerOnRight);
+    }
+
+    /**
      * Returns an array of DontGoInTherePlayer objects for all/specified player IDs
      * @param array<int> $playerIds An array of player IDs from database
      * @return array<DontGoInTherePlayer> An array of DontGoInTherePlayer objects
