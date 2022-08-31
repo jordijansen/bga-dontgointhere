@@ -38,4 +38,55 @@ class Twin extends DontGoInThereCursedCard
     {
         return clienttranslate('When you collect 2 Twin cards with the same Curse value, immediately dispel those 2 Twin cards.');
     }
+
+    /**
+     * Trigger twin effect
+     * @param mixed $args
+     * @return void
+     */
+    public function triggerEffect($args)
+    {
+        $player = $args['player'];
+        $selectedCard = $args['selectedCard'];
+        $twinCards = $this->game->cardManager->getPlayerCardsOfType($player->getId(), TWIN);
+        $twins = [];
+        $twins[] = $selectedCard;
+        $matchingTwin = self::twinsContainCard($twinCards, $selectedCard->getCurses(), $selectedCard->getId());
+
+        if($matchingTwin != false) {
+            $twins[] = $matchingTwin;
+            $this->game->playerManager->adjustPlayerDispeled($player->getId(), 2);
+            $this->game->playerManager->adjustPlayerCurses($player->getId(), $selectedCard->getCurses * -2);
+            $this->game->cardManager->moveCards($twins, DISPELED);
+            $this->game->notifyAllPlayers(
+                DISPEL_CARDS,    
+                clienttranslate('${player_name} dispels ${amount} Twin cards '),
+                array(
+                    'player_name' => $this->game->getActivePlayerName(),
+                    'amount' => $twins,
+                    'curseTotal' => - $selectedCard->getCurses * -2,
+                    'player' => $player->getUiData(),
+                    'cards' => $this->game->cardManager->getUiDataFromCards($twins),
+                )
+            );
+        }
+    }
+
+    /**
+     * Check if twin is in list
+     * @param array<DontGoInThereCursedCard> $twinCards cards in a list
+     * @param int $curseValue The value of card to find
+     * @param mixed $existingId The id of a previously found card so we don't find it again
+     * @return mixed
+     */
+    private function twinsContainCard($twinCards, $curseValue, $existingId)
+    {
+        foreach($twinCards as $twinCard)
+        {
+            if($twinCard->getId() != $existingId && $twinCard->getCurses() == $curseValue) {
+                return $twinCard;
+            }
+        }
+        return false;
+    }
 }
