@@ -37,4 +37,37 @@ class Ring extends DontGoInThereCursedCard
     {
         return clienttranslate('When you collect 4 Ring cards, immediately dispel those 4 Ring cards.');
     }
+
+    /**
+     * Trigger ring effect
+     * @param mixed $args
+     * @return void
+     */
+    public function triggerEffect($args)
+    {
+        $player = $args['player'];
+
+        $ringCards = $this->game->cardManager->getPlayerCardsOfType($player->getId(), RING);
+        if(count($ringCards) == 4) {
+            $this->game->playerManager->adjustPlayerDispeled($player->getId(), 3);
+            $curseTotal = 0;
+            foreach($ringCards as $ringCard) {
+                $curseTotal += $ringCard->getCurses();
+            }
+            $this->game->playerManager->adjustPlayerCurses($player->getId(), $curseTotal * -1);
+            $this->game->cardManager->moveCards($ringCards, DISPELED);
+
+            $this->game->notifyAllPlayers(
+                DISPEL_CARDS,    
+                clienttranslate('${player_name} dispels ${amount} Ring cards '),
+                array(
+                    'player_name' => $this->game->getActivePlayerName(),
+                    'amount' => 4,
+                    'curseTotal' => $curseTotal * -1,
+                    'player' => $player->getUiData(),
+                    'cards' => $this->game->cardManager->getUiDataFromCards($ringCards),
+                )
+            );
+        }
+    }
 }
