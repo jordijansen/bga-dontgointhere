@@ -100,7 +100,7 @@ class DontGoInTherePlayerManager extends APP_GameClass
     {
         $playerId = $playerId ?? $this->game->getActivePlayerId();
         $players = $this->getPlayers([$playerId]);
-        return $players[0];
+        return array_shift($players);
     }
 
     /**
@@ -112,7 +112,7 @@ class DontGoInTherePlayerManager extends APP_GameClass
     {
         $sql = "SELECT player_id id, player_no naturalOrder, player_name name, player_avatar avatar, player_color color, player_score curses, player_score_aux ghostTokens, player_cards_dispeled cardsDispeled, player_eliminated eliminated, player_zombie zombie FROM player WHERE player_no='".$naturalOrder."'";
         $rows = self::getObjectListFromDb($sql);
-        return new DontGoInTherePlayer($this->game, $rows[0]);
+        return new DontGoInTherePlayer($this->game, array_shift($rows));
     }
 
     /**
@@ -124,7 +124,7 @@ class DontGoInTherePlayerManager extends APP_GameClass
     {
         $playerCount = self::getPlayerCount();
         $playerNaturalOrder = $player->getNaturalOrder();
-        $orderOfPlayerOnRight = ($playerNaturalOrder == $playerCount) ? 1 : $playerNaturalOrder - 1;
+        $orderOfPlayerOnRight = ($playerNaturalOrder == 1) ? $playerCount : $playerNaturalOrder - 1;
         return self::getPlayerByNaturalOrder($orderOfPlayerOnRight);
     }
 

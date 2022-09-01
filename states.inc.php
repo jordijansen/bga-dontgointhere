@@ -114,7 +114,14 @@ $machinestates = array(
         "type" => "game",
         "action" => "stNextPlayer",
         "updateGameProgression" => true,
-        "transitions" => array( PLAYER_TURN => STATE_PLAYER_TURN, GAME_END => STATE_GAME_END )
+        "transitions" => array( PLAYER_TURN => STATE_PLAYER_TURN, TRIGGER_GAME_END_CARD_EFFECTS => STATE_TRIGGER_GAME_END_CARD_EFFECTS )
+    ),
+
+    STATE_TRIGGER_GAME_END_CARD_EFFECTS => array(
+        "name" => TRIGGER_GAME_END_CARD_EFFECTS,
+        "type" => "game",
+        "action" => "stTriggerGameEndCardEffects",
+        "transitions" => array(GAME_END => STATE_GAME_END)
     ),
    
     // Final state.

@@ -481,7 +481,7 @@ class DontGoInThere extends Table
     function stNextPlayer()
     {
         if(self::getGameStateValue(TURN_COUNTER) == self::getGameStateValue(TOTAL_TURNS)) {
-            $this->gamestate->nextState(GAME_END);
+            $this->gamestate->nextState(TRIGGER_GAME_END_CARD_EFFECTS);
         } else {
             $nextPlayer = $this->activeNextPlayer();
 
@@ -680,6 +680,12 @@ class DontGoInThere extends Table
                 $this->gamestate->nextState(RESOLVE_ROOM);
             }
         }
+    }
+
+    function stTriggerGameEndCardEffects()
+    {
+        $this->cardManager->triggerEndGameEffects();
+        $this->gamestate->nextState(GAME_END);
     }
 
 

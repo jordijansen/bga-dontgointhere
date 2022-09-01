@@ -135,7 +135,7 @@ define([
                     { 
                         var card = args.args.card;
                         var playerId = card.uiPosition;
-                        if (card.type == TOME) {
+                        if (card.type == TOME && $('dgit_player_'+playerId+'_10_cards').children.length % 2 == 1) {
                             for (var type = AMULET; type <= TWIN; type++)
                             { 
                                 var dispelButtonDiv = 'dgit_dipel_card_type_button_' + playerId + '_' + type;
@@ -308,14 +308,14 @@ define([
             dojo.subscribe(TAKE_CARD, this, 'notif_takeCard');
             dojo.subscribe(TRIGGER_MASK, this, 'notif_triggerMask');
 
-            this.notifqueue.setSynchronous(ADJUST_GHOSTS, 500);
-            this.notifqueue.setSynchronous(DISPEL_CARDS, 500);
-            this.notifqueue.setSynchronous(FLIP_ROOM, 500);
-            this.notifqueue.setSynchronous(NEW_CARDS, 500);
-            this.notifqueue.setSynchronous(RETURN_MEEPLE, 500);
-            this.notifqueue.setSynchronous(ROLL_DICE, 500);
-            this.notifqueue.setSynchronous(TAKE_CARD, 500);
-            this.notifqueue.setSynchronous(TRIGGER_MASK, 500);
+            this.notifqueue.setSynchronous(ADJUST_GHOSTS, 1000);
+            this.notifqueue.setSynchronous(DISPEL_CARDS, 1000);
+            this.notifqueue.setSynchronous(FLIP_ROOM, 1000);
+            this.notifqueue.setSynchronous(NEW_CARDS, 1000);
+            this.notifqueue.setSynchronous(RETURN_MEEPLE, 1000);
+            this.notifqueue.setSynchronous(ROLL_DICE, 1000);
+            this.notifqueue.setSynchronous(TAKE_CARD, 1000);
+            this.notifqueue.setSynchronous(TRIGGER_MASK, 1000);
         },
 
         /**
@@ -360,8 +360,6 @@ define([
             var player = notification.args.player;
             var cards = notification.args.cards;
             var curseTotal = notification.args.curseTotal;
-
-            debug('curseTotal', curseTotal);
  
             this.counterManager.adjustPlayerCurses(player, curseTotal);
             this.cardManager.dispelCards(player, cards);
