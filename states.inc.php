@@ -121,6 +121,13 @@ $machinestates = array(
         "name" => TRIGGER_GAME_END_CARD_EFFECTS,
         "type" => "game",
         "action" => "stTriggerGameEndCardEffects",
+        "transitions" => array(GAME_END_CHECK_GHOSTS => STATE_GAME_END_CHECK_GHOSTS)
+    ),
+
+    STATE_GAME_END_CHECK_GHOSTS => array(
+        "name" => GAME_END_CHECK_GHOSTS,
+        "type" => "game",
+        "action" => "stGameEndCheckGhosts",
         "transitions" => array(GAME_END => STATE_GAME_END)
     ),
    

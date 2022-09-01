@@ -474,6 +474,12 @@ class DontGoInThere extends Table
      *    GAME STATE::Global game state actions                                                     *
      ************************************************************************************************/
 
+    function stGameEndCheckGhosts()
+    {
+        $this->playerManager->handleGameEndGhosts();
+        $this->gamestate->nextState(GAME_END);
+    }
+
     /**
      * Handle transition to next player
      * @return void
@@ -682,10 +688,14 @@ class DontGoInThere extends Table
         }
     }
 
+    /**
+     * Trigger the effects of all the end game cards
+     * @return void
+     */
     function stTriggerGameEndCardEffects()
     {
         $this->cardManager->triggerEndGameEffects();
-        $this->gamestate->nextState(GAME_END);
+        $this->gamestate->nextState(GAME_END_CHECK_GHOSTS);
     }
 
 

@@ -299,6 +299,7 @@ define([
             dojo.subscribe(DISPEL_CARDS, this, 'notif_dispelCards');
             dojo.subscribe(FLIP_ROOM, this, 'notif_flipRoom');
             dojo.subscribe(FLIP_ROOM_FACEDOWN, this, 'notif_flipRoomFacedown');
+            dojo.subscribe(GAIN_CURSES, this, 'notif_gainCurses');
             dojo.subscribe(NEW_CARDS, this, 'notif_newCards');
             dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
             dojo.subscribe(RESET_DICE, this, 'notif_resetDice');
@@ -311,6 +312,7 @@ define([
             this.notifqueue.setSynchronous(ADJUST_GHOSTS, 1000);
             this.notifqueue.setSynchronous(DISPEL_CARDS, 1000);
             this.notifqueue.setSynchronous(FLIP_ROOM, 1000);
+            this.notifqueue.setSynchronous(GAIN_CURSES, 1000);
             this.notifqueue.setSynchronous(NEW_CARDS, 1000);
             this.notifqueue.setSynchronous(RETURN_MEEPLE, 1000);
             this.notifqueue.setSynchronous(ROLL_DICE, 1000);
@@ -384,6 +386,13 @@ define([
         { 
             var room = notification.args.room;
             dojo.destroy('dgit_room_panel_' + room.uiPosition);
+        },
+
+        notif_gainCurses: function (notification)
+        { 
+            var player = notification.args.player;
+            var amount = notification.args.amount;
+            this.counterManager.adjustPlayerCurses(player, amount);
         },
 
         /**

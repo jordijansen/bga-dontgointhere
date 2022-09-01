@@ -249,4 +249,38 @@ class DontGoInTherePlayerManager extends APP_GameClass
 
         return false;
     }
+
+    public function handleGameEndGhosts()
+    {
+        $players = self::getPlayers();
+        $playersWithMostGhosts = [];
+        $mostGhosts = 0;
+
+        foreach($players as $player)
+        {
+            if($player->getGhostTokens() > $mostGhosts) {
+                $playersWithMostGhosts = [];
+                $playersWithMostGhosts[] = $player;
+                $mostGhosts = $player->getGhostTokens();
+            } else if($player->getGhostTokens() > 0 && $player->getGhostTokens() == $mostGhosts) {
+                $playersWithMostGhosts[] = $player;
+            }
+        }
+
+        foreach($playersWithMostGhosts as $player) 
+        {
+            $cursesToGain = floor($mostGhosts / 2);
+            self::adjustPlayerCurses($player->getId(), $cursesToGain);
+
+            $this->game->notifyAllPlayers(    
+                GAIN_CURSES, 
+                clienttranslate('${player_name} gains ${amount} curses from having the most ghosts'),
+                array(
+                    'player_name' => $player->getName(),
+                    'amount' => $cursesToGain,
+                    'player' => $player->getUiData(),
+                )
+            );
+        }
+    }
 }

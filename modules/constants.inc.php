@@ -24,6 +24,7 @@ define('DISPEL_CARDS', 'dispelCards');
 define('DISPEL_SET', 'dispelSet');
 define('FLIP_ROOM', 'flipRoom');
 define('FLIP_ROOM_FACEDOWN', 'flipRoomFacedown');
+define('GAIN_CURSES', 'gainCurses');
 define('NEW_CARDS', 'newCards');
 define('PLACE_MEEPLE', 'placeMeeple');
 define('RESET_DICE', 'resetDice');
@@ -137,12 +138,14 @@ define('STATE_SELECT_CARD', 12);
 define('STATE_TRIGGER_CARD_EFFECT', 13);
 define('STATE_NEXT_PLAYER', 20);
 define('STATE_TRIGGER_GAME_END_CARD_EFFECTS', 30);
+define('STATE_GAME_END_CHECK_GHOSTS', 31);
 define('STATE_GAME_END', 99);
 
 /**
  * State names
  */
 define('GAME_END', 'gameEnd');
+define('GAME_END_CHECK_GHOSTS', 'gameEndCheckGhosts');
 define('GAME_SETUP', 'gameSetup');
 define('NEXT_PLAYER', 'nextPlayer');
 define('PLAYER_TURN', 'playerTurn');
