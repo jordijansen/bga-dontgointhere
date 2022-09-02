@@ -34,6 +34,6 @@ class Nursery extends DontGoInThereRoom
      */
     private function buildTooltipText()
     {
-        return clienttranslate('If you place a Meeple on the bottom space of the Nursery, immediately discard a Ghost token.');
+        return clienttranslate('If you place a Meeple on the bottom space of the Nursery, immediately discard a Ghost.');
     }
 }

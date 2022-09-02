@@ -34,6 +34,6 @@ class Library extends DontGoInThereRoom
      */
     private function buildTooltipText()
     {
-        return clienttranslate('Place the 3 Cursed Cards in the Library in ascending Curse value. If cards have the same Curse value, the one drawn first is placed to the left. When a player takes the leftmost card they must first take a Ghost token. When a player takes the rightmost card, they first discard a Ghost Token.');
+        return clienttranslate('Place the 3 Cursed Cards in the Library in ascending Curse value. If cards have the same Curse value, the one drawn first is placed to the left. When a player takes the leftmost card they must first take a Ghost. When a player takes the rightmost card, they first discard a Ghost.');
     }
 }

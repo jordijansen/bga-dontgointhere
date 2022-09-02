@@ -34,6 +34,6 @@ class SecretPassage extends DontGoInThereRoom
      */
     private function buildTooltipText()
     {
-        return clienttranslate('Place the 3rd Cursed Card in the Secret Passage face-down. If you place a Meeple here, secretly look at the face-down card. When a 3rd Meeple is placed here, reveal the card.');
+        return clienttranslate('Place the 3rd Cursed card in the Secret Passage face-down. If you place a Meeple here, secretly look at the face-down card. When a 3rd Meeple is placed here, reveal the card.');
     }
 }

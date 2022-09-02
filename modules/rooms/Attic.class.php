@@ -34,6 +34,6 @@ class Attic extends DontGoInThereRoom
      */
     private function buildTooltipText()
     {
-        return clienttranslate('If you place a Meeple on the top space of the Attic immediately take a Ghost token.');
+        return clienttranslate('If you place a Meeple on the top space of the Attic immediately take a Ghost.');
     }
 }
