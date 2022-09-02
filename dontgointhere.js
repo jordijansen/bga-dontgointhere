@@ -46,9 +46,7 @@ define([
          */
         setup: function( gamedatas )
         {
-            // Initial debug logging
-            debug('setup', 'Beginning game setup');
-            debug('setup', gamedatas);
+            debug('gamedatas', gamedatas);
 
             // Define global constants
             this.util.defineGlobalConstants(gamedatas.constants);
@@ -66,8 +64,6 @@ define([
 
             // Setup game notifications to handle (see "setupNotifications" method below)
             this.setupNotifications();
-
-            debug('setup', 'Ending game setup');
         },
        
 
@@ -82,9 +78,6 @@ define([
          */
         onEnteringState: function( stateName, args )
         {
-            debug('onEnteringState', stateName);
-            debug('onEnteringState', args);
-
             this.util.removeAllTemporaryStyles();
             this.disconnectAll();
             
@@ -158,9 +151,6 @@ define([
          */
         onLeavingState: function( stateName )
         {
-            debug('onLeavingState', 'Leaving a state');
-            debug('onLeavingState::stateName', stateName);
-
             this.util.removeAllTemporaryStyles();
             this.disconnectAll();
             
@@ -181,11 +171,7 @@ define([
          * @param {Object} args Any arguments needed for interface updates
          */
         onUpdateActionButtons: function( stateName, args )
-        {
-            debug('onUpdateActionButtons', 'Updating action buttons');
-            debug('onUpdateActionButtons::stateName', stateName);
-            debug('onUpdateActionButtons::args', args);
-                      
+        {                      
             if( this.isCurrentPlayerActive() )
             {            
                 switch( stateName )
@@ -224,6 +210,7 @@ define([
 
         /**
          * Triggers when user changes a die to its oppposite face
+         * @param {int} dieId database id of die
          * @param {Object} event onclick event
          */
         onDieChange: function (dieId, event) {
@@ -235,6 +222,8 @@ define([
 
         /**
          * Triggers when user dispels a set of cards from Tome effect
+         * @param {int} cardType card type
+         * @param {Object} event onclick event
          */
         onDispelSet: function (cardType, event) {
             return function (event) {
@@ -291,8 +280,6 @@ define([
          */
         setupNotifications: function()
         {
-            debug('setupNotifications', 'Setting up notification subscriptions');
-
             dojo.subscribe(ADJUST_GHOSTS, this, 'notif_adjustGhosts');
             dojo.subscribe(CHANGE_DIE, this, 'notif_changeDie');
             dojo.subscribe(CHANGE_PLAYER, this, 'notif_changePlayer');
@@ -388,6 +375,10 @@ define([
             dojo.destroy('dgit_room_panel_' + room.uiPosition);
         },
 
+        /**
+         * Handle gaining curses at end of game
+         * @param {Object} notification notification object
+         */
         notif_gainCurses: function (notification)
         { 
             var player = notification.args.player;
