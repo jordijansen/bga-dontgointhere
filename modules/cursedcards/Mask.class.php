@@ -36,7 +36,7 @@ class Mask extends DontGoInThereCursedCard
      */
     private function buildTooltipText()
     {
-        return clienttranslate('When you collect a Mask, immediately pass 1 Ghost token per Mask card in your set to the player to your right.');
+        return clienttranslate('When you collect a Mask, immediately pass 1 Ghost per Mask card in your set to the player to your right.');
     }
 
     /**
@@ -56,11 +56,12 @@ class Mask extends DontGoInThereCursedCard
 
         $this->game->notifyAllPlayers(    
             TRIGGER_MASK,    
-            clienttranslate('${player_name} passes ${ghostAmount} ghosts to ${other_player_name} from collecting a Mask'),
+            clienttranslate('${player_name} passes ${ghostAmount} ${plural} to ${other_player_name} from collecting a Mask'),
             array(
                 'player_name' => $this->game->getActivePlayerName(),
                 'ghostAmount' => $ghostsToPass,
-                'other_player_name' => $this->game->getPlayerNameById($playerOnRight->getId()),
+                'plural' => $ghostsToPass == 1 ? clienttranslate('Ghost') : clienttranslate('Ghosts'),
+                'other_player_name' => $this->game->playerManager->getPlayerNameColorDiv($playerOnRight),
                 'currentPlayer' => $player->getUiData(),
                 'otherPlayer' => $playerOnRight->getUiData(),
             )

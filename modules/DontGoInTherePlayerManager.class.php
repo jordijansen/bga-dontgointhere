@@ -104,6 +104,16 @@ class DontGoInTherePlayerManager extends APP_GameClass
     }
 
     /**
+     * Get player name div with color
+     * @param mixed $player
+     * @return string
+     */
+    public function getPlayerNameColorDiv($player)
+    {
+        return '<span class="playername" style="#'.$player->getColor().';">'.$player->getName().'</span>';
+    }
+
+    /**
      * Get a player based on their natrual order
      * @param mixed $naturalOrder
      * @return DontGoInTherePlayer

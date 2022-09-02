@@ -100,10 +100,10 @@ class Doll extends DontGoInThereCursedCard
         $cardList = [];
         $cardList[] = $oneCard;
 
-        $anotherOneCard = self::dollsContainCard($dollCards, 1, $oneCard->getId());
-        $twoCard = self::dollsContainCard($dollCards, 2, null);
-        $threeCard = self::dollsContainCard($dollCards, 3, null);
-        $fourCard = self::dollsContainCard($dollCards, 4, null);
+        $anotherOneCard = $this->game->cardManager->listContainsCard($dollCards, 1, $oneCard->getId());
+        $twoCard = $this->game->cardManager->listContainsCard($dollCards, 2, null);
+        $threeCard = $this->game->cardManager->listContainsCard($dollCards, 3, null);
+        $fourCard = $this->game->cardManager->listContainsCard($dollCards, 4, null);
 
         if($twoCard != false && $threeCard != false) {
             $cardList[] = $twoCard;
@@ -118,7 +118,7 @@ class Doll extends DontGoInThereCursedCard
         }
 
         if($anotherOneCard != false && $twoCard != false) {
-            $anotherTwoCard = self::dollsContainCard($dollCards, 2, $twoCard->getId());
+            $anotherTwoCard = $this->game->cardManager->listContainsCard($dollCards, 2, $twoCard->getId());
             if($anotherTwoCard != false) {
                 $cardList[] = $anotherOneCard;
                 $cardList[] = $twoCard;
@@ -141,10 +141,10 @@ class Doll extends DontGoInThereCursedCard
         $cardList = [];
         $cardList[] = $twoCard;
 
-        $oneCard = self::dollsContainCard($dollCards, 1, null);
-        $anotherTwoCard = self::dollsContainCard($dollCards, 2, $twoCard->getId());
-        $threeCard = self::dollsContainCard($dollCards, 3, null);
-        $fourCard = self::dollsContainCard($dollCards, 4, null);
+        $oneCard = $this->game->cardManager->listContainsCard($dollCards, 1, null);
+        $anotherTwoCard = $this->game->cardManager->listContainsCard($dollCards, 2, $twoCard->getId());
+        $threeCard = $this->game->cardManager->listContainsCard($dollCards, 3, null);
+        $fourCard = $this->game->cardManager->listContainsCard($dollCards, 4, null);
 
         if($fourCard != false) {
             $cardList[] = $fourCard;
@@ -158,7 +158,7 @@ class Doll extends DontGoInThereCursedCard
         }
 
         if($anotherTwoCard != null && $oneCard != null) {
-            $anotherOneCard = self::dollsContainCard($dollCards, 1, $oneCard->getId());
+            $anotherOneCard = $this->game->cardManager->listContainsCard($dollCards, 1, $oneCard->getId());
             if($anotherOneCard != false) {
                 $cardList[] = $anotherTwoCard;
                 $cardList[] = $oneCard;
@@ -181,9 +181,9 @@ class Doll extends DontGoInThereCursedCard
         $cardList = [];
         $cardList[] = $threeCard;
 
-        $oneCard = self::dollsContainCard($dollCards, 1, null);
-        $twoCard = self::dollsContainCard($dollCards, 2, null);
-        $anotherThreeCard = self::dollsContainCard($dollCards, 3, $threeCard->getId());
+        $oneCard = $this->game->cardManager->listContainsCard($dollCards, 1, null);
+        $twoCard = $this->game->cardManager->listContainsCard($dollCards, 2, null);
+        $anotherThreeCard = $this->game->cardManager->listContainsCard($dollCards, 3, $threeCard->getId());
 
         if($oneCard != false && $twoCard != false) {
             $cardList[] = $oneCard;
@@ -210,8 +210,8 @@ class Doll extends DontGoInThereCursedCard
         $cardList = [];
         $cardList[] = $fourCard;
 
-        $oneCard = self::dollsContainCard($dollCards, 1, null);
-        $twoCard = self::dollsContainCard($dollCards, 2, null);
+        $oneCard = $this->game->cardManager->listContainsCard($dollCards, 1, null);
+        $twoCard = $this->game->cardManager->listContainsCard($dollCards, 2, null);
 
         if($twoCard != false) {
             $cardList[] = $twoCard;
@@ -219,7 +219,7 @@ class Doll extends DontGoInThereCursedCard
         }
 
         if($oneCard != false) {
-            $anotherOneCard = self::dollsContainCard($dollCards, 1, $oneCard->getId());
+            $anotherOneCard = $this->game->cardManager->listContainsCard($dollCards, 1, $oneCard->getId());
             if($anotherOneCard != false) {
                 $cardList[] = $oneCard;
                 $cardList[] = $anotherOneCard;
@@ -227,24 +227,6 @@ class Doll extends DontGoInThereCursedCard
             }
         }
 
-        return false;
-    }
-
-    /**
-     * Check if doll is in list
-     * @param array<DontGoInThereCursedCard> $dollCards cards in a list
-     * @param int $curseValue The value of card to find
-     * @param mixed $existingId The id of a previously found card so we don't find it again
-     * @return mixed
-     */
-    private function dollsContainCard($dollCards, $curseValue, $existingId)
-    {
-        foreach($dollCards as $dollCard)
-        {
-            if($dollCard->getId() != $existingId && $dollCard->getCurses() == $curseValue) {
-                return $dollCard;
-            }
-        }
         return false;
     }
 }

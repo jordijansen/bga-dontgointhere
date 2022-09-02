@@ -36,6 +36,6 @@ class Cat extends DontGoInThereCursedCard
      */
     private function buildTooltipText()
     {
-        return clienttranslate('At game end, if you have 9 or fewer Ghost tokens, dispel all but 1 Cat card of your choice.');
+        return clienttranslate('At game end, if you have 9 or fewer Ghosts, dispel all but 1 Cat card.');
     }
 }

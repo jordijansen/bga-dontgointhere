@@ -28,12 +28,6 @@ class Clock extends DontGoInThereCursedCard
         $this->diceIcons = self::determineDiceIcons($row[TYPE_ARG]);
         $this->endGameTrigger = false;
         $this->uiPosition = $row[LOCATION_ARG];
-        $this->abilityText = self::buildAbilityText();
-    }
-
-    private function buildAbilityText()
-    {
-        return clienttranslate('must dispel 2 clock cards');
     }
 
     /**
@@ -42,12 +36,18 @@ class Clock extends DontGoInThereCursedCard
      */
     private function buildTooltipText()
     {
-        return clienttranslate('If you are the 1st player to collect a set of Clock cards whose Curse values add up to 8 or more, immediately dispel 2 Clock cards of your choice. After that, collecting a set of clocks has no effect.');
+        return clienttranslate('If you are the 1st player to collect a set of Clock cards whose Curse values add up to 8 or more, immediately dispel 2 Clock cards. After that, collecting a set of Clocks has no effect.');
     }
 
+    /**
+     * Trigger the effect from taking a Clock
+     * @param mixed $args
+     * @return void
+     */
     public function triggerEffect($args)
     {
         $player = $args['player'];
+        // Clocks can only be triggered once, need to check if it's already happened or not
         $isClockCollected = $this->game->getGameStateValue(CLOCKS_COLLECTED);
 
         if($isClockCollected == DGIT_FALSE) {
@@ -58,6 +58,7 @@ class Clock extends DontGoInThereCursedCard
                 $totalCurseValue += $clockCard->getCurses();
             }
 
+            // If Clocks haven't been triggered yet and player has a total of 8 or more curse, dispel 2 Clock cards with highest curse calue
             if($totalCurseValue >= 8) {
                 $sortedClocks = $this->game->cardManager->sortCardsByCurseValueDesc($clockCards);
                 $clocksToDispel = [];

@@ -51,7 +51,7 @@ class Twin extends DontGoInThereCursedCard
         $twinCards = $this->game->cardManager->getPlayerCardsOfType($player->getId(), TWIN);
         $twins = [];
         $twins[] = $selectedCard;
-        $matchingTwin = self::twinsContainCard($twinCards, $selectedCard->getCurses(), $selectedCard->getId());
+        $matchingTwin = $this->game->cardManager->listContainsCard($twinCards, $selectedCard->getCurses(), $selectedCard->getId());
 
         if($matchingTwin != false) {
             $twins[] = $matchingTwin;
@@ -70,23 +70,5 @@ class Twin extends DontGoInThereCursedCard
                 )
             );
         }
-    }
-
-    /**
-     * Check if twin is in list
-     * @param array<DontGoInThereCursedCard> $twinCards cards in a list
-     * @param int $curseValue The value of card to find
-     * @param mixed $existingId The id of a previously found card so we don't find it again
-     * @return mixed
-     */
-    private function twinsContainCard($twinCards, $curseValue, $existingId)
-    {
-        foreach($twinCards as $twinCard)
-        {
-            if($twinCard->getId() != $existingId && $twinCard->getCurses() == $curseValue) {
-                return $twinCard;
-            }
-        }
-        return false;
     }
 }

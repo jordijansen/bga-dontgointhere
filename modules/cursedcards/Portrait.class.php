@@ -36,6 +36,6 @@ class Portrait extends DontGoInThereCursedCard
      */
     private function buildTooltipText()
     {
-        return clienttranslate('At game end, dispel half of your Portrait cards (of your choice), rounded down.');
+        return clienttranslate('At game end, dispel half of your Portrait cards, rounded down.');
     }
 }

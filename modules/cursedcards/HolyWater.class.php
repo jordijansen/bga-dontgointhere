@@ -36,7 +36,7 @@ class HolyWater extends DontGoInThereCursedCard
      */
     private function buildTooltipText()
     {
-        return clienttranslate('When you collect 2 Holy Water cards, immediately discard half of your Ghost tokens, rounded down.');
+        return clienttranslate('When you collect 2 Holy Water cards, immediately discard half of your Ghosts, rounded down.');
     }
 
     /**
@@ -49,9 +49,7 @@ class HolyWater extends DontGoInThereCursedCard
         $player = $args['player'];
         $holyWaterCards = $this->game->cardManager->getPlayerCardsOfType($player->getId(), HOLY_WATER);
 
-        // echo(count($holyWaterCards) % 2);
-        // die('ok');
-        
+        // If player has a new pair of Holy Water cards they discard half of their ghosts, rounded down
         if(count($holyWaterCards) % 2 == 0) {
             $currentGhosts = $player->getGhostTokens();
             $ghostsToDiscard = floor($currentGhosts / 2) * -1;
@@ -60,10 +58,11 @@ class HolyWater extends DontGoInThereCursedCard
                 $this->game->playerManager->adjustPlayerGhosts($player->getId(), $ghostsToDiscard);
                 $this->game->notifyAllPlayers(
                     ADJUST_GHOSTS,    
-                    clienttranslate('${player_name} collects a set of 2 Holy Water cards and discards ${number} ghosts'),
+                    clienttranslate('${player_name} collects a set of 2 Holy Water cards and discards ${number} ${plural}'),
                     array(
                         'player_name' => $this->game->getActivePlayerName(),
                         'number' => $ghostsToDiscard * -1,
+                        'plural' => $ghostsToDiscard == 1 ? clienttranslate('Ghost') : clienttranslate('Ghosts'),
                         'playerId' => $player->getId(),
                         'amount' => $ghostsToDiscard,
                     )

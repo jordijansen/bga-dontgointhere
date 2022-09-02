@@ -35,7 +35,7 @@ class Mirror extends DontGoInThereCursedCard
      */
     private function buildTooltipText()
     {
-        return clienttranslate('When you collect a Mirror card, take 1 Ghost token. When you collect 3 Mirror cards, immediately dispel those 3 Mirror cards.');
+        return clienttranslate('When you collect a Mirror card, take 1 Ghost. When you collect 3 Mirror cards, immediately dispel those 3 Mirror cards.');
     }
 
     /**
@@ -49,7 +49,7 @@ class Mirror extends DontGoInThereCursedCard
         $this->game->playerManager->adjustPlayerGhosts($player->getId(), 1);
         $this->game->notifyAllPlayers(
             ADJUST_GHOSTS,    
-            clienttranslate('${player_name} gains 1 ghost from taking a Mirror'),
+            clienttranslate('${player_name} gains 1 Ghost from taking a Mirror'),
             array(
                 'player_name' => $this->game->getActivePlayerName(),
                 'playerId' => $player->getId(),
