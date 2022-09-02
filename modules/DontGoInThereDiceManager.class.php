@@ -170,7 +170,7 @@ class DontGoInThereDiceManager extends APP_GameClass
      */
     private function rollDie($dieId) 
     {
-        $rolledValue = rand(1, 6);
+        $rolledValue = bga_rand(1, 6);
         self::DbQuery("UPDATE die SET die_value='" . $rolledValue . "' WHERE die_id='" . $dieId . "'");
     }
 
