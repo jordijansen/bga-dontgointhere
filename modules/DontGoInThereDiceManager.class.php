@@ -104,6 +104,15 @@ class DontGoInThereDiceManager extends APP_GameClass
     }
 
     /**
+     * Get the game state value for ghosts rolled
+     * @return int Number of ghosts rolled on dice
+     */
+    public function getGhostsRolled()
+    {
+        return $this->game->getGameStateValue(GHOSTS_ROLLED);
+    }
+
+    /**
      * Get visible dice ui data for all/specified dieIds
      * @param array<int> $dieIds An array of die IDs from database
      * @return array<mixed> Array of uiData for a die
@@ -163,15 +172,6 @@ class DontGoInThereDiceManager extends APP_GameClass
     {
         $rolledValue = rand(1, 6);
         self::DbQuery("UPDATE die SET die_value='" . $rolledValue . "' WHERE die_id='" . $dieId . "'");
-    }
-
-    /**
-     * Get the game state value for ghosts rolled
-     * @return int Number of ghosts rolled on dice
-     */
-    public function getGhostsRolled()
-    {
-        return $this->game->getGameStateValue(GHOSTS_ROLLED);
     }
 
     /**

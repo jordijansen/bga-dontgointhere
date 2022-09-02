@@ -64,7 +64,7 @@ class DontGoInTherePlayerManager extends APP_GameClass
     }
 
     /**
-     * Adjust oplayer dispeled value
+     * Adjust player dispeled value
      * @param int $playerId
      * @param mixed $amount
      * @return float|int
@@ -260,12 +260,17 @@ class DontGoInTherePlayerManager extends APP_GameClass
         return false;
     }
 
+    /**
+     * The player(s) with the most ghosts gain curses
+     * @return void
+     */
     public function handleGameEndGhosts()
     {
         $players = self::getPlayers();
         $playersWithMostGhosts = [];
         $mostGhosts = 0;
 
+        // Get player(s) with the most ghosts
         foreach($players as $player)
         {
             if($player->getGhostTokens() > $mostGhosts) {
@@ -277,17 +282,19 @@ class DontGoInTherePlayerManager extends APP_GameClass
             }
         }
 
+        // Those players get curses equal to half the ghosts
         foreach($playersWithMostGhosts as $player) 
         {
             $cursesToGain = floor($mostGhosts / 2);
             self::adjustPlayerCurses($player->getId(), $cursesToGain);
 
             $this->game->notifyAllPlayers(    
-                GAIN_CURSES, 
-                clienttranslate('${player_name} gains ${amount} curses from having the most ghosts'),
+                GAIN_CURSES,    
+                clienttranslate('${player_name} gains ${amount} ${plural} from having the most ghosts'),
                 array(
-                    'player_name' => $player->getName(),
+                    'player_name' => self::getPlayerNameColorDiv($player),
                     'amount' => $cursesToGain,
+                    'plural' => $cursesToGain == 1 ? clienttranslate('Curse') : clienttranslate('Curses'),
                     'player' => $player->getUiData(),
                 )
             );
