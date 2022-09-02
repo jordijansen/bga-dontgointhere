@@ -147,7 +147,7 @@ class DontGoInThereCardManager extends APP_GameClass
      * Draw three new cards for a room
      * @param DontGoInThereRoom $room room object
      */
-    public function drawNewCardsForRoom($room)
+    private function drawNewCardsForRoom($room)
     {
         if($room->getType() == LIBRARY) {
             $nextThreeCards = self::getCursedCardsOnTopOfDeck(3);
@@ -184,6 +184,11 @@ class DontGoInThereCardManager extends APP_GameClass
         return new $className($this->game, $card);
     }
 
+    /**
+     * Get a cursed card object from card id
+     * @param int $cardId
+     * @return DontGoInThereCursedCard
+     */
     public function getCursedCardById($cardId)
     {
         return self::getCursedCard($this->cards->getCard($cardId));
@@ -224,6 +229,12 @@ class DontGoInThereCardManager extends APP_GameClass
         return self::getCursedCardById($this->game->getGameStateValue(LAST_SELECTED_CARD));
     }
 
+    /**
+     * Get all cards of a type held by a player
+     * @param int $playerId
+     * @param int $type
+     * @return array
+     */
     public function getPlayerCardsOfType($playerId, $type) {
         $cards = $this->cards->getCardsOfTypeInLocation($type, null, HAND, $playerId);
         return array_map(function($card) {
@@ -259,6 +270,24 @@ class DontGoInThereCardManager extends APP_GameClass
             $ui[] = $card->getUiData();
         }
         return $ui;
+    }
+
+    /**
+     * Check if card is in list
+     * @param array<DontGoInThereCursedCard> $cards cards in a list
+     * @param int $curseValue The value of card to find
+     * @param mixed $existingId The id of a previously found card so we don't find it again
+     * @return mixed
+     */
+    public function listContainsCard($cards, $curseValue, $existingId)
+    {
+        foreach($cards as $card)
+        {
+            if($card->getId() != $existingId && $card->getCurses() == $curseValue) {
+                return $card;
+            }
+        }
+        return false;
     }
 
     /**
@@ -359,39 +388,11 @@ class DontGoInThereCardManager extends APP_GameClass
         return self::getCursedCard($this->cards->getCard($cardId));
     }
 
-    /**
-     * Checks if the conditions to trigger the tome are in effect
-     * @param int $playerId
-     * @return bool
-     */
-    public function triggerTome($playerId)
-    {
-        $tomeCards = self::getPlayerCardsOfType($playerId, TOME);
-        // If player has a number of tomes divisible by two and has other cards to dispel
-        if(count($tomeCards) % 2 == 0 && self::countCursedCards(HAND, $playerId) > count($tomeCards)) {
-            return true;
-        }
-        return false;
-    }
 
     /**
-     * Check if card is in list
-     * @param array<DontGoInThereCursedCard> $cards cards in a list
-     * @param int $curseValue The value of card to find
-     * @param mixed $existingId The id of a previously found card so we don't find it again
-     * @return mixed
+     * Trigger the effects of the cards with end game abilities
+     * @return void
      */
-    public function listContainsCard($cards, $curseValue, $existingId)
-    {
-        foreach($cards as $card)
-        {
-            if($card->getId() != $existingId && $card->getCurses() == $curseValue) {
-                return $card;
-            }
-        }
-        return false;
-    }
-
     public function triggerEndGameEffects()
     {
         self::triggerAmuletEffect();
@@ -400,6 +401,10 @@ class DontGoInThereCardManager extends APP_GameClass
         self::triggerPortraitEffect();
     }
 
+    /**
+     * Trigger the end game effect of the Amulet
+     * @return void
+     */
     public function triggerAmuletEffect()
     {
         $players = $this->game->playerManager->getPlayers();
@@ -462,10 +467,11 @@ class DontGoInThereCardManager extends APP_GameClass
                     self::moveCards($cardsToDispel, DISPELED);
                     $this->game->notifyAllPlayers(
                         DISPEL_CARDS,    
-                        clienttranslate('${player_name} dispels ${amount} Amulet cards '),
+                        clienttranslate('${player_name} dispels ${amount} Amulet ${plural}'),
                         array(
-                            'player_name' => $this->game->getPlayerNameById($player->getId()),
+                            'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
                             'amount' => count($cardsToDispel),
+                            'plural' => count($cardsToDispel) == 1 ? clienttranslate('card') : clienttranslate('cards'),
                             'curseTotal' => $totalCurseValue * -1,
                             'player' => $player->getUiData(),
                             'cards' => $this->game->cardManager->getUiDataFromCards($cardsToDispel),
@@ -476,6 +482,10 @@ class DontGoInThereCardManager extends APP_GameClass
         }
     }
 
+    /**
+     * Trigger the end game effect of the Cat
+     * @return void
+     */
     public function triggerCatEffect()
     {
         $players = $this->game->playerManager->getPlayers();
@@ -496,10 +506,11 @@ class DontGoInThereCardManager extends APP_GameClass
                     self::moveCards($sortedCats, DISPELED);
                     $this->game->notifyAllPlayers(
                         DISPEL_CARDS,    
-                        clienttranslate('${player_name} dispels ${amount} Cat cards '),
+                        clienttranslate('${player_name} dispels ${amount} Cat ${plural}'),
                         array(
-                            'player_name' => $this->game->getPlayerNameById($player->getId()),
+                            'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
                             'amount' => count($sortedCats),
+                            'plural' => count($sortedCats) == 1 ? clienttranslate('card') : clientranslate('cards'),
                             'curseTotal' => $totalCurseValue * -1,
                             'player' => $player->getUiData(),
                             'cards' => $this->game->cardManager->getUiDataFromCards($sortedCats),
@@ -510,12 +521,17 @@ class DontGoInThereCardManager extends APP_GameClass
         }
     }
 
+    /**
+     * Trigger the end game effect of the Music Box
+     * @return void
+     */
     public function triggerMusicBoxEffect()
     {
         $players = $this->game->playerManager->getPlayers();
         $maxCurses = 0;
         $playersWithMostCurses = [];
 
+        // Figure out which player(s) have Musix Boxes with the highest curse value
         foreach($players as $player) 
         {
             $musicBoxCards = self::getPlayerCardsOfType($player->getId(), MUSIC_BOX);
@@ -533,6 +549,7 @@ class DontGoInThereCardManager extends APP_GameClass
             }
         }
 
+        // Those players dispel (up to) 2 Music Boxes
         foreach($playersWithMostCurses as $player)
         {
             $musicBoxCards = self::getPlayerCardsOfType($player->getId(), MUSIC_BOX);
@@ -556,10 +573,11 @@ class DontGoInThereCardManager extends APP_GameClass
             self::moveCards($cardsToDispel, DISPELED);
             $this->game->notifyAllPlayers(
                 DISPEL_CARDS,    
-                clienttranslate('${player_name} dispels ${amount} Music Box cards '),
+                clienttranslate('${player_name} dispels ${amount} Music Box ${plural}'),
                 array(
-                    'player_name' => $this->game->getPlayerNameById($player->getId()),
+                    'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
                     'amount' => count($cardsToDispel),
+                    'plural' => count($cardsToDispel) == 1 ? clienttranslate('card') : clienttranslate('cards'),
                     'curseTotal' => $totalCurseValue * -1,
                     'player' => $player->getUiData(),
                     'cards' => $this->game->cardManager->getUiDataFromCards($cardsToDispel),
@@ -568,6 +586,10 @@ class DontGoInThereCardManager extends APP_GameClass
         }
     }
 
+    /**
+     * Trigger the end game effect of the Music Box
+     * @return void
+     */
     public function triggerPortraitEffect()
     {
         $players = $this->game->playerManager->getPlayers();
@@ -591,10 +613,11 @@ class DontGoInThereCardManager extends APP_GameClass
                 self::moveCards($cardsToDispel, DISPELED);
                 $this->game->notifyAllPlayers(
                     DISPEL_CARDS,    
-                    clienttranslate('${player_name} dispels ${amount} Portrait cards '),
+                    clienttranslate('${player_name} dispels ${amount} Portrait ${plural}'),
                     array(
-                        'player_name' => $this->game->getPlayerNameById($player->getId()),
+                        'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
                         'amount' => count($cardsToDispel),
+                        'plural' => count($cardsToDispel) == 1 ? clienttranslate('card') : clienttranslate('cards'),
                         'curseTotal' => $totalCurseValue * -1,
                         'player' => $player->getUiData(),
                         'cards' => $this->game->cardManager->getUiDataFromCards($cardsToDispel),
@@ -602,5 +625,20 @@ class DontGoInThereCardManager extends APP_GameClass
                 );
             }         
         }
+    }
+
+    /**
+     * Checks if the conditions to trigger the tome are in effect
+     * @param int $playerId
+     * @return bool
+     */
+    public function triggerTome($playerId)
+    {
+        $tomeCards = self::getPlayerCardsOfType($playerId, TOME);
+        // If player has a number of tomes divisible by two and has other cards to dispel
+        if(count($tomeCards) % 2 == 0 && self::countCursedCards(HAND, $playerId) > count($tomeCards)) {
+            return true;
+        }
+        return false;
     }
 }
