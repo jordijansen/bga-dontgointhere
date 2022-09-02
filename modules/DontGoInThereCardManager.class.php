@@ -147,7 +147,7 @@ class DontGoInThereCardManager extends APP_GameClass
      * Draw three new cards for a room
      * @param DontGoInThereRoom $room room object
      */
-    private function drawNewCardsForRoom($room)
+    public function drawNewCardsForRoom($room)
     {
         if($room->getType() == LIBRARY) {
             $nextThreeCards = self::getCursedCardsOnTopOfDeck(3);
@@ -510,7 +510,7 @@ class DontGoInThereCardManager extends APP_GameClass
                         array(
                             'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
                             'amount' => count($sortedCats),
-                            'plural' => count($sortedCats) == 1 ? clienttranslate('card') : clientranslate('cards'),
+                            'plural' => count($sortedCats) == 1 ? clienttranslate('card') : clienttranslate('cards'),
                             'curseTotal' => $totalCurseValue * -1,
                             'player' => $player->getUiData(),
                             'cards' => $this->game->cardManager->getUiDataFromCards($sortedCats),

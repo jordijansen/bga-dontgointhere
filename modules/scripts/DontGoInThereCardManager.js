@@ -90,12 +90,11 @@ define([
                 moveCard[cardKey] = this.game.slideToObject(cardDiv, dispeledCardsDiv, 500, delay).play();
                 on(moveCard[cardKey], "End", function (cardDiv) {
                     dojo.destroy(cardDiv);
+                    if (cardKey == cards.length - 1 && currentCardsOfType == cards.length) {
+                        dojo.addClass(cardTypeDiv, 'dgit-hidden');
+                    }
                 });
                 delay = delay + 200;
-            }
-            
-            if (currentCardsOfType == cards.length) {
-                dojo.addClass(cardTypeDiv, 'dgit-hidden');
             }
             
             this.game.counterManager.adjustPlayerDispeledCounter(player, cards.length);

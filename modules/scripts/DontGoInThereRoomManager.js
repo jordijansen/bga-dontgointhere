@@ -56,18 +56,18 @@ define([
                     this.game.util.placeBlock(CURSED_CARD_TEMPLATE, 'dgit_room_' + room.uiPosition + '_card_slot_' + card.uiPosition,
                         { card_id: card.id, room_ui_position: room.uiPosition, card_ui_position: card.uiPosition, card_css_class: card.cssClass });
                     
+                    // If card is faceup show tooltip
+                    if (card.tooltipText.length > 0) {
+                        this.addTooltip('dgit_card_' + card.id + '_tooltip', card.tooltipText, '');
+                    } else {
+                        dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
+                    }
+                    
                     if (room.type == SECRET_PASSAGE && card.uiPosition == 3 && gamedatas.secretPassageRevealed == DGIT_FALSE && !this.isPlayerPresentInRoom(gamedatas.meeplesInRooms[room.uiPosition], this.game.getCurrentPlayerId())) {
                         // If room is secret passage flip the 3rd card face down for everyone who has not placed a meeple here
                         dojo.addClass('dgit_card_' + card.id, 'dgit-card-back');
                         dojo.setAttr('dgit_card_' + card.id, 'special', 'secret-passage');
                         dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
-                    } else {
-                        // If card is faceup show tooltip
-                        if (card.tooltipText.length > 0) {
-                            this.addTooltip('dgit_card_' + card.id + '_tooltip', card.tooltipText, '');
-                        } else {
-                            dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
-                        }
                     }
                 }
 
