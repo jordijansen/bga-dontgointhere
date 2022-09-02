@@ -176,6 +176,7 @@ class DontGoInThere extends Table
      */
     function changeDie($dieId)
     {
+        // Change die to opposite value and flag room power as resolved
         $die = $this->diceManager->changeDieFace($dieId);
         $this->roomManager->setResolvedRoomAbility(DGIT_TRUE);
 
@@ -192,12 +193,24 @@ class DontGoInThere extends Table
         $this->gamestate->nextState(RESOLVE_ROOM);
     }
 
+    /**
+     * Dispel a full set of cards for the current player
+     * This should only be trigger after a player selects a card type after using the Tome
+     * @param int $cardType The type of card to dispel
+     * @return void
+     */
     function dispelSet($cardType)
     {
         $player = $this->playerManager->getPlayer();
+
+        // Get all of a players cards of the type
         $cards = $this->cardManager->getPlayerCardsOfType($player->getId(), $cardType);
+        // Dispel them
         $this->cardManager->moveCards($cards, DISPELED);
+        // Adjust player dispel value
         $this->playerManager->adjustPlayerDispeled($player->getId(), count($cards));
+
+        // Determine total curse value of cards
         $totalCurseValue = 0;
         $cardName = '';
         foreach($cards as $card)
@@ -205,15 +218,17 @@ class DontGoInThere extends Table
             $totalCurseValue += $card->getCurses();
             $cardName = $card->getName();
         }
+        // Adjust player curse total
         $this->playerManager->adjustPlayerCurses($player->getId(), $totalCurseValue * -1);
 
         self::notifyAllPlayers(
             DISPEL_CARDS,    
-            clienttranslate('${player_name} dispels ${amount} ${cardName} cards '),
+            clienttranslate('${player_name} dispels ${amount} ${cardName} ${plural}'),
             array(
                 'player_name' => self::getActivePlayerName(),
                 'amount' => count($cards),
                 'cardName' => $cardName,
+                'plural' => count($cards) == 1 ? clienttranslate('card') : clientranslate('cards'),
                 'curseTotal' => $totalCurseValue * -1,
                 'player' => $player->getUiData(),
                 'cards' => $this->cardManager->getUiDataFromCards($cards),
@@ -224,7 +239,7 @@ class DontGoInThere extends Table
     }
 
     /**
-     * Place a a meeple of the active player in the chosen room space
+     * Place a meeple of the active player in the chosen room space
      * @param int $roomPosition UI position of target room
      * @param int $space Chosen space in the room
      * @return void
@@ -232,8 +247,12 @@ class DontGoInThere extends Table
     function placeMeeple($roomPosition, $space)
     {
         $player = $this->playerManager->getPlayer(self::getActivePlayerId());
+
+        // Get the room object
         $room = $this->roomManager->getFaceupRoomByUiPosition($roomPosition);
+        // Move the meeple from player's hand to chosen space 
         $meeple = $this->meepleManager->moveMeepleToRoom($player, $roomPosition, $space);
+        // Get all the meeples that are now iun the room
         $meeplesInRoom = $this->meepleManager->getMeeples(ROOM_PREPEND . $room->getUiPosition());
 
         self::notifyAllPlayers(
@@ -247,6 +266,7 @@ class DontGoInThere extends Table
                 'meeple' => $meeple->getUiData(),
             ));
 
+        // If the room is the secret passage let the player look at the facedown card
         if ($room->getType() == SECRET_PASSAGE)
         {
             self::notifyAllPlayers(
@@ -264,7 +284,7 @@ class DontGoInThere extends Table
             $this->playerManager->adjustPlayerGhosts($player->getId(), 1);
             self::notifyAllPlayers(
                 ADJUST_GHOSTS,
-                clienttranslate('${player_name} gains a Ghost token from placing a meeple in The Attic'),
+                clienttranslate('${player_name} gains a Ghost from placing a meeple in The Attic'),
                 array(
                     'player_name' => $this->getActivePlayerName(),
                     'playerId' => $player->getId(),
@@ -279,7 +299,7 @@ class DontGoInThere extends Table
             $this->playerManager->adjustPlayerGhosts($player->getId(), -1);
             self::notifyAllPlayers(
                 ADJUST_GHOSTS,
-                clienttranslate('${player_name} discards a Ghost token from placing a meeple in The Nursery'),
+                clienttranslate('${player_name} discards a Ghost from placing a meeple in The Nursery'),
                 array(
                     'player_name' => $this->getActivePlayerName(),
                     'playerId' => $player->getId(),
@@ -290,12 +310,14 @@ class DontGoInThere extends Table
 
         if (count($meeplesInRoom) == 3)
         {
+            // If there are 3 meeples in the room we need to resolve it
             $this->roomManager->setRoomResolver(self::getActivePlayerId());
             $this->roomManager->setRoomResolving($room->getUiPosition());
             $this->gamestate->nextState(RESOLVE_ROOM);
         }
         else
         {
+            // Otherwise, bump turn counter and go to next player
             self::incrementTurnCounter();
             $this->gamestate->nextState(NEXT_PLAYER);
         }
@@ -303,6 +325,7 @@ class DontGoInThere extends Table
 
     /**
      * Player inititated dice roll
+     * Triggered from activating the basement
      * @return void
      */
     function rollDice()
@@ -318,15 +341,17 @@ class DontGoInThere extends Table
             )
         );
 
+        // Count dice on cards and roll the dice
         $diceToRoll = $this->cardManager->countDiceIconsInRoom($roomResolving);
         $diceRolled = $this->diceManager->rollDice($diceToRoll);
 
         self::notifyAllPlayers(
-            ROLL_DICE,
-            clienttranslate('${player_name} rolls ${ghostsRolled} Ghost(s) on ${diceToRoll} dice'),
+            ROLL_DICE,    
+            clienttranslate('${player_name} rolls ${ghostsRolled} ${plural} on ${diceToRoll} dice'),
             array(
                 'player_name' => self::getActivePlayerName(),
                 'ghostsRolled' => $this->diceManager->getGhostsRolled(),
+                'plural' => $this->diceManager->getGhostsRolled() == 1 ? clienttranslate('Ghost') : clienttranslate('Ghosts'),
                 'diceToRoll' => $diceToRoll,
                 'diceRolled' => $diceRolled,
             )
@@ -337,6 +362,7 @@ class DontGoInThere extends Table
 
     /**
      * Skip an optional action
+     * Choice after basement or hallway activation
      * @return void
      */
     function skip()
@@ -367,17 +393,22 @@ class DontGoInThere extends Table
         $player = $this->playerManager->getPlayer();
         $room = $this->roomManager->getFaceupRoomByUiPosition($this->roomManager->getRoomResolving());
         $cardPosition = $this->cardManager->getCursedCardById($cardId)->getUiPosition();
+
+        // Move card to player's tabeluau
         $card = $this->cardManager->takeCardFromRoom($cardId, $player);
+        // Player gains curses from card
         $this->playerManager->adjustPlayerCurses($player->getId(), $card->getCurses());
+        // Move meeple back to hand
         $meeple = $this->meepleManager->triggerMeeple($player->getId(), $room->getUiPosition());
 
         self::notifyAllPlayers(
-            TAKE_CARD,
-            clienttranslate('${player_name} takes the ${cardName} and collects ${amount} curses'),
+            TAKE_CARD,    
+            clienttranslate('${player_name} takes the ${cardName} and collects ${amount} ${plural}'),
             array(
                 'player_name' => self::getActivePlayerName(),
                 'cardName' => $card->getName(),
                 'amount' => $card->getCurses(),
+                'plural' => $card->getCurses() == 1 ? 'Curse' : 'Curses',
                 'player' => $player->getUiData(),
                 'card' => $card->getUiData(),
             )
@@ -393,10 +424,11 @@ class DontGoInThere extends Table
 
         if($room->getType() == LIBRARY) {
             if($cardPosition == 1) {
+                // If player takes the card in space 1 of the library they gain a ghost
                 $this->playerManager->adjustPlayerGhosts($player->getId(), 1);
                 self::notifyAllPlayers(
                     ADJUST_GHOSTS,
-                    clienttranslate('${player_name} gains a Ghost token from taking the first card in The Library'),
+                    clienttranslate('${player_name} gains a Ghost from taking the first card in The Library'),
                     array(
                         'player_name' => $this->getActivePlayerName(),
                         'playerId' => $player->getId(),
@@ -405,10 +437,11 @@ class DontGoInThere extends Table
                 );
             }
             if($cardPosition == 3 && $player->getGhostTokens() > 0) {
+                // If player takes the card in space 3 of the library they discard a ghost
                 $this->playerManager->adjustPlayerGhosts($player->getId(), -1);
                 self::notifyAllPlayers(
                     ADJUST_GHOSTS,
-                    clienttranslate('${player_name} discards a Ghost token from taking the third card in The Library'),
+                    clienttranslate('${player_name} discards a Ghost from taking the third card in The Library'),
                     array(
                         'player_name' => $this->getActivePlayerName(),
                         'playerId' => $player->getId(),
@@ -418,6 +451,7 @@ class DontGoInThere extends Table
             }
         }
 
+        // Persist the id of the card chosen for use in the triggering card effects state
         $this->cardManager->setLastSelectedCard($cardId);
         $this->gamestate->nextState(TRIGGER_CARD_EFFECT);
     }
@@ -474,6 +508,7 @@ class DontGoInThere extends Table
      *    GAME STATE::Global game state actions                                                     *
      ************************************************************************************************/
 
+    // The player(s) with the most ghosts will gain curses
     function stGameEndCheckGhosts()
     {
         $this->playerManager->handleGameEndGhosts();
@@ -487,8 +522,10 @@ class DontGoInThere extends Table
     function stNextPlayer()
     {
         if(self::getGameStateValue(TURN_COUNTER) == self::getGameStateValue(TOTAL_TURNS)) {
+            // All cards are taken, trigger end game powers on cards
             $this->gamestate->nextState(TRIGGER_GAME_END_CARD_EFFECTS);
         } else {
+            // If not just move the next player
             $nextPlayer = $this->activeNextPlayer();
 
             self::notifyAllPlayers(
@@ -531,18 +568,19 @@ class DontGoInThere extends Table
             $diceRolled = $this->diceManager->rollDice($diceToRoll);
 
             self::notifyAllPlayers(
-                ROLL_DICE,
-                clienttranslate('${player_name} rolls ${ghostsRolled} Ghost(s) on ${diceToRoll} dice'),
+                ROLL_DICE,    
+                clienttranslate('${player_name} rolls ${ghostsRolled} ${plural} on ${diceToRoll} dice'),
                 array(
                     'player_name' => self::getActivePlayerName(),
                     'ghostsRolled' => $this->diceManager->getGhostsRolled(),
+                    'plural' => $this->diceManager->getGhostsRolled() == 1 ? clienttranslate('Ghost') : clienttranslate('Ghosts'),
                     'diceToRoll' => $diceToRoll,
                     'diceRolled' => $diceRolled,
                 )
             );
         }
 
-        // If room has a resolve ability we need to handle it
+        // If room has an unresolved ability we need to handle it
         if ($room->hasResolveAbility() && $this->roomManager->getResolvedRoomAbility() == DGIT_FALSE)
         {
             $this->gamestate->nextState(ROOM_RESOLUTION_ABILITY);
@@ -552,14 +590,16 @@ class DontGoInThere extends Table
             // Get next meeple in room
             $nextMeeple = $this->meepleManager->getTopMeepleInRoom($roomResolving);
 
-            // Activate next meeple for card selection or move to next phase
             if ($nextMeeple)
             {
+                // Get the next player to act
                 $this->gamestate->changeActivePlayer($nextMeeple->getOwner());
                 $this->gamestate->nextState(SELECT_CARD);
             }
             else
             {
+                // Else all meeples have been resolved and we need to clean up the room
+
                 // Reset Dice
                 $this->diceManager->resetDice();
                 self::notifyAllPlayers(
@@ -572,7 +612,7 @@ class DontGoInThere extends Table
 
                 // Draw new room and cards if there are enough cards left
                 if($this->cardManager->countCursedCards(DECK) >= 3) {
-                    // Flip Room
+                    // Flip the room to its opposite side and reset resolve abilities
                     $currentRoom = $this->roomManager->getFaceupRoomByUiPosition($roomResolving);
                     if($currentRoom->hasResolveAbility()) {
                         $this->roomManager->setResolvedRoomAbility(DGIT_FALSE);
@@ -583,7 +623,7 @@ class DontGoInThere extends Table
                     $newRoom = $this->roomManager->flipRoom($roomResolving);
                     self::notifyAllPlayers(
                         FLIP_ROOM, 
-                        clienttranslate('The ${currentName} flips over to ${newName}'),
+                        clienttranslate('The ${currentName} flips over to The ${newName}'),
                         array(
                             'currentName' => $currentRoom->getName(),
                             'newName' => $newRoom->getName(),
@@ -596,7 +636,7 @@ class DontGoInThere extends Table
                     $this->cardManager->drawNewCardsForRoom($newRoom);
                     self::notifyAllPlayers(
                         NEW_CARDS,
-                        clienttranslate('Three new cards drawn for ${roomName}'),
+                        clienttranslate('Three new cards drawn for The ${roomName}'),
                         array(
                             'roomName' => $newRoom->getName(),
                             'room' => $newRoom->getUiData(),
@@ -604,6 +644,7 @@ class DontGoInThere extends Table
                         )
                     );
                 } else {
+                    // All the cards are gone, so just remove the room tile from the game
                     $currentRoom = $this->roomManager->getFaceupRoomByUiPosition($roomResolving);
                     if($currentRoom->hasResolveAbility()) {
                         $this->roomManager->setResolvedRoomAbility(DGIT_FALSE);
@@ -640,17 +681,20 @@ class DontGoInThere extends Table
         $player = $this->playerManager->getPlayer();
         $roomResolving = $this->roomManager->getRoomResolving();
         $room = $this->roomManager->getFaceupRoomByUiPosition($roomResolving);
+        
+        // Player gains ghosts rolled minus how many flashlights on their space
         $ghostsRolled = $this->diceManager->getGhostsRolled();
         $flashlights = $this->meepleManager->getMeepleFlashlights($player->getId(), $roomResolving);
         $ghostsGained = ($ghostsRolled - $flashlights) > 0 ? $ghostsRolled - $flashlights : 0;
         $this->playerManager->adjustPlayerGhosts($player->getId(), $ghostsGained);
 
         self::notifyAllPlayers(
-            ADJUST_GHOSTS,
-            clienttranslate('${player_name}\'s meeple gains ${amount} ghosts from The ${roomName}'),
+            ADJUST_GHOSTS,    
+            clienttranslate('${player_name}\'s meeple gains ${amount} ${plural} from The ${roomName}'),
             array(
                 'player_name' => self::getActivePlayerName(),
                 'amount' => $ghostsGained,
+                'plural' => $ghostsGained == 1 ? clienttranslate('Ghost') : clienttranslate('Ghosts'),
                 'roomName' => $room->getName(),
                 'playerId' => $player->getId(),
             )
@@ -658,8 +702,8 @@ class DontGoInThere extends Table
     }
 
     /**
-     * Check that the active player should do something in this phase.
-     * This will only be if the effect of the Clock or the Tome need to be triggered.
+     * Check if the active player should do something in this phase.
+     * This will only be if the effect of the Tome needs to be triggered.
      * If card has in game ability trigger it and move to next phase
      * @return void
      */
@@ -681,7 +725,6 @@ class DontGoInThere extends Table
             }
             // Handle card types without choices
             if($card->getType() != TOME) {
-
                 $card->triggerEffect($args);
                 $this->gamestate->nextState(RESOLVE_ROOM);
             }
