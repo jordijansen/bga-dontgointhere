@@ -15,6 +15,21 @@
 -->
 
 <div id="dgit_layout">
+    <div id="dgit_end_game_scoring" class="dgit-hidden">
+        <div id="dgit_end_game_score_table">
+            <!-- BEGIN playerscorerow -->
+            <div id="dgit_score_row_player_{PLAYER_ID}" class="dgit-player-score-row" style="background-image: linear-gradient(to right, gray, #{PLAYER_COLOR})">
+                <div id="dgit_score_name_{PLAYER_ID}" class="dgit-end-game-name dgit-end-game-text" style="color:#{PLAYER_COLOR}">{PLAYER_NAME}</div>
+                <div id="dgit_score_ghosts_{PLAYER_ID}" class="dgit-ghost-token dgit-ghost-token-{PLAYER_NATURAL_ORDER} dgit-ghost-tracker" style="color:#{PLAYER_COLOR}">
+                    <span id="dgit_score_ghost_counter_{PLAYER_ID}" class="dgit-player-ghost-counter" style="text-shadow: 2px 0 2px #{PLAYER_COLOR},0 -2px 2px #{PLAYER_COLOR},0 2px 2px #{PLAYER_COLOR},-2px 0 2px #{PLAYER_COLOR};">0</span>
+                </div>
+                <div id="dgit_score_curses_{PLAYER_ID}" class="dgit-curse-icon" style="color:#{PLAYER_COLOR}">
+                    <span id="dgit_score_curse_counter_{PLAYER_ID}" class="dgit-player-curse-counter-game-end">0</span>
+                </div>
+            </div>
+            <!-- END playerscorerow -->
+        </div>
+    </div>
     <div id="dgit_top_panel">
         <div id="dgit_game_panel">
             <div id="dgit_deck">

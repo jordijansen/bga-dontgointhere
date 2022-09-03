@@ -273,6 +273,14 @@ class DontGoInTherePlayerManager extends APP_GameClass
         // Get player(s) with the most ghosts
         foreach($players as $player)
         {
+            $this->game->notifyAllPlayers(
+                REVEAL_PLAYER_ROW,
+                '',
+                array(
+                    'player' => $player->getUiData(),
+                    'ghosts' => $player->getGhostTokens(),
+                )
+            );
             if($player->getGhostTokens() > $mostGhosts) {
                 $playersWithMostGhosts = [];
                 $playersWithMostGhosts[] = $player;

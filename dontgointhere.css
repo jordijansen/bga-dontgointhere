@@ -31,6 +31,11 @@ div.player-board {
     cursor: pointer;
 }
 
+.dgit-fade-in {
+    opacity: 100% !important;
+    transition: opacity .5s;
+}
+
 .dgit-hidden {
     display: none !important;
 }
@@ -45,6 +50,11 @@ div.player-board {
 
 .dgit-important {
     background-color: orangered !important;
+}
+
+.dgit-pulse {
+    transform: scale(1);
+    animation: pulse-black 1s infinite;
 }
 
 .dgit-header {
@@ -106,6 +116,60 @@ div.player-board {
     display: flex;
     flex-flow: column nowrap;
     gap: 20px
+}
+
+#dgit_end_game_scoring {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+#dgit_end_game_score_table {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.dgit-player-score-row {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 700px;
+    box-shadow: 0px 2px 15px 0px rgba(0,0,0,0.5);
+	border-radius: 4px;
+	flex: 1;
+	margin: -0.5%;
+    opacity: 0;
+}
+
+.dgit-end-game-name {
+    padding-left: 5%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    width: 300px;
+}
+
+.dgit-end-game-curses {
+    padding-left: 5%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    width: 75px;
+}
+
+.dgit-end-game-ghosts {
+    padding-left: 5%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    width: 75px;
+}
+
+.dgit-end-game-text {
+    font-size: xxx-large;
+    font-weight: bolder;
 }
 
 #dgit_game_panel {
@@ -285,6 +349,16 @@ div.player-board {
     font-weight: bolder;
     color: linen;
     right: 67%;
+    bottom: 24%;
+    z-index: 1;
+}
+
+.dgit-player-curse-counter-game-end {
+    position: absolute;
+    font-size: large;
+    font-weight: bolder;
+    color: linen;
+    right: 35%;
     bottom: 24%;
     z-index: 1;
 }

@@ -258,6 +258,8 @@ define([
         onSelectCard: function (event)
         { 
             dojo.stopEvent(event);
+            this.util.removeAllTemporaryStyles();
+            this.disconnectAll();
             this.util.triggerPlayerAction(TAKE_CARD, { cardId: event.target.attributes['card-id'].value });
         },
 
@@ -291,6 +293,7 @@ define([
             dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
             dojo.subscribe(RESET_DICE, this, 'notif_resetDice');
             dojo.subscribe(RETURN_MEEPLE, this, 'notif_returnMeeple');
+            dojo.subscribe(REVEAL_PLAYER_ROW, this, 'notif_revealPlayerRow');
             dojo.subscribe(ROLL_DICE, this, 'notif_rollDice');
             dojo.subscribe(SECRET_PASSAGE_REVEAL, this, 'notif_secretPassageReveal');
             dojo.subscribe(TAKE_CARD, this, 'notif_takeCard');
@@ -302,6 +305,7 @@ define([
             this.notifqueue.setSynchronous(GAIN_CURSES, 1000);
             this.notifqueue.setSynchronous(NEW_CARDS, 1000);
             this.notifqueue.setSynchronous(RETURN_MEEPLE, 1000);
+            this.notifqueue.setSynchronous(REVEAL_PLAYER_ROW, 500);
             this.notifqueue.setSynchronous(ROLL_DICE, 1000);
             this.notifqueue.setSynchronous(TAKE_CARD, 1000);
             this.notifqueue.setSynchronous(TRIGGER_MASK, 1000);
@@ -384,6 +388,11 @@ define([
             var player = notification.args.player;
             var amount = notification.args.amount;
             this.counterManager.adjustPlayerCurses(player, amount);
+            dojo.addClass('dgit_score_ghosts_' + player.id, 'dgit-pulse');
+            var curseElement = dojo.byId('dgit_score_curse_counter_' + player.id);
+            var currentCurses = Number(curseElement.textContent);
+            curseElement.textContent = currentCurses + amount;
+            dojo.addClass('dgit_score_curses_' + player.id, 'dgit-pulse');
         },
 
         /**
@@ -427,6 +436,22 @@ define([
         { 
             var dice = notification.args.dice;
             this.diceManager.resetDice(dice);
+        },
+
+        notif_revealPlayerRow: function (notification)
+        { 
+            var player = notification.args.player;
+            var ghosts = notification.args.ghosts;
+
+            // Hide top panel and reveal scoring panel
+            dojo.addClass('dgit_top_panel', 'dgit-hidden');
+            dojo.removeClass('dgit_end_game_scoring', 'dgit-hidden');            
+
+            // Reveal player row
+            dojo.removeClass('dgit_score_row_player_' + player.id, 'dgit-hidden');
+            dojo.byId('dgit_score_ghost_counter_' + player.id).textContent = ghosts;
+            dojo.byId('dgit_score_curse_counter_' + player.id).textContent = player.curses;
+            dojo.addClass('dgit_score_row_player_' + player.id, 'dgit-fade-in');
         },
 
         /**

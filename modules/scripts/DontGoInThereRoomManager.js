@@ -51,8 +51,10 @@ define([
                 // Create cards currently in room
                 for(var roomCardsKey in gamedatas.roomCards[room.uiPosition])
                 {
+                    debug('roomCards', gamedatas.roomCards[room.uiPosition]);
                     // Create card
                     var card = gamedatas.roomCards[room.uiPosition][roomCardsKey];
+                    debug('card', card);
                     this.game.util.placeBlock(CURSED_CARD_TEMPLATE, 'dgit_room_' + room.uiPosition + '_card_slot_' + card.uiPosition,
                         { card_id: card.id, room_ui_position: room.uiPosition, card_ui_position: card.uiPosition, card_css_class: card.cssClass });
                     

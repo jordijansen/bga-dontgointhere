@@ -228,7 +228,7 @@ class DontGoInThere extends Table
                 'player_name' => self::getActivePlayerName(),
                 'amount' => count($cards),
                 'cardName' => $cardName,
-                'plural' => count($cards) == 1 ? clienttranslate('card') : clientranslate('cards'),
+                'plural' => count($cards) == 1 ? clienttranslate('card') : clienttranslate('cards'),
                 'curseTotal' => $totalCurseValue * -1,
                 'player' => $player->getUiData(),
                 'cards' => $this->cardManager->getUiDataFromCards($cards),
