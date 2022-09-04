@@ -367,31 +367,31 @@ div.dgit-highlight-card:hover {
 
 .dgit-player-curse-counter {
     position: absolute;
-    font-size: large;
+    font-size: xx-large;
     font-weight: bolder;
     color: linen;
-    right: 67%;
-    bottom: 24%;
+    right: 65%;
+    bottom: 16%;
     z-index: 1;
 }
 
 .dgit-player-curse-counter-game-end {
     position: absolute;
-    font-size: large;
+    font-size: xx-large;
     font-weight: bolder;
     color: linen;
-    right: 35%;
-    bottom: 24%;
+    right: 23%;
+    bottom: 11%;
     z-index: 1;
 }
 
 .dgit-player-side-panel-curse-counter {
     position: absolute;
-    font-size: large;
+    font-size: xx-large;
     font-weight: bolder;
     color: linen;
-    right: 34%;
-    bottom: 24%;
+    right: 25%;
+    bottom: 16%;
     z-index: 1;
 }
 

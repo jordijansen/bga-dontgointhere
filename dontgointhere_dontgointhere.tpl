@@ -24,7 +24,7 @@
                     <span id="dgit_score_ghost_counter_{PLAYER_ID}" class="dgit-player-ghost-counter" style="text-shadow: 2px 0 2px #{PLAYER_COLOR},0 -2px 2px #{PLAYER_COLOR},0 2px 2px #{PLAYER_COLOR},-2px 0 2px #{PLAYER_COLOR};">0</span>
                 </div>
                 <div id="dgit_score_curses_{PLAYER_ID}" class="dgit-curse-icon" style="color:#{PLAYER_COLOR}">
-                    <span id="dgit_score_curse_counter_{PLAYER_ID}" class="dgit-player-curse-counter-game-end">0</span>
+                    <span id="dgit_score_curse_counter_{PLAYER_ID}" class="dgit-player-curse-counter-game-end" style="text-shadow: 2px 0 2px #{PLAYER_COLOR},0 -2px 2px #{PLAYER_COLOR},0 2px 2px #{PLAYER_COLOR},-2px 0 2px #{PLAYER_COLOR};">0</span>
                 </div>
             </div>
             <!-- END playerscorerow -->
@@ -83,7 +83,7 @@
             <div id="dgit_player_{PLAYER_ID}_info_panel" class="dgit-player-info-panel">
                 <div id="dgit_player_{PLAYER_ID}_tracker_panel" class="dgit-player-tracker-panel">
                     <div id="dgit_player_{PLAYER_ID}_curse_tracker" class="dgit-curse-icon"></div>
-                    <span id="dgit_player_{PLAYER_ID}_curse_counter" class="dgit-player-curse-counter">0</span>
+                    <span id="dgit_player_{PLAYER_ID}_curse_counter" class="dgit-player-curse-counter" style="text-shadow: 2px 0 2px #{PLAYER_COLOR},0 -2px 2px #{PLAYER_COLOR},0 2px 2px #{PLAYER_COLOR},-2px 0 2px #{PLAYER_COLOR};">0</span>
                     <div id="dgit_player_{PLAYER_ID}_ghost_tracker" class="dgit-ghost-token dgit-ghost-token-{PLAYER_NATURAL_ORDER} dgit-ghost-tracker-animate"></div>
                     <span id="dgit_player_{PLAYER_ID}_ghost_counter" class="dgit-player-ghost-counter" style="text-shadow: 2px 0 2px #{PLAYER_COLOR},0 -2px 2px #{PLAYER_COLOR},0 2px 2px #{PLAYER_COLOR},-2px 0 2px #{PLAYER_COLOR};">?</span>
                 </div>
@@ -118,7 +118,7 @@
     var jstpl_player_side_panel = '<div id="dgit_player_${player_id}_side_panel" class="dgit-player-side-panel">\
                                         <div id="dgit_player_${player_id}_active_player" class="dgit-active-player dgit-hidden"></div>\
                                         <div id="dgit_player_${player_id}_curse_count" class="dgit-curse-icon">\
-                                            <span id="dgit_player_${player_id}_side_panel_curse_counter" class="dgit-player-side-panel-curse-counter">0</span>\
+                                            <span id="dgit_player_${player_id}_side_panel_curse_counter" class="dgit-player-side-panel-curse-counter" style="text-shadow: 2px 0 2px #${player_color},0 -2px 2px #${player_color},0 2px 2px #${player_color},-2px 0 2px #${player_color};">0</span>\
                                         </div>\
                                         <div id="dgit_player_${player_id}_ghost_count" class="dgit-ghost-token dgit-ghost-token-${player_natural_order} dgit-ghost-tracker">\
                                             <span id="dgit_player_${player_id}_side_panel_ghost_counter" class="dgit-player-ghost-counter" style="text-shadow: 2px 0 2px #${player_color},0 -2px 2px #${player_color},0 2px 2px #${player_color},-2px 0 2px #${player_color};">?</span>\
