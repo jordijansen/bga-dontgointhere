@@ -78,6 +78,7 @@ define([
          */
         onEnteringState: function( stateName, args )
         {
+            debug('STATE', stateName);
             this.util.removeAllTemporaryStyles();
             this.disconnectAll();
             
@@ -297,16 +298,16 @@ define([
             dojo.subscribe(TAKE_CARD, this, 'notif_takeCard');
             dojo.subscribe(TRIGGER_MASK, this, 'notif_triggerMask');
 
-            this.notifqueue.setSynchronous(ADJUST_GHOSTS, 1000);
-            this.notifqueue.setSynchronous(DISPEL_CARDS, 1000);
-            this.notifqueue.setSynchronous(FLIP_ROOM, 1000);
-            this.notifqueue.setSynchronous(GAIN_CURSES, 2000);
-            this.notifqueue.setSynchronous(NEW_CARDS, 1000);
-            this.notifqueue.setSynchronous(RETURN_MEEPLE, 1000);
+            this.notifqueue.setSynchronous(ADJUST_GHOSTS, 500);
+            this.notifqueue.setSynchronous(DISPEL_CARDS, 500);
+            this.notifqueue.setSynchronous(FLIP_ROOM, 500);
+            this.notifqueue.setSynchronous(GAIN_CURSES, 1000);
+            this.notifqueue.setSynchronous(NEW_CARDS, 500);
+            this.notifqueue.setSynchronous(RETURN_MEEPLE, 500);
             this.notifqueue.setSynchronous(REVEAL_PLAYER_ROW, 1000);
-            this.notifqueue.setSynchronous(ROLL_DICE, 1000);
-            this.notifqueue.setSynchronous(TAKE_CARD, 1000);
-            this.notifqueue.setSynchronous(TRIGGER_MASK, 1000);
+            this.notifqueue.setSynchronous(ROLL_DICE, 500);
+            this.notifqueue.setSynchronous(TAKE_CARD, 500);
+            this.notifqueue.setSynchronous(TRIGGER_MASK, 500);
         },
 
         /**

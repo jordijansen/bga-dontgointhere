@@ -32,11 +32,12 @@ class DontGoInThere extends Table
             GHOSTS_ROLLED => 11,
             LAST_SELECTED_CARD => 12,
             RESOLVED_ROOM_ABILITY => 13,
-            ROOM_RESOLVER => 14,
-            ROOM_RESOLVING => 15,
-            SECRET_PASSAGE_REVEALED => 16,
-            TOTAL_TURNS => 17,
-            TURN_COUNTER => 18,
+            RESOLVED_ROOM_GHOSTS => 14,
+            ROOM_RESOLVER => 15,
+            ROOM_RESOLVING => 16,
+            SECRET_PASSAGE_REVEALED => 17,
+            TOTAL_TURNS => 18,
+            TURN_COUNTER => 19,
         ));
 
         $this->cardManager = new DontGoInThereCardManager($this);
@@ -80,6 +81,7 @@ class DontGoInThere extends Table
         self::setGameStateInitialValue(GHOSTS_ROLLED, -1);
         self::setGameStateInitialValue(LAST_SELECTED_CARD, -1);
         self::setGameStateInitialValue(RESOLVED_ROOM_ABILITY, DGIT_FALSE);
+        self::setGameStateInitialValue(RESOLVED_ROOM_GHOSTS, DGIT_FALSE);
         self::setGameStateInitialValue(ROOM_RESOLVER, 0);
         self::setGameStateInitialValue(ROOM_RESOLVING, 0);
         self::setGameStateInitialValue(SECRET_PASSAGE_REVEALED, DGIT_FALSE);
@@ -587,6 +589,10 @@ class DontGoInThere extends Table
         }
         else
         {
+            // If we have not resolved ghosts yet we need to do that
+            if($this->roomManager->getResolvedRoomGhosts() == DGIT_FALSE) {
+                $this->roomManager->resolveRoomGhosts($roomResolving);
+            }
             // Get next meeple in room
             $nextMeeple = $this->meepleManager->getTopMeepleInRoom($roomResolving);
 
@@ -667,38 +673,10 @@ class DontGoInThere extends Table
                 $this->gamestate->changeActivePlayer($this->roomManager->getRoomResolver());
                 $this->roomManager->setRoomResolver(0);
                 $this->roomManager->setRoomResolving(0);
+                $this->roomManager->setResolvedRoomGhosts(DGIT_FALSE);
                 $this->gamestate->nextState(NEXT_PLAYER);
             }
         }
-    }
-
-    /**
-     * Before a player selects a card they gain ghosts based on dice and flashlights
-     * @return void
-     */
-    function stSelectCard()
-    {
-        $player = $this->playerManager->getPlayer();
-        $roomResolving = $this->roomManager->getRoomResolving();
-        $room = $this->roomManager->getFaceupRoomByUiPosition($roomResolving);
-        
-        // Player gains ghosts rolled minus how many flashlights on their space
-        $ghostsRolled = $this->diceManager->getGhostsRolled();
-        $flashlights = $this->meepleManager->getMeepleFlashlights($player->getId(), $roomResolving);
-        $ghostsGained = ($ghostsRolled - $flashlights) > 0 ? $ghostsRolled - $flashlights : 0;
-        $this->playerManager->adjustPlayerGhosts($player->getId(), $ghostsGained);
-
-        self::notifyAllPlayers(
-            ADJUST_GHOSTS,    
-            clienttranslate('${player_name}\'s meeple gains ${amount} ${plural} from The ${roomName}'),
-            array(
-                'player_name' => self::getActivePlayerName(),
-                'amount' => $ghostsGained,
-                'plural' => $ghostsGained == 1 ? clienttranslate('Ghost') : clienttranslate('Ghosts'),
-                'roomName' => $room->getName(),
-                'playerId' => $player->getId(),
-            )
-        );
     }
 
     /**

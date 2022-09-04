@@ -91,6 +91,7 @@ div.dgit-highlight-card:hover {
     margin-top: -25px;
     margin-left: -10px;
     padding-left: 10px;
+    text-shadow: 1px 0 1px darkslategray, 0 -1px 1px darkslategray, 0 1px 1px darkslategray, -1px 0 1px darkslategray;
 }
 
 .dgit-card-tooltip {
@@ -192,6 +193,7 @@ div.dgit-highlight-card:hover {
 .dgit-end-game-text {
     font-size: xxx-large;
     font-weight: bolder;
+    text-shadow: 3px 0 3px gray, 0 -3px 3px gray, 0 3px 3px gray, -3px 0 3px gray;
 }
 
 #dgit_game_panel {

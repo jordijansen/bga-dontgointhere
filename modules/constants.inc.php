@@ -94,6 +94,7 @@ define('CLOCKS_COLLECTED', 'clocks_collected');
 define('GHOSTS_ROLLED', 'ghosts_rolled');
 define('LAST_SELECTED_CARD', 'last_selected_card');
 define('RESOLVED_ROOM_ABILITY', 'resolved_room_ability');
+define('RESOLVED_ROOM_GHOSTS', 'resolved_room_ghosts');
 define('ROOM_RESOLVER', 'room_resolver');
 define('ROOM_RESOLVING', 'room_resolving');
 define('SECRET_PASSAGE_REVEALED', 'secret_passage_revealed');

@@ -93,7 +93,6 @@ $machinestates = array(
         "descriptionmyturn" => clienttranslate('${you} must take a Cursed Card'),
         "type" => "activeplayer",
         "args" => "argsSelectCard",
-        "action" => "stSelectCard",
         "possibleactions" => array( TAKE_CARD ),
         "transitions" => array( TRIGGER_CARD_EFFECT => STATE_TRIGGER_CARD_EFFECT )
     ),

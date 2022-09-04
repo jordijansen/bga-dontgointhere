@@ -216,12 +216,21 @@ class DontGoInThereRoomManager extends APP_GameClass
     }
 
     /**
-     * Get the game state value to determine if toom resolution ability has been triggered
-     * @return int Boolean if room ability has been resolve or not
+     * Get the game state value to determine if room resolution ability has been triggered
+     * @return int Boolean if room ability has been resolved or not
      */
     public function getResolvedRoomAbility()
     {
         return $this->game->getGameStateValue(RESOLVED_ROOM_ABILITY);
+    }
+
+    /**
+     * Get the game state value to determine if room ghosts have been resolved or not
+     * @return int Boolean if room ghosts has been resolved or not
+     */
+    public function getResolvedRoomGhosts()
+    {
+        return $this->game->getGameStateValue(RESOLVED_ROOM_GHOSTS);
     }
 
     /**
@@ -267,12 +276,60 @@ class DontGoInThereRoomManager extends APP_GameClass
     }
 
     /**
-     * Set the game state value to determine if toom resolution ability has been triggered
+     * Hand out ghosts to each meeple in room based on die roll and flashlights
+     * @return void
+     */
+    public function resolveRoomGhosts($roomUiPosition)
+    {
+        $room = self::getFaceupRoomByUiPosition($roomUiPosition);
+        $meeples = $this->game->meepleManager->getMeeplesInRoom($roomUiPosition);
+
+        foreach($meeples as $meeple) {
+            // Get owner of meeple
+            $player = $this->game->playerManager->getPlayer($meeple->getOwner());
+            // Meeple gains ghosts rolled minus how many flashlights on their space
+            $ghostsRolled = $this->game->diceManager->getGhostsRolled();
+            // Flashlights will equal meeple position - 1
+            $flashlights = $meeple->getUiPosition() - 1;
+            // Ghosts gained = ghosts rolled - flashlighys
+            $ghostsGained = ($ghostsRolled - $flashlights) > 0 ? $ghostsRolled - $flashlights : 0;
+
+            if($ghostsGained > 0) {
+                $this->game->playerManager->adjustPlayerGhosts($player->getId(), $ghostsGained);
+            }
+
+            $this->game->notifyAllPlayers(
+                ADJUST_GHOSTS,
+                clienttranslate('${player_name}\'s meeple gains ${amount} ${plural} from The ${roomName}'),
+                array(
+                    'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
+                    'amount' => $ghostsGained,
+                    'plural' => $ghostsGained == 1 ? clienttranslate('Ghost') : clienttranslate('Ghosts'),
+                    'roomName' => $room->getName(),
+                    'playerId' => $player->getId(),
+                )
+            );
+        }
+
+        self::setResolvedRoomGhosts(DGIT_TRUE);
+    }
+
+    /**
+     * Set the game state value to determine if room resolution ability has been triggered
      * @param int $abilityStatus tinyint boolean
      */
     public function setResolvedRoomAbility($abilityStatus)
     {
         $this->game->setGameStateValue(RESOLVED_ROOM_ABILITY, $abilityStatus);
+    }
+
+    /**
+     * Set the game state value to determine if room ghosts have been resolved
+     * @param int $ghostStatus tinyint boolean
+     */
+    public function setResolvedRoomGhosts($ghostStatus)
+    {
+        $this->game->setGameStateValue(RESOLVED_ROOM_GHOSTS, $ghostStatus);
     }
 
     /**
