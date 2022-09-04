@@ -110,7 +110,7 @@ class DontGoInTherePlayerManager extends APP_GameClass
      */
     public function getPlayerNameColorDiv($player)
     {
-        return '<span class="playername" style="#'.$player->getColor().';">'.$player->getName().'</span>';
+        return '<span class="playername" style="color:#'.$player->getColor().';">'.$player->getName().'</span>';
     }
 
     /**
@@ -269,9 +269,10 @@ class DontGoInTherePlayerManager extends APP_GameClass
         $players = self::getPlayers();
         $playersWithMostGhosts = [];
         $mostGhosts = 0;
+        $sortedPlayers = self::sortPlayersByGhosts($players);
 
         // Get player(s) with the most ghosts
-        foreach($players as $player)
+        foreach($sortedPlayers as $player)
         {
             $this->game->notifyAllPlayers(
                 REVEAL_PLAYER_ROW,
@@ -307,5 +308,16 @@ class DontGoInTherePlayerManager extends APP_GameClass
                 )
             );
         }
+    }
+
+    private function sortPlayersByGhosts($players) 
+    {
+        usort($players, function(DontGoInTherePlayer $a, DontGoInTherePlayer $b) {
+            if($a->getGhostTokens() === $b->getGhostTokens()) {
+                return 0;
+            }
+            return $a->getGhostTokens() < $b->getGhostTokens() ? -1 : 1;
+        });
+        return $players;
     }
 }

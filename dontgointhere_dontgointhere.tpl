@@ -84,7 +84,7 @@
                 <div id="dgit_player_{PLAYER_ID}_tracker_panel" class="dgit-player-tracker-panel">
                     <div id="dgit_player_{PLAYER_ID}_curse_tracker" class="dgit-curse-icon"></div>
                     <span id="dgit_player_{PLAYER_ID}_curse_counter" class="dgit-player-curse-counter">0</span>
-                    <div id="dgit_player_{PLAYER_ID}_ghost_tracker" class="dgit-ghost-token dgit-ghost-token-{PLAYER_NATURAL_ORDER} dgit-ghost-tracker"></div>
+                    <div id="dgit_player_{PLAYER_ID}_ghost_tracker" class="dgit-ghost-token dgit-ghost-token-{PLAYER_NATURAL_ORDER} dgit-ghost-tracker-animate"></div>
                     <span id="dgit_player_{PLAYER_ID}_ghost_counter" class="dgit-player-ghost-counter" style="text-shadow: 2px 0 2px #{PLAYER_COLOR},0 -2px 2px #{PLAYER_COLOR},0 2px 2px #{PLAYER_COLOR},-2px 0 2px #{PLAYER_COLOR};">?</span>
                 </div>
                 <div id="dgit_player_{PLAYER_ID}_meeples" class="dgit-player-meeples" style="background-color: #{PLAYER_COLOR}50; border-color: #{PLAYER_COLOR}; color: #{PLAYER_COLOR}"></div>

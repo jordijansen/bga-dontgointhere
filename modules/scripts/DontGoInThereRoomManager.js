@@ -33,7 +33,7 @@ define([
             // Delete room panels without cards
             for (var uiPosition = 1; uiPosition <= 3; uiPosition++)
             { 
-                if (gamedatas.roomCards[uiPosition].length == 0) {
+                if (!this.uiPositionExistsInFaceupRooms(gamedatas.faceupRooms, uiPosition)) {
                     dojo.destroy('dgit_room_panel_' + uiPosition);
                 }
             }
@@ -49,12 +49,11 @@ define([
                 this.addTooltip('dgit_room_' + room.uiPosition + '_tooltip', room.tooltipText, '');
 
                 // Create cards currently in room
+                if(gamedatas.roomCards[room.uiPosition].length > 0) {}
                 for(var roomCardsKey in gamedatas.roomCards[room.uiPosition])
                 {
-                    debug('roomCards', gamedatas.roomCards[room.uiPosition]);
                     // Create card
                     var card = gamedatas.roomCards[room.uiPosition][roomCardsKey];
-                    debug('card', card);
                     this.game.util.placeBlock(CURSED_CARD_TEMPLATE, 'dgit_room_' + room.uiPosition + '_card_slot_' + card.uiPosition,
                         { card_id: card.id, room_ui_position: room.uiPosition, card_ui_position: card.uiPosition, card_css_class: card.cssClass });
                     
@@ -72,7 +71,7 @@ define([
                         dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
                     }
                 }
-
+                
                 // Create meeples currently in room
                 for (var roomMeeplesKey in gamedatas.meeplesInRooms[room.uiPosition])
                 {
@@ -175,6 +174,18 @@ define([
                 dojo.removeClass(secretPassageHiddenCard.id, 'dgit-card-back');
                 dojo.removeClass(secretPassageHiddenCard.firstElementChild.id, 'dgit-hidden');
             }
-         },
+        },
+        
+        uiPositionExistsInFaceupRooms: function (faceupRooms, uiPosition)
+        { 
+            for (var faceupRoomsKey in faceupRooms) {
+                var room = faceupRooms[faceupRoomsKey];
+                if (room.uiPosition == uiPosition) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
     });
 });

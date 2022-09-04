@@ -33,7 +33,7 @@ div.player-board {
 
 .dgit-fade-in {
     opacity: 100% !important;
-    transition: opacity .5s;
+    transition: opacity 1s;
 }
 
 .dgit-hidden {
@@ -44,8 +44,16 @@ div.player-board {
     border: 5px solid #8bc98a;
 }
 
+div.dgit-highlight:hover {
+    border: 5px solid orangered !important;
+}
+
 .dgit-highlight-card {
     border: 3px solid #8bc98a !important;
+}
+
+div.dgit-highlight-card:hover {
+    border: 3px solid orangered !important;
 }
 
 .dgit-important {
@@ -54,7 +62,21 @@ div.player-board {
 
 .dgit-pulse {
     transform: scale(1);
-    animation: pulse-black 1s infinite;
+    animation: pulse-animation 1s infinite;
+}
+
+@keyframes pulse-animation {
+    0% {
+        transform: scale(0.75);
+    }
+
+    70% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0.75);
+    }
 }
 
 .dgit-header {
@@ -267,7 +289,7 @@ div.player-board {
 
 .dgit-dispel-card-type-button {
     position: absolute;
-    z-index: 10;
+    z-index: 80;
     left: 25%;
     bottom: 25%;
     width: 6em;
@@ -458,6 +480,11 @@ div.player-board {
     background-image: url('img/dgit_cards.png');
 }
 
+div.dgit-card:hover {
+    transform: scale(1.05);
+    z-index: 30;
+}
+
 .dgit-card-in-deck {
     position: absolute;
     z-index: -1;
@@ -521,6 +548,23 @@ div.player-board {
     opacity: 1 !important;
 }
 
+.dgit-ghost-tracker-animate {
+    opacity: 1 !important;
+}
+
+div.dgit-ghost-tracker-animate:hover {
+    animation: rotation 2s infinite linear
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
 @keyframes x {
     100% {
         transform: translateX(calc(340px - 70px));
@@ -541,6 +585,7 @@ div.player-board {
     height: 57px;
     transform: rotateY(180deg);
     background-image: url('img/dgit_meeples.png');
+    z-index: 50;
 }
 
 .dgit-meeple-space-1 {

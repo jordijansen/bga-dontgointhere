@@ -82,7 +82,9 @@ define([
         triggerPlayerAction: function (actionName, args)
         { 
             // Check if action is possible in current state
-            if (this.game.isCurrentPlayerActive()&& this.game.checkAction(actionName)) {
+            if (this.game.isCurrentPlayerActive() && this.game.checkAction(actionName)) {
+                this.removeAllTemporaryStyles();
+                this.game.disconnectAll();
                 // Add lock = true to args
                 if (!args) {
                     args = [];

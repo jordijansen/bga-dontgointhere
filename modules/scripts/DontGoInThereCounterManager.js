@@ -26,6 +26,7 @@ define([
             this.deckCounter = new ebg.counter();
             this.ghostTotalCounter = new ebg.counter();
             this.playerCurseCounters = [];
+            this.playerEndGameCurseCounters = [];
             this.playerSidePanelCurseCounters = [];
             this.currentPlayerGhosts = new ebg.counter();
             this.currentPlayerSidePanelGhosts = new ebg.counter();
@@ -40,7 +41,7 @@ define([
         { 
             this.deckCounter.incValue(delta);
         },
-
+        
         /**
          * Adjust current player's ghost counter by delta
          * @param {int} delta delta to adjust by
@@ -67,6 +68,7 @@ define([
          */
         adjustPlayerCurses: function (player, delta)
         { 
+            this.playerEndGameCurseCounters[player.id].incValue(delta);
             this.playerCurseCounters[player.id].incValue(delta);
             this.playerSidePanelCurseCounters[player.id].incValue(delta);
         },
@@ -87,7 +89,6 @@ define([
          */
         createDeckCounter: function (deckSize)
         { 
-            debug('counterManager::createDeckCounter', deckSize);
             this.deckCounter.create('dgit_deck_counter');
             this.deckCounter.setValue(deckSize);
         },
@@ -108,10 +109,12 @@ define([
          */
         createPlayerCurseCounters: function (player)
         {
-            debug('counterManager::createPlayerCurseCounters', player);
             this.playerCurseCounters[player.id] = new ebg.counter();
             this.playerCurseCounters[player.id].create('dgit_player_' + player.id + '_curse_counter');
             this.playerCurseCounters[player.id].setValue(player.curses);
+            this.playerEndGameCurseCounters[player.id] = new ebg.counter();
+            this.playerEndGameCurseCounters[player.id].create('dgit_score_curse_counter_' + player.id);
+            this.playerEndGameCurseCounters[player.id].setValue(player.curses);
             this.playerSidePanelCurseCounters[player.id] = new ebg.counter();
             this.playerSidePanelCurseCounters[player.id].create('dgit_player_' + player.id + '_side_panel_curse_counter');
             this.playerSidePanelCurseCounters[player.id].setValue(player.curses);
@@ -123,7 +126,6 @@ define([
          */
         createPlayerDispeledCounter: function (player)
         { 
-            debug('counterManager::createPlayerDispeledCounter', player);
             this.playerDispeledCounters[player.id] = new ebg.counter();
             this.playerDispeledCounters[player.id].create('dgit_player_' + player.id + '_dispeled_counter');
             this.playerDispeledCounters[player.id].setValue(player.cardsDispeled);
@@ -135,7 +137,6 @@ define([
          */
         createPlayerGhostCounters: function (player)
         { 
-            debug('counterManager::createPlayerGhostCounters', player);
             this.currentPlayerGhosts.create('dgit_player_' + player.id + '_ghost_counter');
             this.currentPlayerGhosts.setValue(player.ghostTokens);
             this.currentPlayerSidePanelGhosts.create('dgit_player_' + player.id + '_side_panel_ghost_counter');

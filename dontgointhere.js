@@ -258,8 +258,6 @@ define([
         onSelectCard: function (event)
         { 
             dojo.stopEvent(event);
-            this.util.removeAllTemporaryStyles();
-            this.disconnectAll();
             this.util.triggerPlayerAction(TAKE_CARD, { cardId: event.target.attributes['card-id'].value });
         },
 
@@ -302,10 +300,10 @@ define([
             this.notifqueue.setSynchronous(ADJUST_GHOSTS, 1000);
             this.notifqueue.setSynchronous(DISPEL_CARDS, 1000);
             this.notifqueue.setSynchronous(FLIP_ROOM, 1000);
-            this.notifqueue.setSynchronous(GAIN_CURSES, 1000);
+            this.notifqueue.setSynchronous(GAIN_CURSES, 2000);
             this.notifqueue.setSynchronous(NEW_CARDS, 1000);
             this.notifqueue.setSynchronous(RETURN_MEEPLE, 1000);
-            this.notifqueue.setSynchronous(REVEAL_PLAYER_ROW, 500);
+            this.notifqueue.setSynchronous(REVEAL_PLAYER_ROW, 1000);
             this.notifqueue.setSynchronous(ROLL_DICE, 1000);
             this.notifqueue.setSynchronous(TAKE_CARD, 1000);
             this.notifqueue.setSynchronous(TRIGGER_MASK, 1000);
@@ -389,10 +387,9 @@ define([
             var amount = notification.args.amount;
             this.counterManager.adjustPlayerCurses(player, amount);
             dojo.addClass('dgit_score_ghosts_' + player.id, 'dgit-pulse');
-            var curseElement = dojo.byId('dgit_score_curse_counter_' + player.id);
-            var currentCurses = Number(curseElement.textContent);
-            curseElement.textContent = currentCurses + amount;
-            dojo.addClass('dgit_score_curses_' + player.id, 'dgit-pulse');
+            // var curseElement = dojo.byId('dgit_score_curse_counter_' + player.id);
+            // var currentCurses = Number(curseElement.textContent);
+            // curseElement.textContent = currentCurses + amount;
         },
 
         /**
@@ -450,7 +447,7 @@ define([
             // Reveal player row
             dojo.removeClass('dgit_score_row_player_' + player.id, 'dgit-hidden');
             dojo.byId('dgit_score_ghost_counter_' + player.id).textContent = ghosts;
-            dojo.byId('dgit_score_curse_counter_' + player.id).textContent = player.curses;
+            // dojo.byId('dgit_score_curse_counter_' + player.id).textContent = player.curses;
             dojo.addClass('dgit_score_row_player_' + player.id, 'dgit-fade-in');
         },
 

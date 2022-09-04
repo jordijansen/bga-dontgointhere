@@ -103,7 +103,6 @@ define([
         { 
             for (var dieKey in dice) {
                 var die = dice[dieKey];
-                console.log(die);
                 dojo.removeClass('dgit_die_' + die.id, 'dgit-hidden');
                 dojo.removeClass('dgit_die_' + die.id + '_face');
                 dojo.addClass('dgit_die_' + die.id + '_face', 'dgit-die-face');
