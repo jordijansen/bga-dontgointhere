@@ -14,6 +14,10 @@
  */
 
 /***** GENERAL *****/
+:root {
+    --dgit-hover-color: orangered;
+}
+
 html {
     background-image:url('img/dgit_background.png');
 }
@@ -45,7 +49,7 @@ div.player-board {
 }
 
 div.dgit-highlight:hover {
-    border: 5px solid orangered !important;
+    border: 5px solid var(--dgit-hover-color) !important;
 }
 
 .dgit-highlight-card {
@@ -53,11 +57,11 @@ div.dgit-highlight:hover {
 }
 
 div.dgit-highlight-card:hover {
-    border: 3px solid orangered !important;
+    border: 3px solid var(--dgit-hover-color) !important;
 }
 
 .dgit-important {
-    background-color: orangered !important;
+    background-color: var(--dgit-hover-color) !important;
 }
 
 .dgit-pulse {
@@ -569,13 +573,27 @@ div.dgit-ghost-tracker-animate:hover {
 
 @keyframes x {
     100% {
-        transform: translateX(calc(340px - 70px));
+        transform: translateX(calc(21.25em - 4.375em));
     }
 }
 
 @keyframes y {
     100% {
-        transform: translateY(calc(340px - 72.5px));
+        transform: translateY(calc(21.25em - 4.531em));
+    }
+}
+
+@media only screen and (max-device-width: 480px) {
+    @keyframes x {
+        100% {
+            transform: translateX(calc(9.97em - 2.037em));
+        }
+    }
+    
+    @keyframes y {
+        100% {
+            transform: translateY(calc(9.97em - 2.124em));
+        }
     }
 }
 

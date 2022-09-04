@@ -300,9 +300,9 @@ class DontGoInThereRoomManager extends APP_GameClass
 
             $this->game->notifyAllPlayers(
                 ADJUST_GHOSTS,
-                clienttranslate('${player_name}\'s meeple gains ${amount} ${plural} from The ${roomName}'),
+                clienttranslate('${player_name} meeple gains ${amount} ${plural} from The ${roomName}'),
                 array(
-                    'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
+                    'player_name' => $this->game->playerManager->getPlayerNamePossessiveColorDiv($player),
                     'amount' => $ghostsGained,
                     'plural' => $ghostsGained == 1 ? clienttranslate('Ghost') : clienttranslate('Ghosts'),
                     'roomName' => $room->getName(),

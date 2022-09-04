@@ -33,6 +33,11 @@ define([
             {
                 var player = gamedatas.playerInfo[playerKey];
 
+                // Set players hover color
+                if (this.game.player_id == player.id) {
+                    document.querySelector(':root').style.setProperty('--dgit-hover-color', '#' + player.color);
+                }
+
                 // Place custom block in player panel
                 this.game.util.placeBlock(PLAYER_SIDE_PANEL_TEMPLATE, 'player_board_' + player.id,
                     { player_id: player.id, player_natural_order: player.naturalOrder, player_color: player.color });

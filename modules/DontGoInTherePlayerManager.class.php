@@ -114,6 +114,16 @@ class DontGoInTherePlayerManager extends APP_GameClass
     }
 
     /**
+     * Get possesive player name div with color
+     * @param mixed $player
+     * @return string
+     */
+    public function getPlayerNamePossessiveColorDiv($player)
+    {
+        return '<span class="playername" style="color:#'.$player->getColor().';">'.$player->getName().'\'s</span>';
+    }
+
+    /**
      * Get a player based on their natrual order
      * @param mixed $naturalOrder
      * @return DontGoInTherePlayer
