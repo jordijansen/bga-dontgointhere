@@ -73,10 +73,11 @@ class Clock extends DontGoInThereCursedCard
 
                 $this->game->notifyAllPlayers(
                     DISPEL_CARDS,    
-                    clienttranslate('${player_name} dispels ${amount} Clock cards '),
+                    clienttranslate('${player_name} dispels ${amount} Clock cards worth a total of ${curses} Curses'),
                     array(
                         'player_name' => $this->game->getActivePlayerName(),
                         'amount' => 2,
+                        'curses' => $curseValueDispeled,
                         'curseTotal' => $curseValueDispeled * -1,
                         'player' => $player->getUiData(),
                         'cards' => $this->game->cardManager->getUiDataFromCards($clocksToDispel),

@@ -30,6 +30,7 @@ define('PLACE_MEEPLE', 'placeMeeple');
 define('RESET_DICE', 'resetDice');
 define('RETURN_MEEPLE', 'returnMeeple');
 define('REVEAL_PLAYER_ROW', 'revealPlayerRow');
+define('REVEAL_WINNERS', 'revealWinners');
 define('ROLL_DICE', 'rollDice');
 define('SECRET_PASSAGE_PEEK', 'secretPassagePeek');
 define('SECRET_PASSAGE_REVEAL', 'secretPassageReveal');

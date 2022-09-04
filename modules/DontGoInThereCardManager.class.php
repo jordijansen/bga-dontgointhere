@@ -467,7 +467,7 @@ class DontGoInThereCardManager extends APP_GameClass
                     self::moveCards($cardsToDispel, DISPELED);
                     $this->game->notifyAllPlayers(
                         DISPEL_CARDS,    
-                        clienttranslate('${player_name} dispels ${amount} Amulet ${plural}'),
+                        clienttranslate('${player_name} dispels ${amount} Amulet ${plural} worth a total of ${curses} Curses'),
                         array(
                             'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
                             'amount' => count($cardsToDispel),
@@ -506,11 +506,12 @@ class DontGoInThereCardManager extends APP_GameClass
                     self::moveCards($sortedCats, DISPELED);
                     $this->game->notifyAllPlayers(
                         DISPEL_CARDS,    
-                        clienttranslate('${player_name} dispels ${amount} Cat ${plural}'),
+                        clienttranslate('${player_name} dispels ${amount} Cat ${plural} worth ${curses} Curses'),
                         array(
                             'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
                             'amount' => count($sortedCats),
                             'plural' => count($sortedCats) == 1 ? clienttranslate('card') : clienttranslate('cards'),
+                            'curses' => $totalCurseValue,
                             'curseTotal' => $totalCurseValue * -1,
                             'player' => $player->getUiData(),
                             'cards' => $this->game->cardManager->getUiDataFromCards($sortedCats),
@@ -573,11 +574,12 @@ class DontGoInThereCardManager extends APP_GameClass
             self::moveCards($cardsToDispel, DISPELED);
             $this->game->notifyAllPlayers(
                 DISPEL_CARDS,    
-                clienttranslate('${player_name} dispels ${amount} Music Box ${plural}'),
+                clienttranslate('${player_name} dispels ${amount} Music Box ${plural} worth a total of ${curses} Curses'),
                 array(
                     'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
                     'amount' => count($cardsToDispel),
                     'plural' => count($cardsToDispel) == 1 ? clienttranslate('card') : clienttranslate('cards'),
+                    'curses' => $totalCurseValue,
                     'curseTotal' => $totalCurseValue * -1,
                     'player' => $player->getUiData(),
                     'cards' => $this->game->cardManager->getUiDataFromCards($cardsToDispel),
@@ -613,11 +615,12 @@ class DontGoInThereCardManager extends APP_GameClass
                 self::moveCards($cardsToDispel, DISPELED);
                 $this->game->notifyAllPlayers(
                     DISPEL_CARDS,    
-                    clienttranslate('${player_name} dispels ${amount} Portrait ${plural}'),
+                    clienttranslate('${player_name} dispels ${amount} Portrait ${plural} worth a total of ${curses} Curses'),
                     array(
                         'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
                         'amount' => count($cardsToDispel),
                         'plural' => count($cardsToDispel) == 1 ? clienttranslate('card') : clienttranslate('cards'),
+                        'curses' => $totalCurseValue,
                         'curseTotal' => $totalCurseValue * -1,
                         'player' => $player->getUiData(),
                         'cards' => $this->game->cardManager->getUiDataFromCards($cardsToDispel),

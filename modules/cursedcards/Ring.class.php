@@ -59,10 +59,11 @@ class Ring extends DontGoInThereCursedCard
 
             $this->game->notifyAllPlayers(
                 DISPEL_CARDS,    
-                clienttranslate('${player_name} dispels ${amount} Ring cards '),
+                clienttranslate('${player_name} dispels ${amount} Ring cards worth a total of ${curses} Curses'),
                 array(
                     'player_name' => $this->game->getActivePlayerName(),
                     'amount' => 4,
+                    'curses' => $curseTotal,
                     'curseTotal' => $curseTotal * -1,
                     'player' => $player->getUiData(),
                     'cards' => $this->game->cardManager->getUiDataFromCards($ringCards),

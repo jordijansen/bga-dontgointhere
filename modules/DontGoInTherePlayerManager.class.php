@@ -120,6 +120,10 @@ class DontGoInTherePlayerManager extends APP_GameClass
      */
     public function getPlayerNamePossessiveColorDiv($player)
     {
+        if($player->getColor() == 'ffffff') {
+            return '<span class="playername" style="color:#'.$player->getColor().';background-color:#bbbbbb">'.$player->getName().'\'s</span>';
+        }
+
         return '<span class="playername" style="color:#'.$player->getColor().';">'.$player->getName().'\'s</span>';
     }
 
@@ -215,6 +219,49 @@ class DontGoInTherePlayerManager extends APP_GameClass
         return intval(self::getUniqueValueFromDB("SELECT COUNT(*) FROM player"));
     }
 
+    public function getWinningPlayers()
+    {
+        $players = self::getPlayers();
+        $leastCurses = -1;
+        $playersWithLeastCurses = [];
+
+        foreach($players as $player) 
+        {
+            if($leastCurses == -1) {
+                $leastCurses = $player->getCurses();
+                $playersWithLeastCurses[] = $player;
+            } else if($player->getCurses() < $leastCurses) {
+                $leastCurses = $player->getCurses();
+                $playersWithLeastCurses = [];
+                $playersWithLeastCurses[] = $player;
+            } else if($player->getCurses() == $leastCurses) {
+                $playersWithLeastCurses[] = $player;
+            }
+        }
+
+        if(count($playersWithLeastCurses) == 1) {
+            return $playersWithLeastCurses;
+        }
+
+        $leastGhosts = -1;
+        $playersWithLeastGhosts = [];
+        foreach($playersWithLeastCurses as $player)
+        {
+            if($leastGhosts == -1) {
+                $leastGhosts = $player->getGhostTokens();
+                $playersWithLeastGhosts[] = $player;
+            } else if($player->getGhostTokens() < $leastGhosts) {
+                $leastGhosts = $player->getGhostTokens();
+                $playersWithLeastGhosts = [];
+                $playersWithLeastGhosts[] = $player;
+            } else if($player->getGhostTokens() == $leastGhosts) {
+                $playersWithLeastGhosts[] = $player;
+            }
+        }
+
+        return $playersWithLeastGhosts;
+    }
+
 
     /**
      * Get all ui data visible by player id
@@ -230,6 +277,21 @@ class DontGoInTherePlayerManager extends APP_GameClass
         }
 
         return $uiData;
+    }
+
+    /**
+     * Get ui data of players in a list
+     * @param array<DontGoInTherePlayer> $players list of player objects
+     * @return array
+     */
+    public function getUiDataFromPlayers($players)
+    {
+        $ui = [];
+        foreach($players as $player)
+        {
+            $ui[] = $player->getUiData();
+        }
+        return $ui;
     }
 
     /**

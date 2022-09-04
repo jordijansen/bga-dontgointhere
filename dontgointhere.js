@@ -292,6 +292,7 @@ define([
             dojo.subscribe(PLACE_MEEPLE, this, 'notif_placeMeeple');
             dojo.subscribe(RESET_DICE, this, 'notif_resetDice');
             dojo.subscribe(RETURN_MEEPLE, this, 'notif_returnMeeple');
+            dojo.subscribe(REVEAL_WINNERS, this, 'notif_revealWinners');
             dojo.subscribe(REVEAL_PLAYER_ROW, this, 'notif_revealPlayerRow');
             dojo.subscribe(ROLL_DICE, this, 'notif_rollDice');
             dojo.subscribe(SECRET_PASSAGE_REVEAL, this, 'notif_secretPassageReveal');
@@ -305,6 +306,7 @@ define([
             this.notifqueue.setSynchronous(NEW_CARDS, 500);
             this.notifqueue.setSynchronous(RETURN_MEEPLE, 500);
             this.notifqueue.setSynchronous(REVEAL_PLAYER_ROW, 1000);
+            this.notifqueue.setSynchronous(REVEAL_WINNERS, 6000);
             this.notifqueue.setSynchronous(ROLL_DICE, 500);
             this.notifqueue.setSynchronous(TAKE_CARD, 500);
             this.notifqueue.setSynchronous(TRIGGER_MASK, 500);
@@ -388,9 +390,6 @@ define([
             var amount = notification.args.amount;
             this.counterManager.adjustPlayerCurses(player, amount);
             dojo.addClass('dgit_score_ghosts_' + player.id, 'dgit-pulse');
-            // var curseElement = dojo.byId('dgit_score_curse_counter_' + player.id);
-            // var currentCurses = Number(curseElement.textContent);
-            // curseElement.textContent = currentCurses + amount;
         },
 
         /**
@@ -448,8 +447,17 @@ define([
             // Reveal player row
             dojo.removeClass('dgit_score_row_player_' + player.id, 'dgit-hidden');
             dojo.byId('dgit_score_ghost_counter_' + player.id).textContent = ghosts;
-            // dojo.byId('dgit_score_curse_counter_' + player.id).textContent = player.curses;
             dojo.addClass('dgit_score_row_player_' + player.id, 'dgit-fade-in');
+        },
+
+        notif_revealWinners: function (notification)
+        { 
+            var winningPlayers = notification.args.winningPlayers;
+            for (var winningPlayersKey in winningPlayers)
+            {
+                var winningPlayer = winningPlayers[winningPlayersKey];
+                dojo.addClass('dgit_score_curses_counter_' + winningPlayer.id, 'dgit-pulse');
+            }
         },
 
         /**

@@ -225,12 +225,13 @@ class DontGoInThere extends Table
 
         self::notifyAllPlayers(
             DISPEL_CARDS,    
-            clienttranslate('${player_name} dispels ${amount} ${cardName} ${plural}'),
+            clienttranslate('${player_name} dispels ${amount} ${cardName} ${plural} worth a total of ${curses} Curses'),
             array(
                 'player_name' => self::getActivePlayerName(),
                 'amount' => count($cards),
                 'cardName' => $cardName,
                 'plural' => count($cards) == 1 ? clienttranslate('card') : clienttranslate('cards'),
+                'curses' => $totalCurseValue,
                 'curseTotal' => $totalCurseValue * -1,
                 'player' => $player->getUiData(),
                 'cards' => $this->cardManager->getUiDataFromCards($cards),
@@ -514,6 +515,14 @@ class DontGoInThere extends Table
     function stGameEndCheckGhosts()
     {
         $this->playerManager->handleGameEndGhosts();
+        $winningPlayers = $this->playerManager->getWinningPlayers();
+
+        self::notifyAllPlayers(
+            REVEAL_WINNERS,
+            '',
+            array('winningPlayers', $this->playerManager->getUiDataFromPlayers($winningPlayers))
+        );
+
         $this->gamestate->nextState(GAME_END);
     }
 

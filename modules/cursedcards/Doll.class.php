@@ -77,7 +77,7 @@ class Doll extends DontGoInThereCursedCard
             $this->game->cardManager->moveCards($validSet, DISPELED);
             $this->game->notifyAllPlayers(
                 DISPEL_CARDS,    
-                clienttranslate('${player_name} dispels ${amount} Doll cards '),
+                clienttranslate('${player_name} dispels ${amount} Doll cards worth a total of 6 Curses'),
                 array(
                     'player_name' => $this->game->getActivePlayerName(),
                     'amount' => count($validSet),

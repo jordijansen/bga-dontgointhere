@@ -60,10 +60,11 @@ class Twin extends DontGoInThereCursedCard
             $this->game->cardManager->moveCards($twins, DISPELED);
             $this->game->notifyAllPlayers(
                 DISPEL_CARDS,    
-                clienttranslate('${player_name} dispels ${amount} Twin cards '),
+                clienttranslate('${player_name} dispels ${amount} Twin cards worth a total of ${curses} Curses'),
                 array(
                     'player_name' => $this->game->getActivePlayerName(),
                     'amount' => $twins,
+                    'curses' => $selectedCard->getCurses() * 2,
                     'curseTotal' => $selectedCard->getCurses() * -2,
                     'player' => $player->getUiData(),
                     'cards' => $this->game->cardManager->getUiDataFromCards($twins),
