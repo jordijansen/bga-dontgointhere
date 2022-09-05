@@ -89,9 +89,53 @@ class DontGoInThere extends Table
         self::setGameStateInitialValue(TURN_COUNTER, 0);
 
         // Init game statistics
-        // (note: statistics used in this file must be defined in your stats.inc.php file)
-        //self::initStat( 'table', 'table_teststat1', 0 );    // Init a table statistics
-        //self::initStat( 'player', 'player_teststat1', 0 );  // Init a player statistics (for all players)
+        self::initStat( 'table', 'turns_number', $this->playerManager->getPlayerCount() * 12 );
+        self::initStat( 'table', 'avg_curses', 0 );
+        self::initStat( 'table', 'avg_ghosts', 0 );
+        self::initStat( 'table', 'avg_cards_dispeled', 0 );
+        self::initStat( 'table', 'avg_curses_dispeled', 0 );
+
+        self::initStat( 'player', 'turns_number', 12 );
+        self::initStat( 'player', 'curses_taken', 0 );
+        self::initStat( 'player', 'curses_dispeled', 0 );
+        self::initStat( 'player', 'ghosts_taken', 0 );
+        self::initStat( 'player', 'ghosts_discarded', 0 );
+        self::initStat( 'player', 'amulets_taken', 0 );
+        self::initStat( 'player', 'cats_taken', 0 );
+        self::initStat( 'player', 'clocks_taken', 0 );
+        self::initStat( 'player', 'dolls_taken', 0 );
+        self::initStat( 'player', 'holy_water_taken', 0 );
+        self::initStat( 'player', 'masks_taken', 0 );
+        self::initStat( 'player', 'mirrors_taken', 0 );
+        self::initStat( 'player', 'music_boxes_taken', 0 );
+        self::initStat( 'player', 'portraits_taken', 0 );
+        self::initStat( 'player', 'rings_taken', 0 );
+        self::initStat( 'player', 'tomes_taken', 0 );
+        self::initStat( 'player', 'twins_taken', 0 );
+        self::initStat( 'player', 'amulets_dispeled', 0 );
+        self::initStat( 'player', 'cats_dispeled', 0 );
+        self::initStat( 'player', 'clocks_dispeled', 0 );
+        self::initStat( 'player', 'dolls_dispeled', 0 );
+        self::initStat( 'player', 'holy_water_dispeled', 0 );
+        self::initStat( 'player', 'masks_dispeled', 0 );
+        self::initStat( 'player', 'mirrors_dispeled', 0 );
+        self::initStat( 'player', 'music_boxes_dispeled', 0 );
+        self::initStat( 'player', 'portraits_dispeled', 0 );
+        self::initStat( 'player', 'rings_dispeled', 0 );
+        self::initStat( 'player', 'tomes_dispeled', 0 );
+        self::initStat( 'player', 'twins_dispeled', 0 );
+        self::initStat( 'player', 'amulets_curses', 0 );
+        self::initStat( 'player', 'cats_curses', 0 );
+        self::initStat( 'player', 'clocks_curses', 0 );
+        self::initStat( 'player', 'dolls_curses', 0 );
+        self::initStat( 'player', 'holy_water_curses', 0 );
+        self::initStat( 'player', 'masks_curses', 0 );
+        self::initStat( 'player', 'mirrors_curses', 0 );
+        self::initStat( 'player', 'music_boxes_curses', 0 );
+        self::initStat( 'player', 'portraits_curses', 0 );
+        self::initStat( 'player', 'rings_curses', 0 );
+        self::initStat( 'player', 'tomes_curses', 0 );
+        self::initStat( 'player', 'twins_curses', 0 );
 
         // Activate first player (which is in general a good idea :) )
         $this->activeNextPlayer();
@@ -215,13 +259,17 @@ class DontGoInThere extends Table
         // Determine total curse value of cards
         $totalCurseValue = 0;
         $cardName = '';
+        $statName = '';
         foreach($cards as $card)
         {
             $totalCurseValue += $card->getCurses();
             $cardName = $card->getName();
+            $statName = $card->getStatName();
         }
         // Adjust player curse total
         $this->playerManager->adjustPlayerCurses($player->getId(), $totalCurseValue * -1);
+        self::incStat($totalCurseValue * -1, $statName . '_curses', $player->getId());
+        self::incStat(count($cards), $statName . '_dispeled', $player->getId());
 
         self::notifyAllPlayers(
             DISPEL_CARDS,    
@@ -403,6 +451,8 @@ class DontGoInThere extends Table
         $this->playerManager->adjustPlayerCurses($player->getId(), $card->getCurses());
         // Move meeple back to hand
         $meeple = $this->meepleManager->triggerMeeple($player->getId(), $room->getUiPosition());
+        self::incStat($card->getCurses(), $card->getStatName() . '_curses', $player->getId());
+        self::incStat(1, $card->getStatName() . '_taken', $player->getId());
 
         self::notifyAllPlayers(
             TAKE_CARD,    
@@ -522,6 +572,24 @@ class DontGoInThere extends Table
             '',
             array('winningPlayers', $this->playerManager->getUiDataFromPlayers($winningPlayers))
         );
+
+        $players = $this->playerManager->getPlayers();
+        $playerCount = count($players);
+        $totalCurses = 0;
+        $totalGhosts = 0;
+        $totalCardsDispeled = 0;
+        $totalCursesDispeled = 0;
+        foreach($players as $player) {
+            $totalCurses = $totalCurses + $player->getCurses();
+            $totalGhosts = $totalGhosts + $player->getGhostTokens();
+            $totalCardsDispeled = $totalCardsDispeled + $player->getCardsDispeled();
+            $totalCursesDispeled = $totalCursesDispeled + self::getStat('curses_dispeled', $player->getId());
+        }
+
+        self::setStat($totalCurses / $playerCount, 'avg_curses');
+        self::setStat($totalGhosts / $playerCount, 'avg_ghosts');
+        self::setStat($totalCardsDispeled / $playerCount, 'avg_cards_dispeled');
+        self::setStat($totalCursesDispeled / $playerCount, 'avg_curses_dispeled');
 
         $this->gamestate->nextState(GAME_END);
     }

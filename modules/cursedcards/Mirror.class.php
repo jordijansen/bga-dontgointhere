@@ -27,6 +27,7 @@ class Mirror extends DontGoInThereCursedCard
         $this->diceIcons = self::determineDiceIcons($row[TYPE_ARG]);
         $this->endGameTrigger = false;
         $this->uiPosition = $row[LOCATION_ARG];
+        $this->statName = 'mirrors';
     }
 
     /**
@@ -65,6 +66,8 @@ class Mirror extends DontGoInThereCursedCard
                 $curseTotal += $mirrorCard->getCurses();
             }
             $this->game->playerManager->adjustPlayerCurses($player->getId(), $curseTotal * -1);
+            $this->game->incStat($curseTotal * -1, 'mirrors_curses', $player->getId());
+            $this->game->incStat(3, 'mirrors_dispeled', $player->getId());
             $this->game->cardManager->moveCards($mirrorCards, DISPELED);
 
             $this->game->notifyAllPlayers(

@@ -58,6 +58,14 @@ class DontGoInTherePlayerManager extends APP_GameClass
     public function adjustPlayerCurses($playerId, $amount)
     {
         $player = self::getPlayer($playerId);
+
+        if($amount > 0) {
+            $this->game->incStat($amount, 'curses_taken', $playerId);
+        }
+        if($amount < 0) {
+            $this->game->incStat($amount, 'curses_dispeled', $playerId);
+        }
+
         $newCurseTotal = ($player->getCurses() + $amount) >= 0 ? $player->getCurses() + $amount : 0;
         self::DbQuery('UPDATE player SET player_score="' . $newCurseTotal * -1 . '" WHERE player_id="' . $playerId . '"');
         return $newCurseTotal;
@@ -86,6 +94,14 @@ class DontGoInTherePlayerManager extends APP_GameClass
     public function adjustPlayerGhosts($playerId, $amount)
     {
         $player = self::getPlayer($playerId);
+
+        if($amount > 0) {
+            $this->game->incStat($amount, 'ghosts_taken', $playerId);
+        }
+        if($amount < 0) {
+            $this->game->incStat($amount, 'ghosts_discarded', $playerId);
+        }
+
         $newGhostTotal = ($player->getGhostTokens() + $amount) >= 0 ? $player->getGhostTokens() + $amount : 0;
         self::DbQuery('UPDATE player SET player_score_aux="' . $newGhostTotal * -1 . '" WHERE player_id="' . $playerId . '"');
         return $newGhostTotal;

@@ -28,6 +28,7 @@ class Tome extends DontGoInThereCursedCard
         $this->endGameTrigger = false;
         $this->uiPosition = $row[LOCATION_ARG];
         $this->abilityText = self::buildAbilityText();
+        $this->statName = 'tomes';
     }
 
     private function buildAbilityText()

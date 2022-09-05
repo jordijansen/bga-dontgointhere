@@ -28,6 +28,7 @@ class HolyWater extends DontGoInThereCursedCard
         $this->diceIcons = self::determineDiceIcons($row[TYPE_ARG]);
         $this->endGameTrigger = false;
         $this->uiPosition = $row[LOCATION_ARG];
+        $this->statName = 'holy_water';
     }
 
     /**

@@ -27,6 +27,7 @@ class Ring extends DontGoInThereCursedCard
         $this->diceIcons = self::determineDiceIcons($row[TYPE_ARG]);
         $this->endGameTrigger = false;
         $this->uiPosition = $row[LOCATION_ARG];
+        $this->statName = 'rings';
     }
 
     /**
@@ -56,6 +57,8 @@ class Ring extends DontGoInThereCursedCard
             }
             $this->game->playerManager->adjustPlayerCurses($player->getId(), $curseTotal * -1);
             $this->game->cardManager->moveCards($ringCards, DISPELED);
+            $this->game->incStat($curseTotal * -1, 'rings_curses', $player->getId());
+            $this->game->incStat(4, 'rings_dispeled', $player->getId());
 
             $this->game->notifyAllPlayers(
                 DISPEL_CARDS,    

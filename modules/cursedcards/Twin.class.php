@@ -28,6 +28,7 @@ class Twin extends DontGoInThereCursedCard
         $this->diceIcons = self::determineDiceIcons($row[TYPE_ARG]);
         $this->endGameTrigger = false;
         $this->uiPosition = $row[LOCATION_ARG];
+        $this->statName = 'twins';
     }
 
     /**
@@ -57,13 +58,15 @@ class Twin extends DontGoInThereCursedCard
             $twins[] = $matchingTwin;
             $this->game->playerManager->adjustPlayerDispeled($player->getId(), 2);
             $this->game->playerManager->adjustPlayerCurses($player->getId(), $selectedCard->getCurses() * -2);
+            $this->game->incStat($selectedCard->getCurses() * -2, 'twins_curses', $player->getId());
+            $this->game->incStat(2, 'twins_dispeled', $player->getId());
             $this->game->cardManager->moveCards($twins, DISPELED);
             $this->game->notifyAllPlayers(
                 DISPEL_CARDS,    
                 clienttranslate('${player_name} dispels ${amount} Twin cards worth a total of ${curses} Curses'),
                 array(
                     'player_name' => $this->game->getActivePlayerName(),
-                    'amount' => $twins,
+                    'amount' => 2,
                     'curses' => $selectedCard->getCurses() * 2,
                     'curseTotal' => $selectedCard->getCurses() * -2,
                     'player' => $player->getUiData(),

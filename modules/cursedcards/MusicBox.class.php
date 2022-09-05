@@ -28,6 +28,7 @@ class MusicBox extends DontGoInThereCursedCard
         $this->diceIcons = self::determineDiceIcons($row[TYPE_ARG]);
         $this->endGameTrigger = true;
         $this->uiPosition = $row[LOCATION_ARG];
+        $this->statName = 'music_boxes';
     }
 
     /**

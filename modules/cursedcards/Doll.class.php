@@ -28,6 +28,7 @@ class Doll extends DontGoInThereCursedCard
         $this->diceIcons = self::determineDiceIcons($row[TYPE_ARG]);
         $this->endGameTrigger = false;
         $this->uiPosition = $row[LOCATION_ARG];
+        $this->statName = 'dolls';
     }
 
     /**
@@ -74,6 +75,8 @@ class Doll extends DontGoInThereCursedCard
         if($validSet != false) {
             $this->game->playerManager->adjustPlayerDispeled($player->getId(), count($validSet));
             $this->game->playerManager->adjustPlayerCurses($player->getId(), -6);
+            $this->game->incStat(-6, 'dolls_curses', $player->getId());
+            $this->game->incStat(count($validSet), 'dolls_dispeled', $player->getId());
             $this->game->cardManager->moveCards($validSet, DISPELED);
             $this->game->notifyAllPlayers(
                 DISPEL_CARDS,    

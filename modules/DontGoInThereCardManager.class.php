@@ -464,6 +464,8 @@ class DontGoInThereCardManager extends APP_GameClass
                 if(count($cardsToDispel) > 0) {
                     $this->game->playerManager->adjustPlayerDispeled($player->getId(), count($cardsToDispel));
                     $this->game->playerManager->adjustPlayerCurses($player->getId(), $totalCurseValue * -1);
+                    $this->game->incStat($totalCurseValue * -1, 'amulets_curses', $player->getId());
+                    $this->game->incStat(count($cardsToDispel), 'amulets_dispeled', $player->getId());
                     self::moveCards($cardsToDispel, DISPELED);
                     $this->game->notifyAllPlayers(
                         DISPEL_CARDS,    
@@ -472,6 +474,7 @@ class DontGoInThereCardManager extends APP_GameClass
                             'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
                             'amount' => count($cardsToDispel),
                             'plural' => count($cardsToDispel) == 1 ? clienttranslate('card') : clienttranslate('cards'),
+                            'curses' => $totalCurseValue,
                             'curseTotal' => $totalCurseValue * -1,
                             'player' => $player->getUiData(),
                             'cards' => $this->game->cardManager->getUiDataFromCards($cardsToDispel),
@@ -503,6 +506,8 @@ class DontGoInThereCardManager extends APP_GameClass
                     }
                     $this->game->playerManager->adjustPlayerDispeled($player->getId(), count($sortedCats));
                     $this->game->playerManager->adjustPlayerCurses($player->getId(), $totalCurseValue * -1);
+                    $this->game->incStat($totalCurseValue * -1, 'cats_curses', $player->getId());
+                    $this->game->incStat(count($sortedCats), 'cats_dispeled', $player->getId());
                     self::moveCards($sortedCats, DISPELED);
                     $this->game->notifyAllPlayers(
                         DISPEL_CARDS,    
@@ -532,7 +537,7 @@ class DontGoInThereCardManager extends APP_GameClass
         $maxCurses = 0;
         $playersWithMostCurses = [];
 
-        // Figure out which player(s) have Musix Boxes with the highest curse value
+        // Figure out which player(s) have Music Boxes with the highest curse value
         foreach($players as $player) 
         {
             $musicBoxCards = self::getPlayerCardsOfType($player->getId(), MUSIC_BOX);
@@ -571,6 +576,8 @@ class DontGoInThereCardManager extends APP_GameClass
 
             $this->game->playerManager->adjustPlayerDispeled($player->getId(), count($cardsToDispel));
             $this->game->playerManager->adjustPlayerCurses($player->getId(), $totalCurseValue * -1);
+            $this->game->incStat($totalCurseValue * -1, 'music_boxes_curses', $player->getId());
+            $this->game->incStat(count($cardsToDispel), 'music_boxes_dispeled', $player->getId());
             self::moveCards($cardsToDispel, DISPELED);
             $this->game->notifyAllPlayers(
                 DISPEL_CARDS,    
@@ -612,6 +619,8 @@ class DontGoInThereCardManager extends APP_GameClass
 
                 $this->game->playerManager->adjustPlayerDispeled($player->getId(), count($cardsToDispel));
                 $this->game->playerManager->adjustPlayerCurses($player->getId(), $totalCurseValue * -1);
+                $this->game->incStat($totalCurseValue * -1, 'portraits_curses', $player->getId());
+                $this->game->incStat(count($cardsToDispel), 'portraits_dispeled', $player->getId());
                 self::moveCards($cardsToDispel, DISPELED);
                 $this->game->notifyAllPlayers(
                     DISPEL_CARDS,    

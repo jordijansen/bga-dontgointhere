@@ -456,7 +456,7 @@ define([
             for (var winningPlayersKey in winningPlayers)
             {
                 var winningPlayer = winningPlayers[winningPlayersKey];
-                dojo.addClass('dgit_score_curses_counter_' + winningPlayer.id, 'dgit-pulse');
+                dojo.addClass('dgit_score_curses_' + winningPlayer.id, 'dgit-pulse');
             }
         },
 

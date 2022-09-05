@@ -33,6 +33,7 @@ abstract class DontGoInThereCursedCard extends APP_GameClass
     protected $endGameTrigger = false;
     protected $uiPosition = 0;
     protected $abilityText = '';
+    protected $statName = '';
 
     public function getId() { return $this->id; }
     public function getName() { return $this->name; }
@@ -44,6 +45,7 @@ abstract class DontGoInThereCursedCard extends APP_GameClass
     public function isEndGameTrigger() { return $this->endGameTrigger; }
     public function getUiPosition() { return $this->uiPosition; }
     public function getAbilityText() { return $this->abilityText; }
+    public function getStatName() { return $this->statName; }
 
     /**
      * Get ui data of CursedCard visible by current player

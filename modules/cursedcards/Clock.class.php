@@ -28,6 +28,7 @@ class Clock extends DontGoInThereCursedCard
         $this->diceIcons = self::determineDiceIcons($row[TYPE_ARG]);
         $this->endGameTrigger = false;
         $this->uiPosition = $row[LOCATION_ARG];
+        $this->statName = 'clocks';
     }
 
     /**
@@ -68,6 +69,8 @@ class Clock extends DontGoInThereCursedCard
 
                 $this->game->playerManager->adjustPlayerDispeled($player->getId(), 2);
                 $this->game->playerManager->adjustPlayerCurses($player->getId(), $curseValueDispeled * -1);
+                $this->game->incStat($totalCurseValue * -1, 'clocks_curses', $player->getId());
+                $this->game->incStat(count($clocksToDispel), 'clocks_dispeled', $player->getId());
                 $this->game->cardManager->moveCards($clocksToDispel, DISPELED);
                 $this->game->setGameStateValue(CLOCKS_COLLECTED, DGIT_TRUE);
 
