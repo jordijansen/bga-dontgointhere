@@ -33,7 +33,8 @@ define([
         { 
             // Create card deck
             if (gamedatas.deckSize == 0) {
-                dojo.addClass('dgit_deck', 'dgit-hidden');
+                this.game.util.placeBlock(DECK_CARD_TEMPLATE, 'dgit_deck', { card_num: 1 });
+                dojo.setStyle('dgit_deck_counter', 'bottom', '2%');
             } else {
                 this.game.counterManager.createDeckCounter(gamedatas.deckSize);
 

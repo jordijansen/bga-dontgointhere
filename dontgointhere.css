@@ -614,6 +614,7 @@ div.dgit-ghost-tracker-animate:hover {
     transform: rotateY(180deg);
     background-image: url('img/dgit_meeples.png');
     z-index: 50;
+    filter: drop-shadow(0.5rem 0 1rem rgb(255, 255, 255));
 }
 
 .dgit-meeple-space-1 {

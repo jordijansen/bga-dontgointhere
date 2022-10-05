@@ -81,7 +81,7 @@ require_once( APP_BASE_PATH."view/common/game.view.php" );
 
     // Inflate a pile of ghosts
     $this->page->begin_block($template, 'ghost');
-    for($ghostNumber = 1; $ghostNumber <= 48; $ghostNumber++)
+    for($ghostNumber = 1; $ghostNumber <= 24; $ghostNumber++)
     {
       $this->page->insert_block(
         'ghost',

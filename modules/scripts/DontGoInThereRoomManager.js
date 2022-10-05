@@ -119,11 +119,11 @@ define([
             // Adjust deck
             this.game.counterManager.adjustDeckCounter(-3);
             var deckSize = this.game.counterManager.getDeckCounterValue();
-            dojo.destroy('dgit_deck_card_' + deckSize / 3);
-            dojo.setStyle('dgit_deck_counter', 'bottom', deckSize / 3 + '%');
             if (deckSize == 0) {
-                dojo.addClass('dgit_deck', 'dgit-hidden');
-                dojo.addClass('dgit_deck_counter', 'dgit-hidden');
+                dojo.setStyle('dgit_deck_counter', 'bottom', '2%');
+            } else {
+                dojo.destroy('dgit_deck_card_' + deckSize / 3);
+                dojo.setStyle('dgit_deck_counter', 'bottom', deckSize / 3 + '%');
             }
         },
 
@@ -145,6 +145,7 @@ define([
                     dojo.setAttr(roomspace.id, 'meeple', 'none');
                 }
             }
+            this.addTooltip('dgit_room_' + newRoom.uiPosition + '_tooltip', newRoom.tooltipText, '');
         },
 
         /**
