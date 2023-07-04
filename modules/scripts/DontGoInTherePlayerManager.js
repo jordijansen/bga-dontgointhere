@@ -86,6 +86,7 @@ define([
             if (playerId == this.game.getCurrentPlayerId()) {
                 this.game.counterManager.adjustGhostCounter(amount);
             }
+
         },
 
         /**
