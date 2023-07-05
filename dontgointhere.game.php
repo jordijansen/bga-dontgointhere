@@ -616,6 +616,8 @@ class DontGoInThere extends Table
                 )
             );
 
+            $this->giveExtraTime(self::getActivePlayerId());
+
             $this->gamestate->nextState(PLAYER_TURN);
         }
     }
@@ -675,9 +677,16 @@ class DontGoInThere extends Table
 
             if ($nextMeeple)
             {
-                // Get the next player to act
+                $cards = $this->cardManager->getCursedCards(ROOM_PREPEND . $roomResolving);
                 $this->gamestate->changeActivePlayer($nextMeeple->getOwner());
-                $this->gamestate->nextState(SELECT_CARD);
+                if (sizeof($cards) == 1) {
+                    $card = reset($cards);
+                    $this->takeCard($card->getId());
+
+                } else {
+                    // Get the next player to act
+                    $this->gamestate->nextState(SELECT_CARD);
+                }
             }
             else
             {

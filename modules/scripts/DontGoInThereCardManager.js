@@ -52,14 +52,14 @@ define([
             {
                 // Place card
                 var playerCard = gamedatas.playerCards[playerCardsKey];
-                this.game.util.placeBlock(CURSED_CARD_TEMPLATE, 'dgit_player_' + playerCard.uiPosition + '_' + playerCard.type + '_cards',
-                    { card_id: playerCard.id, player_id: playerCard.uiPosition, card_css_class: playerCard.cssClass, room_ui_position: -1, card_ui_position: playerCard.curses });
-                dojo.removeClass('dgit_player_' + playerCard.uiPosition + '_' + playerCard.type + '_cards', 'dgit-hidden');
+                const playerCardDiv = 'dgit_player_' + playerCard.uiPosition + '_' + playerCard.type + '_cards';
+                this.game.util.placeBlock(CURSED_CARD_TEMPLATE, playerCardDiv, { card_id: playerCard.id, player_id: playerCard.uiPosition, card_css_class: playerCard.cssClass, room_ui_position: -1, curses: playerCard.curses });
+                dojo.removeClass(playerCardDiv, 'dgit-hidden');
 
                 // Create tooltip
                 if (playerCard.tooltipText.length > 0) {
                     // If card has a tooltip, create it
-                    this.game.addTooltip('dgit_card_' + playerCard.id + '_tooltip', playerCard.tooltipText, '');
+                    this.game.addTooltip('dgit_card_' + playerCard.id + '_tooltip', _(playerCard.tooltipText), '');
                 } else {
                     // Else hide tooltip element
                     dojo.addClass('dgit_card_' + playerCard.id + '_tooltip', 'dgit-hidden');
@@ -111,9 +111,9 @@ define([
             var cardDiv = 'dgit_card_' + card.id;
             var playerCardDiv = 'dgit_player_' + player.id + '_' + card.type + '_cards';
             dojo.setAttr(cardDiv, 'roomnumber', -1);
-            dojo.setStyle(cardDiv, 'order', card.curses);
             dojo.removeClass(playerCardDiv, 'dgit-hidden');
             this.game.attachToNewParent(cardDiv, playerCardDiv);
+
             var moveCard = this.game.slideToObject(cardDiv, playerCardDiv).play();
             on(moveCard, "End", function () {
                 $(cardDiv).style.removeProperty('top');

@@ -74,7 +74,7 @@ $machinestates = array(
         "name" => RESOLVE_ROOM,
         "type" => "game",
         "action" => "stResolveRoom",
-        "transitions" => array( ROOM_RESOLUTION_ABILITY => STATE_ROOM_RESOLUTION_ABILITY, SELECT_CARD => STATE_SELECT_CARD, NEXT_PLAYER => STATE_NEXT_PLAYER )
+        "transitions" => array( ROOM_RESOLUTION_ABILITY => STATE_ROOM_RESOLUTION_ABILITY, SELECT_CARD => STATE_SELECT_CARD, NEXT_PLAYER => STATE_NEXT_PLAYER, TRIGGER_CARD_EFFECT => STATE_TRIGGER_CARD_EFFECT)
     ),
 
     STATE_ROOM_RESOLUTION_ABILITY => array(
