@@ -98,38 +98,6 @@ div.dgit-highlight-card:hover {
     text-shadow: 1px 0 1px darkslategray, 0 -1px 1px darkslategray, 0 1px 1px darkslategray, -1px 0 1px darkslategray;
 }
 
-.dgit-card-tooltip {
-    display: inline-block;
-    position: absolute;
-    font-size: small;
-    font-weight: bold;
-    text-align: center;
-    color: #8bc98a;
-    left: 2%;
-    bottom: 2%;
-    border: 2px solid #8bc98a;
-    border-radius: 20px;
-    z-index: 1;
-    width: 15px;
-    height: 15px;
-}
-
-.dgit-room-tooltip {
-    display: inline-block;
-    position: absolute;
-    font-size: x-large;
-    font-weight: bolder;
-    text-align: center;
-    color: #8bc98a;
-    right: 5%;
-    bottom: 5%;
-    border: 5px solid #8bc98a;
-    border-radius: 20px;
-    z-index: 1;
-    width: 30px;
-    height: 30px;
-}
-
 /***** LAYOUT *****/
 .dgit-player-side-panel {
     display: flex;
@@ -142,7 +110,8 @@ div.dgit-highlight-card:hover {
 #dgit_layout {
     display: flex;
     flex-flow: column nowrap;
-    gap: 20px
+    gap: 20px;
+    align-items: center;
 }
 
 #dgit_end_game_scoring {
@@ -206,6 +175,7 @@ div.dgit-highlight-card:hover {
     padding-top: 10px;
     padding-bottom: 20px;
     gap: 20px;
+    justify-content: center;
 }
 
 #dgit_deck {
@@ -319,6 +289,7 @@ div.dgit-highlight-card:hover {
     flex-flow: row wrap;   
     gap: 20px;
     margin-left: 10px;
+    justify-content: center;
 }
 
 .dgit-room-panel {
@@ -344,6 +315,8 @@ div.dgit-highlight-card:hover {
     flex-flow: column nowrap;
     gap: 20px;
     padding-left: 10px;
+    width: 100%;
+    max-width: 1891px;
 }
 
 .dgit-player-panel {
@@ -484,11 +457,6 @@ div.dgit-highlight-card:hover {
     border: 1px solid;
     box-shadow: 1px 1px 1px 0 #000000a0;
     background-image: url('img/dgit_cards.png');
-}
-
-div.dgit-card:hover {
-    transform: scale(1.05);
-    z-index: 30;
 }
 
 .dgit-card-in-deck {

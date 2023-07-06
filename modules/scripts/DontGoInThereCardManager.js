@@ -59,10 +59,7 @@ define([
                 // Create tooltip
                 if (playerCard.tooltipText.length > 0) {
                     // If card has a tooltip, create it
-                    this.game.addTooltip('dgit_card_' + playerCard.id + '_tooltip', _(playerCard.tooltipText), '');
-                } else {
-                    // Else hide tooltip element
-                    dojo.addClass('dgit_card_' + playerCard.id + '_tooltip', 'dgit-hidden');
+                    this.game.addTooltip(`dgit_card_${playerCard.id}`, _(playerCard.tooltipText), '');
                 }
             }
         },
@@ -119,6 +116,11 @@ define([
                 $(cardDiv).style.removeProperty('top');
                 $(cardDiv).style.removeProperty('left');
             });
+
+            if (card.tooltipText.length > 0) {
+                // If card has a tooltip, create it
+                this.game.addTooltip(`dgit_card_${card.id}`, _(card.tooltipText), '');
+            }
         },
     });
 });

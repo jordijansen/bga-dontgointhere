@@ -46,7 +46,7 @@ define([
                 
                 // Add room css class and tooltip
                 dojo.addClass('dgit_room_' + room.uiPosition, room.cssClass);
-                this.addTooltip('dgit_room_' + room.uiPosition + '_tooltip', _(room.tooltipText), '');
+                this.addTooltip('dgit_room_' + room.uiPosition, _(room.tooltipText), '');
 
                 // Create cards currently in room
                 if(gamedatas.roomCards[room.uiPosition].length > 0) {}
@@ -59,16 +59,13 @@ define([
                     
                     // If card is faceup show tooltip
                     if (card.tooltipText.length > 0) {
-                        this.addTooltip('dgit_card_' + card.id + '_tooltip', _(card.tooltipText), '');
-                    } else {
-                        dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
+                        this.addTooltip(`dgit_card_${card.id}`, _(card.tooltipText), '');
                     }
                     
                     if (room.type == SECRET_PASSAGE && card.uiPosition == 3 && gamedatas.secretPassageRevealed == DGIT_FALSE && !this.isPlayerPresentInRoom(gamedatas.meeplesInRooms[room.uiPosition], this.game.getCurrentPlayerId())) {
                         // If room is secret passage flip the 3rd card face down for everyone who has not placed a meeple here
                         dojo.addClass('dgit_card_' + card.id, 'dgit-card-back');
                         dojo.setAttr('dgit_card_' + card.id, 'special', 'secret-passage');
-                        dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
                     }
                 }
                 
@@ -103,13 +100,10 @@ define([
                     // If room is secret passage flip the 3rd card face down for everyone who has not placed a meeple here
                     dojo.addClass('dgit_card_' + card.id, 'dgit-card-back');
                     dojo.setAttr('dgit_card_' + card.id, 'special', 'secret-passage');
-                    dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
                 } else {
                     // If card is faceup show tooltip
                     if (card.tooltipText.length > 0) {
-                        this.addTooltip('dgit_card_' + card.id + '_tooltip', _(card.tooltipText), '');
-                    } else {
-                        dojo.addClass('dgit_card_' + card.id + '_tooltip', 'dgit-hidden');
+                        this.addTooltip(`dgit_card_${card.id}`, _(card.tooltipText), '');
                     }
                 }
                 this.game.attachToNewParent('dgit_card_' + card.id, 'dgit_room_' + room.uiPosition + '_card_slot_' + card.uiPosition);
@@ -145,7 +139,7 @@ define([
                     dojo.setAttr(roomspace.id, 'meeple', 'none');
                 }
             }
-            this.addTooltip('dgit_room_' + newRoom.uiPosition + '_tooltip', _(newRoom.tooltipText), '');
+            this.addTooltip(`dgit_room_${newRoom.uiPosition}`, _(newRoom.tooltipText), '');
         },
 
         /**
@@ -173,7 +167,6 @@ define([
             var secretPassageHiddenCard = dojo.query('div[special="secret-passage"')[0];
             if (secretPassageHiddenCard) {
                 dojo.removeClass(secretPassageHiddenCard.id, 'dgit-card-back');
-                dojo.removeClass(secretPassageHiddenCard.firstElementChild.id, 'dgit-hidden');
             }
         },
         
