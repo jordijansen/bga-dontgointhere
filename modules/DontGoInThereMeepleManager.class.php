@@ -35,12 +35,12 @@ class DontGoInThereMeepleManager extends APP_GameClass
      */
     public function setupNewGame($players)
     {
-        // Create 5 meeples for each player
+        // Create x meeples for each player
         $meeples = [];
         foreach($players as $player)
         {
             $meepleType = self::determineMeepleType($player->getColor());
-            $meeples[] = [TYPE => $meepleType, TYPE_ARG => $player->getId(), 'nbr' => 5];
+            $meeples[] = [TYPE => $meepleType, TYPE_ARG => $player->getId(), 'nbr' => 10];
         }
         $this->meeples->createCards($meeples, HAND);
     }

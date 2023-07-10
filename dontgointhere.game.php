@@ -38,6 +38,17 @@ class DontGoInThere extends Table
             SECRET_PASSAGE_REVEALED => 17,
             TOTAL_TURNS => 18,
             TURN_COUNTER => 19,
+            // OPTIONS
+            CURSED_CARDS_OPTION => CURSED_CARDS_OPTION_ID,
+            CURSED_CARDS_1 => CURSED_CARDS_1_ID,
+            CURSED_CARDS_2 => CURSED_CARDS_2_ID,
+            CURSED_CARDS_3 => CURSED_CARDS_3_ID,
+            CURSED_CARDS_4 => CURSED_CARDS_4_ID,
+            CURSED_CARDS_5 => CURSED_CARDS_5_ID,
+            CURSED_CARDS_6 => CURSED_CARDS_6_ID,
+            CURSED_CARDS_7 => CURSED_CARDS_7_ID,
+            CURSED_CARDS_8 => CURSED_CARDS_8_ID,
+
         ));
 
         $this->cardManager = new DontGoInThereCardManager($this);

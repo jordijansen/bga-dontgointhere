@@ -53,8 +53,11 @@ define([
                 // Place card
                 var playerCard = gamedatas.playerCards[playerCardsKey];
                 const playerCardDiv = 'dgit_player_' + playerCard.uiPosition + '_' + playerCard.type + '_cards';
+                dojo.style(playerCardDiv, 'display', 'block');
+
                 this.game.util.placeBlock(CURSED_CARD_TEMPLATE, playerCardDiv, { card_id: playerCard.id, player_id: playerCard.uiPosition, card_css_class: playerCard.cssClass, room_ui_position: -1, curses: playerCard.curses });
                 dojo.removeClass(playerCardDiv, 'dgit-hidden');
+                this.setContainerWidth(playerCardDiv);
 
                 // Create tooltip
                 if (playerCard.tooltipText.length > 0) {
@@ -90,6 +93,8 @@ define([
                     dojo.destroy(cardDiv);
                     if (cardKey == cards.length - 1 && currentCardsOfType == cards.length) {
                         dojo.addClass(cardTypeDiv, 'dgit-hidden');
+                    } else {
+                        this.setContainerWidth(cardTypeDiv);
                     }
                 });
                 delay = delay + 200;
@@ -108,7 +113,7 @@ define([
             var cardDiv = 'dgit_card_' + card.id;
             var playerCardDiv = 'dgit_player_' + player.id + '_' + card.type + '_cards';
             dojo.setAttr(cardDiv, 'roomnumber', -1);
-            dojo.removeClass(playerCardDiv, 'dgit-hidden');
+            dojo.style(playerCardDiv, 'display', 'block');
             this.game.attachToNewParent(cardDiv, playerCardDiv);
 
             var moveCard = this.game.slideToObject(cardDiv, playerCardDiv).play();
@@ -117,10 +122,20 @@ define([
                 $(cardDiv).style.removeProperty('left');
             });
 
+            this.setContainerWidth(playerCardDiv);
+
             if (card.tooltipText.length > 0) {
                 // If card has a tooltip, create it
                 this.game.addTooltip(`dgit_card_${card.id}`, _(card.tooltipText), '');
             }
         },
+
+        setContainerWidth: function (cardDiv) {
+            const cardDivElement = $(cardDiv);
+            const cardsInDiv = cardDivElement.querySelectorAll('.dgit-card');
+            const nrOfCards = cardsInDiv.length;
+            const newWidth =  200 + ((nrOfCards - 1) * 50)
+            dojo.style(cardDiv, 'min-width', `${newWidth}px`);
+        }
     });
 });

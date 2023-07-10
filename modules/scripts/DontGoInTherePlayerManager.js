@@ -73,12 +73,12 @@ define([
             // Animate gain ghosts
             if (amount > 0) {
                 this.game.util.placeBlock(GHOST_TEMPLATE, 'dgit_ghost_tokens', { ghost_type: Math.floor(Math.random() * 24) + 1 });
-                this.slideToObjectAndDestroy('dgit_moving_ghost', 'dgit_player_' + playerId + '_ghost_tracker');
+                this.slideToObjectAndDestroy('dgit_moving_ghost', `dgit_player_${playerId}_side_panel_ghost_counter`);
             }
 
             // Animate discard ghosts
             if (amount < 0) {
-                this.game.util.placeBlock(GHOST_TEMPLATE, 'dgit_player_' + playerId + '_tracker_panel', { ghost_type: Math.floor(Math.random() * 24) + 1 });
+                this.game.util.placeBlock(GHOST_TEMPLATE, `dgit_player_${playerId}_side_panel_ghost_counter`, { ghost_type: Math.floor(Math.random() * 24) + 1 });
                 this.slideToObjectAndDestroy('dgit_moving_ghost', 'dgit_ghost_tokens');
             }
 

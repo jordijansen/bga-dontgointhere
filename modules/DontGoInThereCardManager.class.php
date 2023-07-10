@@ -48,7 +48,7 @@ class DontGoInThereCardManager extends APP_GameClass
     public function setupNewGame($playerCount, $libraryPosition)
     {
         // Get cursed card types to use for this game
-        $cursedCardTypes = self::randomizeCursedCardTypes($playerCount);
+        $cursedCardTypes = self::determineCursedCardTypes($playerCount);
         
         // Create 2 of each card
         $cards = [];
@@ -322,14 +322,27 @@ class DontGoInThereCardManager extends APP_GameClass
      * @param int $playerCount Number of players in the game
      * @return array An array of card types
      */
-    private function randomizeCursedCardTypes($playerCount)
+    private function determineCursedCardTypes($playerCount)
     {
         $numberOfTypes = self::$playerCountVariables[$playerCount]['cursedCardTypes'];
-
         $possibleTypes = range(AMULET, TWIN);
         shuffle($possibleTypes);
 
-        return array_slice($possibleTypes, 0, $numberOfTypes);
+        if ($this->game->getGameStateValue(CURSED_CARDS_OPTION) == CURSED_CARDS_OPTION_STANDARD) {
+            return array_slice($possibleTypes, 0, $numberOfTypes);
+        } else {
+            $selectedTypes = [];
+            for ($i = 1; $i <= $numberOfTypes; $i++) {
+                $selectedTypes = [...$selectedTypes, $this->game->getGameStateValue('CURSED_CARDS_'.$i)];
+            }
+            $selectedTypesWithoutRandoms = array_filter($selectedTypes, fn($value) => $value != RANDOM_CURSED_CARD);
+            $uniqueSelectedTypes = array_unique($selectedTypesWithoutRandoms);
+
+            $nrOfRandomTypes =  $numberOfTypes - sizeof($uniqueSelectedTypes);
+            $remainingTypes = array_filter($possibleTypes, fn($value) => !in_array($value, $uniqueSelectedTypes));
+
+            return [...$uniqueSelectedTypes, ...array_slice($remainingTypes, 0, $nrOfRandomTypes)];
+        }
     }
 
     /**

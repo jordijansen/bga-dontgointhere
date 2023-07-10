@@ -25,10 +25,8 @@ define([
             
             this.deckCounter = new ebg.counter();
             this.ghostTotalCounter = new ebg.counter();
-            this.playerCurseCounters = [];
             this.playerEndGameCurseCounters = [];
             this.playerSidePanelCurseCounters = [];
-            this.currentPlayerGhosts = new ebg.counter();
             this.currentPlayerSidePanelGhosts = new ebg.counter();
             this.playerDispeledCounters = [];
         },
@@ -48,7 +46,6 @@ define([
          */
         adjustGhostCounter: function (delta)
         { 
-            this.currentPlayerGhosts.incValue(delta);
             this.currentPlayerSidePanelGhosts.incValue(delta);
         },
 
@@ -69,7 +66,6 @@ define([
         adjustPlayerCurses: function (player, delta)
         { 
             this.playerEndGameCurseCounters[player.id].incValue(delta);
-            this.playerCurseCounters[player.id].incValue(delta);
             this.playerSidePanelCurseCounters[player.id].incValue(delta);
         },
 
@@ -109,9 +105,6 @@ define([
          */
         createPlayerCurseCounters: function (player)
         {
-            this.playerCurseCounters[player.id] = new ebg.counter();
-            this.playerCurseCounters[player.id].create('dgit_player_' + player.id + '_curse_counter');
-            this.playerCurseCounters[player.id].setValue(player.curses);
             this.playerEndGameCurseCounters[player.id] = new ebg.counter();
             this.playerEndGameCurseCounters[player.id].create('dgit_score_curse_counter_' + player.id);
             this.playerEndGameCurseCounters[player.id].setValue(player.curses);
@@ -136,9 +129,7 @@ define([
          * @param {Object} player A player object
          */
         createPlayerGhostCounters: function (player)
-        { 
-            this.currentPlayerGhosts.create('dgit_player_' + player.id + '_ghost_counter');
-            this.currentPlayerGhosts.setValue(player.ghostTokens);
+        {
             this.currentPlayerSidePanelGhosts.create('dgit_player_' + player.id + '_side_panel_ghost_counter');
             this.currentPlayerSidePanelGhosts.setValue(player.ghostTokens);
         },
@@ -150,15 +141,6 @@ define([
         getDeckCounterValue: function ()
         {
             return this.deckCounter.getValue();
-        },
-
-        /**
-         * Set the current players ghost counter to a new value
-         * @param {int} value To set ghost counter to
-         */
-        ghostCounterToValue: function (value) { 
-            this.currentPlayerGhosts.toValue(value);
-            this.currentPlayerSidePanelGhosts.toValue(value);
         },
 
         /**

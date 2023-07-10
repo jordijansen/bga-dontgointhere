@@ -46,7 +46,7 @@ define([
                 
                 // Add room css class and tooltip
                 dojo.addClass('dgit_room_' + room.uiPosition, room.cssClass);
-                this.addTooltip('dgit_room_' + room.uiPosition, _(room.tooltipText), '');
+                this.addTooltip(`dgit_room_${room.uiPosition}_tooltip`, _(room.tooltipText), '');
 
                 // Create cards currently in room
                 if(gamedatas.roomCards[room.uiPosition].length > 0) {}
@@ -139,7 +139,7 @@ define([
                     dojo.setAttr(roomspace.id, 'meeple', 'none');
                 }
             }
-            this.addTooltip(`dgit_room_${newRoom.uiPosition}`, _(newRoom.tooltipText), '');
+            this.addTooltip(`dgit_room_${newRoom.uiPosition}_tooltip`, _(newRoom.tooltipText), '');
         },
 
         /**

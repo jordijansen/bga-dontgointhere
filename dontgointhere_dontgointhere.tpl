@@ -68,7 +68,7 @@
                     <div id="dgit_room_{ROOM_NUM}_space_{SPACE_NUM}" class="dgit-room-space dgit-room-space-{SPACE_NUM}"></div>
                     <div id="dgit_room_{ROOM_NUM}_space_highlight_{SPACE_NUM}" room="{ROOM_NUM}" space="{SPACE_NUM}" meeple="none" class="dgit-room-space-highlight dgit-room-space-highlight-{SPACE_NUM}"></div>
                     <!-- END roomspace -->
-                    <span id="dgit_room_{ROOM_NUM}_tooltip" class="dgit-room-tooltip">i</span>
+                    <div id="dgit_room_{ROOM_NUM}_tooltip" class="dgit-room-tooltip"></div>
                 </div>
             </div>
             <!-- END room -->
@@ -80,15 +80,6 @@
             <h3 id="dgit_player_{PLAYER_ID}_header" class="dgit-header" style="color: #{PLAYER_COLOR}; background-image: linear-gradient(to right, gray, #{PLAYER_COLOR})">
                 {PLAYER_NAME}
             </h3>
-            <div id="dgit_player_{PLAYER_ID}_info_panel" class="dgit-player-info-panel">
-                <div id="dgit_player_{PLAYER_ID}_tracker_panel" class="dgit-player-tracker-panel">
-                    <div id="dgit_player_{PLAYER_ID}_curse_tracker" class="dgit-curse-icon"></div>
-                    <span id="dgit_player_{PLAYER_ID}_curse_counter" class="dgit-player-curse-counter">0</span>
-                    <div id="dgit_player_{PLAYER_ID}_ghost_tracker" class="dgit-ghost-token dgit-ghost-token-{PLAYER_NATURAL_ORDER} dgit-ghost-tracker-animate"></div>
-                    <span id="dgit_player_{PLAYER_ID}_ghost_counter" class="dgit-player-ghost-counter" style="text-shadow: 2px 0 2px #{PLAYER_COLOR},0 -2px 2px #{PLAYER_COLOR},0 2px 2px #{PLAYER_COLOR},-2px 0 2px #{PLAYER_COLOR};">?</span>
-                </div>
-                <div id="dgit_player_{PLAYER_ID}_meeples" class="dgit-player-meeples" style="background-color: #{PLAYER_COLOR}; border-color: #{PLAYER_COLOR}; color: #{PLAYER_COLOR}"></div>
-            </div>
             <div id="dgit_player_{PLAYER_ID}_cards_panel" class="dgit-player-cards-panel">
                 <div id="dgit_player_{PLAYER_ID}_dispeled" class="dgit-player-dispeled dgit-hidden">
                     <span id="dgit_player_{PLAYER_ID}_dispeled_counter" class="dgit-player-dispeled-counter" style="text-shadow: 5px 0 5px #{PLAYER_COLOR},0 -5px 5px #{PLAYER_COLOR},0 5px 5px #{PLAYER_COLOR},-5px 0 5px #{PLAYER_COLOR};">0</span>
@@ -96,11 +87,14 @@
                 </div>
                 <div id="dgit_player_{PLAYER_ID}_cards" class="dgit-player-cards">
                     <!-- BEGIN playercardtype -->
-                    <div id="dgit_player_{PLAYER_ID}_{CARD_TYPE}_cards" class="dgit-player-card-type-section dgit-hidden" style="order: {CARD_TYPE}">
+                    <div id="dgit_player_{PLAYER_ID}_{CARD_TYPE}_cards" class="dgit-player-card-type-section">
                         <button id="dgit_dipel_card_type_button_{PLAYER_ID}_{CARD_TYPE}" cardtype="{CARD_TYPE}" class="dgit-dispel-card-type-button dgit-hidden" href="#">{DISPEL}</button>
                     </div>
                     <!-- END playercardtype -->
                 </div>
+            </div>
+            <div id="dgit_player_{PLAYER_ID}_info_panel" class="dgit-player-info-panel">
+                <div id="dgit_player_{PLAYER_ID}_meeples" class="dgit-player-meeples" style="background-color: #{PLAYER_COLOR}; border-color: #{PLAYER_COLOR}; color: #{PLAYER_COLOR}"></div>
             </div>
         </div>
         <!-- END playerarea -->

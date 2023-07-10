@@ -24,35 +24,168 @@
  *
  */
 
-$game_options = array(
+require_once(__DIR__.'/modules/constants.inc.php');
 
-    /*
-    
-    // note: game variant ID should start at 100 (ie: 100, 101, 102, ...). The maximum is 199.
-    100 => array(
-                'name' => totranslate('my game option'),    
-                'values' => array(
 
-                            // A simple value for this option:
-                            1 => array( 'name' => totranslate('option 1') )
+$cursed_card_options = [
+    RANDOM_CURSED_CARD => [
+        'default' => true,
+        'name' => totranslate('Random')
+    ],
+    AMULET => [
+        'name' => totranslate('Amulet'),
+    ],
+    CAT => [
+        'name' => totranslate('Cat'),
+    ],
+    CLOCK => [
+        'name' => totranslate('Clock'),
+    ],
+    DOLL => [
+        'name' => totranslate('Doll'),
+    ],
+    HOLY_WATER => [
+        'name' => totranslate('Holy Water'),
+    ],
+    MASK => [
+        'name' => totranslate('Mask'),
+    ],
+    MIRROR => [
+        'name' => totranslate('Mirror'),
+    ],
+    MUSIC_BOX => [
+        'name' => totranslate('Music Box'),
+    ],
+    PORTRAIT => [
+        'name' => totranslate('Portrait'),
+    ],
+    RING => [
+        'name' => totranslate('Ring'),
+    ],
+    TOME => [
+        'name' => totranslate('Tome'),
+    ],
+    TWIN => [
+        'name' => totranslate('Twin'),
+    ]
+];
 
-                            // A simple value for this option.
-                            // If this value is chosen, the value of "tmdisplay" is displayed in the game lobby
-                            2 => array( 'name' => totranslate('option 2'), 'tmdisplay' => totranslate('option 2') ),
+$game_options = [
 
-                            // Another value, with other options:
-                            //  description => this text will be displayed underneath the option when this value is selected to explain what it does
-                            //  beta=true => this option is in beta version right now (there will be a warning)
-                            //  alpha=true => this option is in alpha version right now (there will be a warning, and starting the game will be allowed only in training mode except for the developer)
-                            //  nobeginner=true  =>  this option is not recommended for beginners
-                            //  firstgameonly=true  =>  this option is recommended only for the first game (discovery option)
-                            3 => array( 'name' => totranslate('option 3'), 'description' => totranslate('this option does X'), 'beta' => true, 'nobeginner' => true )
-                        ),
-                'default' => 1
-            ),
-
-    */
-
-);
+    CURSED_CARDS_OPTION_ID => [
+        'name' => totranslate('Cursed Cards'),
+        'values' => [
+            CURSED_CARDS_OPTION_STANDARD => [
+                'default' => true,
+                'name' => totranslate('Standard'),
+                'description' => totranslate('Random cursed cards are used'),
+            ],
+            CURSED_CARDS_OPTION_CUSTOM => [
+                'name' => totranslate('Custom'),
+                'description' => totranslate('Select the cursed cards to use (or random). Note: if you choose duplicate card types, random ones will be picked instead.'),
+            ]
+        ]
+    ],
+    CURSED_CARDS_1_ID => [
+        'name' => totranslate('Cursed Card #1'),
+        'values' => $cursed_card_options,
+        'displaycondition' => [
+            [
+                'type' => 'otheroption',
+                'id' => CURSED_CARDS_OPTION_ID,
+                'value' => [CURSED_CARDS_OPTION_CUSTOM]
+            ],
+        ],
+    ],
+    CURSED_CARDS_2_ID => [
+        'name' => totranslate('Cursed Card #2'),
+        'values' => $cursed_card_options,
+        'displaycondition' => [
+            [
+                'type' => 'otheroption',
+                'id' => CURSED_CARDS_OPTION_ID,
+                'value' => [CURSED_CARDS_OPTION_CUSTOM]
+            ],
+        ]
+    ],
+    CURSED_CARDS_3_ID => [
+        'name' => totranslate('Cursed Card #3'),
+        'values' => $cursed_card_options,
+        'displaycondition' => [
+            [
+                'type' => 'otheroption',
+                'id' => CURSED_CARDS_OPTION_ID,
+                'value' => [CURSED_CARDS_OPTION_CUSTOM]
+            ],
+        ],
+    ],
+    CURSED_CARDS_4_ID => [
+        'name' => totranslate('Cursed Card #4'),
+        'values' => $cursed_card_options,
+        'displaycondition' => [
+            [
+                'type' => 'otheroption',
+                'id' => CURSED_CARDS_OPTION_ID,
+                'value' => [CURSED_CARDS_OPTION_CUSTOM]
+            ],
+        ],
+    ],
+    CURSED_CARDS_5_ID => [
+        'name' => totranslate('Cursed Card #5'),
+        'values' => $cursed_card_options,
+        'displaycondition' => [
+            [
+                'type' => 'otheroption',
+                'id' => CURSED_CARDS_OPTION_ID,
+                'value' => [CURSED_CARDS_OPTION_CUSTOM]
+            ],
+        ],
+    ],
+    CURSED_CARDS_6_ID => [
+        'name' => totranslate('Cursed Card #6'),
+        'values' => $cursed_card_options,
+        'displaycondition' => [
+            [
+                'type' => 'otheroption',
+                'id' => CURSED_CARDS_OPTION_ID,
+                'value' => [CURSED_CARDS_OPTION_CUSTOM]
+            ],
+            [
+                'type' => 'minplayers',
+                'value' => [3,4,5]
+            ]
+        ],
+    ],
+    CURSED_CARDS_7_ID => [
+        'name' => totranslate('Cursed Card, #7'),
+        'values' => $cursed_card_options,
+        'displaycondition' => [
+            [
+                'type' => 'otheroption',
+                'id' => CURSED_CARDS_OPTION_ID,
+                'value' => [CURSED_CARDS_OPTION_CUSTOM]
+            ],
+            [
+                'type' => 'minplayers',
+                'value' => [4,5]
+            ]
+        ],
+    ],
+    CURSED_CARDS_8_ID => [
+        'name' => totranslate('Cursed Card #8'),
+        'values' => $cursed_card_options,
+        'displaycondition' => [
+            [
+                'type' => 'otheroption',
+                'id' => CURSED_CARDS_OPTION_ID,
+                'value' => [CURSED_CARDS_OPTION_CUSTOM]
+            ],
+            [
+                'type' => 'minplayers',
+                'value' => [5]
+            ]
+        ],
+    ],
+];
 
 
