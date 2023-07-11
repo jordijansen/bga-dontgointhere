@@ -33,5 +33,17 @@ $this->card_types = array(
 */
 
 
-
-
+$this->CURSE_TYPE_LABEL = [
+    0 => totranslate('Amulet'),
+    1 => totranslate('Cat'),
+    2 => totranslate('Clock'),
+    3 => totranslate('Doll'),
+    4 => totranslate('Holy Water'),
+    5 => totranslate('Mask'),
+    6 => totranslate('Mirror'),
+    7 => totranslate('Music Box'),
+    8 => totranslate('Portrait'),
+    9 => totranslate('Ring'),
+    10  => totranslate('Tome'),
+    11 => totranslate('Twin')
+];

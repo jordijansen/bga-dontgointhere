@@ -35,6 +35,16 @@
             <div id="dgit_deck">
                 <span id="dgit_deck_counter">0</span>
             </div>
+            <div id="dgit_dice_tray">
+                <!-- BEGIN die -->
+                <div id="dgit_die_{DIE_NUM}" class="dgit-die">
+                    <div id="dgit_die_{DIE_NUM}_face" class="dgit-die-face"></div>
+                    <button id="dgit_change_die_button_{DIE_NUM}" die="{DIE_NUM}" class="dgit-change-die-button dgit-hidden" href="#"><i class="fa fa-retweet" aria-hidden="true"></i></button>
+                </div>
+                <!-- END die -->
+                <span id="dgit_dice_total" class="dgit-hidden">0</span>
+                <a id="dgit_roll_dice_button" class="action-button bgabutton dgit-hidden" href="#">{ROLL}</a>
+            </div>
             <div id="dgit_ghost_tokens">
                 <!-- BEGIN ghost -->
                 <div id="dgit_x_ghost_{GHOST_NUM}" class="dgit-ghost-x" style="z-index: {Z_INDEX}; animation-delay: {DELAY}ms; animation-duration: {X_TIME}s;">
@@ -43,16 +53,6 @@
                     </div>
                 </div>
                 <!-- END ghost -->
-            </div>
-            <div id="dgit_dice_tray">
-                <!-- BEGIN die -->
-                <div id="dgit_die_{DIE_NUM}" class="dgit-die">
-                    <div id="dgit_die_{DIE_NUM}_face" class="dgit-die-face"></div>
-                    <button id="dgit_change_die_button_{DIE_NUM}" die="{DIE_NUM}" class="dgit-change-die-button dgit-hidden" href="#">{CHANGE}</button>
-                </div>
-                <!-- END die -->
-                <span id="dgit_dice_total" class="dgit-hidden">0</span>
-                <a id="dgit_roll_dice_button" class="action-button bgabutton dgit-hidden" href="#">{ROLL}</a>
             </div>
         </div>
         <div id="dgit_rooms_panel">
@@ -81,11 +81,11 @@
                 {PLAYER_NAME}
             </h3>
             <div id="dgit_player_{PLAYER_ID}_cards_panel" class="dgit-player-cards-panel">
-                <div id="dgit_player_{PLAYER_ID}_dispeled" class="dgit-player-dispeled dgit-hidden">
-                    <span id="dgit_player_{PLAYER_ID}_dispeled_counter" class="dgit-player-dispeled-counter" style="text-shadow: 5px 0 5px #{PLAYER_COLOR},0 -5px 5px #{PLAYER_COLOR},0 5px 5px #{PLAYER_COLOR},-5px 0 5px #{PLAYER_COLOR};">0</span>
-                    <div id="dgit_player_{PLAYER_ID}_dispeled_cards" class="dgit-card dgit-card-back"></div>
-                </div>
                 <div id="dgit_player_{PLAYER_ID}_cards" class="dgit-player-cards">
+                    <div id="dgit_player_{PLAYER_ID}_dispeled" class="dgit-player-dispeled dgit-hidden">
+                        <span id="dgit_player_{PLAYER_ID}_dispeled_counter" class="dgit-player-dispeled-counter" style="text-shadow: 5px 0 5px #{PLAYER_COLOR},0 -5px 5px #{PLAYER_COLOR},0 5px 5px #{PLAYER_COLOR},-5px 0 5px #{PLAYER_COLOR};">0</span>
+                        <div id="dgit_player_{PLAYER_ID}_dispeled_cards" class="dgit-card dgit-card-back"></div>
+                    </div>
                     <!-- BEGIN playercardtype -->
                     <div id="dgit_player_{PLAYER_ID}_{CARD_TYPE}_cards" class="dgit-player-card-type-section">
                         <button id="dgit_dipel_card_type_button_{PLAYER_ID}_{CARD_TYPE}" cardtype="{CARD_TYPE}" class="dgit-dispel-card-type-button dgit-hidden" href="#">{DISPEL}</button>

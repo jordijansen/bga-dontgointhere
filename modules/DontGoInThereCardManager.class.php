@@ -45,10 +45,16 @@ class DontGoInThereCardManager extends APP_GameClass
      * @param int $playerCount Number of players in the game
      * @return void
      */
-    public function setupNewGame($playerCount, $libraryPosition)
+    public function setupNewGame($playerCount, $libraryPosition, $CURSE_TYPE_LABEL)
     {
         // Get cursed card types to use for this game
         $cursedCardTypes = self::determineCursedCardTypes($playerCount);
+        $curedCardTypesLabels = array_map(function($cursedCardType) use ($CURSE_TYPE_LABEL) { return $CURSE_TYPE_LABEL[$cursedCardType];}, array_values($cursedCardTypes));
+        $logMessage = clienttranslate('The following curses are in play: ${curseCards}');
+        $this->game->notifyAllPlayers('cursedCardTypes', $logMessage, [
+            'i18n' => ['curseCards'],
+            'curseCards' => $curedCardTypesLabels
+        ]);
         
         // Create 2 of each card
         $cards = [];
@@ -88,7 +94,6 @@ class DontGoInThereCardManager extends APP_GameClass
                     $this->cards->pickCardForLocation(DECK, ROOM_PREPEND . $roomPosition, $cardSlot);
                 }
             }
-            
         }
     }
 

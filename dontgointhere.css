@@ -94,6 +94,7 @@ div.dgit-highlight-card:hover {
     font-weight: bolder;
     margin-top: -25px;
     margin-left: -10px;
+    margin-bottom: 15px;
     padding-left: 10px;
     text-shadow: 1px 0 1px darkslategray, 0 -1px 1px darkslategray, 0 1px 1px darkslategray, -1px 0 1px darkslategray;
 }
@@ -172,17 +173,22 @@ div.dgit-highlight-card:hover {
 #dgit_game_panel {
     display: flex;
     flex-flow: row wrap;
-    padding-top: 10px;
-    padding-bottom: 20px;
-    gap: 20px;
+    padding: 10px;
+    gap: 10px;
     justify-content: center;
 }
 
 #dgit_deck {
     position: relative;
-    width: 200px;
-    height: 340px;
-    padding-left: 10px;
+    width: 114px;
+    height: 160px;
+    padding: 5px 0;
+    margin: 0 5px;
+}
+
+#dgit_deck .dgit-card {
+    height: 160px;
+    width: 114px;
 }
 
 #dgit_deck_counter {
@@ -196,18 +202,22 @@ div.dgit-highlight-card:hover {
 
 #dgit_ghost_tokens {
     position: relative;
-    width: 340px;
-    height: 340px;
     border: 5px solid;
+    height: 160px;
+    max-width: 114px;
     box-shadow: 5px 5px 5px 0 #000000a0;
     background-image: url('img/dgit_ghost_tray.png');
+    flex: 1;
 }
 
 #dgit_dice_tray {
     position: relative;
-    width: 618px;
-    height: 340px;
+    width: 520px;
+    height: 120px;
+    padding: 20px 10px;
     border: 5px solid;
+    flex: 1;
+    max-width: 618px;
     box-shadow: 5px 5px 5px 0 #000000a0;
     background-image: url('img/dgit_dice_tray.png');
     display: flex;
@@ -219,25 +229,31 @@ div.dgit-highlight-card:hover {
 
 #dgit_dice_total {
     position: absolute;
-    font-size: 4em;
+    font-size: xx-large;
     font-weight: bolder;
     color: darkslategray;
     text-shadow: 5px 0 5px #8bc98a,0 -5px 5px #8bc98a,0 5px 5px #8bc98a,-5px 0 5px #8bc98a;
     top: 5%;
-    right: 5%;
+    width: 100%;
+    text-align: center;
 }
 
 #dgit_roll_dice_button {
     position: absolute;
-    right: 5%;
-    bottom: 5%;
-    font-size: xx-large;
+    right: calc(50% - 100px);
+    bottom: 3px;
+    font-size: small;
+    width: 200px;
+    text-align: center;
     color: #000;
     border: 4px outset;
     background-color: #8bc98a;
-    box-shadow: 0px 0px 10px 10px rgba(139, 201, 138, .9);
-    -webkit-box-shadow: 0px 0px 10px 10px rgba(139, 201, 138, .9);
-    -moz-box-shadow: 0px 0px 10px 10px rgba(139, 201, 138, .9);
+    box-shadow: 0px 0px 3px 3px rgba(139, 201, 138, .9);
+    -webkit-box-shadow: 0px 0px 3px 3px rgba(139, 201, 138, .9);
+    -moz-box-shadow: 0px 0px 3px 3px rgba(139, 201, 138, .9);
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .dgit-change-die-button {
@@ -319,12 +335,9 @@ div.dgit-highlight-card:hover {
 }
 
 .dgit-player-panel {
-    display: flex;
-    flex-flow: row wrap;
-    gap: 20px;
     border-radius: 5px;
-    align-items: flex-end;
     z-index: 1 !important;
+    min-height: 282px;
 }
 
 .dgit-player-info-panel {
@@ -390,7 +403,7 @@ div.dgit-highlight-card:hover {
     position: relative;
     display: flex;
     flex-flow: row wrap;
-    gap: 2px;
+    gap: 8px;
 }
 
 .dgit-player-card-type-section {
@@ -398,8 +411,6 @@ div.dgit-highlight-card:hover {
     display: none;
     flex-flow: row nowrap;
     height: 280px;
-    margin-right: 8px;
-    margin-bottom: 8px;
 }
 
 .dgit-player-card-type-section .dgit-card {
@@ -435,7 +446,7 @@ div.dgit-highlight-card:hover {
     display: flex;
     flex-flow: row wrap;
     position: relative;
-    gap: 2px;
+    gap: 8px;
 }
 
 /***** ACTIVE PLAYER MARKER *****/
@@ -457,6 +468,7 @@ div.dgit-highlight-card:hover {
     border: 1px solid;
     box-shadow: 1px 1px 1px 0 #000000a0;
     background-image: url('img/dgit_cards.png');
+    background-size: auto 600%;
 }
 
 .dgit-card-in-deck {
@@ -480,8 +492,8 @@ div.dgit-curse-icon:hover {
 /***** DICE *****/
 .dgit-die {
     position: relative;
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
 }
 
 .dgit-die-face {
@@ -493,6 +505,7 @@ div.dgit-curse-icon:hover {
     opacity: .9;
     border-radius: 5px;
     box-sizing: border-box;
+    background-size: auto 100%;
     background-image: url('img/dgit_die_faces.png');
     box-shadow: 0px 0px 10px 10px rgba(139, 201, 138, .9);
     -webkit-box-shadow: 0px 0px 10px 10px rgba(139, 201, 138, .9);
@@ -548,28 +561,20 @@ div.dgit-ghost-tracker-animate:hover {
 }
 
 @keyframes x {
+    0% {
+        left: 0;
+    }
+    50% {
+        left: calc(100% - 72px);
+    }
     100% {
-        transform: translateX(calc(21.25em - 4.375em));
+        left: 0;
     }
 }
 
 @keyframes y {
     100% {
-        transform: translateY(calc(21.25em - 4.531em));
-    }
-}
-
-@media only screen and (max-device-width: 480px) {
-    @keyframes x {
-        100% {
-            transform: translateX(calc(9.97em - 2.037em));
-        }
-    }
-    
-    @keyframes y {
-        100% {
-            transform: translateY(calc(9.97em - 2.124em));
-        }
+        transform: translateY(calc(7.5em - 1.531em));
     }
 }
 

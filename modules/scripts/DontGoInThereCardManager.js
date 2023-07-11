@@ -91,15 +91,13 @@ define([
                 moveCard[cardKey] = this.game.slideToObject(cardDiv, dispeledCardsDiv, 500, delay).play();
                 on(moveCard[cardKey], "End", function (cardDiv) {
                     dojo.destroy(cardDiv);
+                    this.setContainerWidth(cardTypeDiv);
                     if (cardKey == cards.length - 1 && currentCardsOfType == cards.length) {
                         dojo.addClass(cardTypeDiv, 'dgit-hidden');
-                    } else {
-                        this.setContainerWidth(cardTypeDiv);
                     }
-                });
+                }.bind(this));
                 delay = delay + 200;
             }
-            
             this.game.counterManager.adjustPlayerDispeledCounter(player, cards.length);
         },
 

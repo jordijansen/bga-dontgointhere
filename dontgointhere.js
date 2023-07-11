@@ -389,7 +389,6 @@ define([
             var player = notification.args.player;
             var amount = notification.args.amount;
             this.counterManager.adjustPlayerCurses(player, amount);
-            dojo.addClass('dgit_score_ghosts_' + player.id, 'dgit-pulse');
         },
 
         /**
@@ -452,12 +451,7 @@ define([
 
         notif_revealWinners: function (notification)
         { 
-            var winningPlayers = notification.args.winningPlayers;
-            for (var winningPlayersKey in winningPlayers)
-            {
-                var winningPlayer = winningPlayers[winningPlayersKey];
-                dojo.addClass('dgit_score_curses_' + winningPlayer.id, 'dgit-pulse');
-            }
+
         },
 
         /**
@@ -505,5 +499,22 @@ define([
             this.playerManager.adjustPlayerGhosts(currentPlayer.id, ghostAmount * -1);
             this.playerManager.adjustPlayerGhosts(otherPlayer.id, ghostAmount);
         },
+
+        format_string_recursive : function format_string_recursive(log, args) {
+            {
+                try {
+                    if (log && args && !args.processed) {
+                        Object.keys(args).forEach(argKey => {
+                            if (argKey.startsWith('curseCards') && Array.isArray(args[argKey])) {
+                                args[argKey] = args[argKey].map(curseType => _(curseType)).join(", ")
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.error(log, args, "Exception thrown", e.stack);
+                }
+                return this.inherited({callee: format_string_recursive}, arguments);
+            }
+        }
    });             
 });

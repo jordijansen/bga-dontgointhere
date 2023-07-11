@@ -85,7 +85,7 @@ class DontGoInThere extends Table
         // Setup rooms
         $this->roomManager->setupNewGame();
         // Setup cards
-        $this->cardManager->setupNewGame($this->playerManager->getPlayerCount(), $this->roomManager->getLibraryPosition());
+        $this->cardManager->setupNewGame($this->playerManager->getPlayerCount(), $this->roomManager->getLibraryPosition(), $this->CURSE_TYPE_LABEL);
 
         // Initialize global variables
         self::setGameStateInitialValue(CLOCKS_COLLECTED, DGIT_FALSE);
