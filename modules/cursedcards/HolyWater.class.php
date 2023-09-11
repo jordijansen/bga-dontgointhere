@@ -61,6 +61,7 @@ class HolyWater extends DontGoInThereCursedCard
                     ADJUST_GHOSTS,    
                     clienttranslate('${player_name} collects a set of 2 Holy Water cards and discards ${number} ${plural}'),
                     array(
+                        'i18n' => ['plural'],
                         'player_name' => $this->game->getActivePlayerName(),
                         'number' => $ghostsToDiscard * -1,
                         'plural' => $ghostsToDiscard == 1 ? clienttranslate('Ghost') : clienttranslate('Ghosts'),

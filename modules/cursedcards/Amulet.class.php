@@ -46,6 +46,6 @@ class Amulet extends DontGoInThereCursedCard
 
         $dispelStrength = $curses + 1;
 
-        return clienttranslate('At game end, dispel an Amulet card with a Curse value of '.$dispelStrength.'.');
+        return sprintf(_('At game end, dispel an Amulet card with a Curse value of %d.'), $dispelStrength);
     }
 }

@@ -489,6 +489,7 @@ class DontGoInThereCardManager extends APP_GameClass
                         DISPEL_CARDS,    
                         clienttranslate('${player_name} dispels ${amount} Amulet ${plural} worth a total of ${curses} Curses'),
                         array(
+                            'i18n' => ['plural'],
                             'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
                             'amount' => count($cardsToDispel),
                             'plural' => count($cardsToDispel) == 1 ? clienttranslate('card') : clienttranslate('cards'),
@@ -531,6 +532,7 @@ class DontGoInThereCardManager extends APP_GameClass
                         DISPEL_CARDS,    
                         clienttranslate('${player_name} dispels ${amount} Cat ${plural} worth ${curses} Curses'),
                         array(
+                            'i18n' => ['plural'],
                             'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
                             'amount' => count($sortedCats),
                             'plural' => count($sortedCats) == 1 ? clienttranslate('card') : clienttranslate('cards'),
@@ -601,6 +603,7 @@ class DontGoInThereCardManager extends APP_GameClass
                 DISPEL_CARDS,    
                 clienttranslate('${player_name} dispels ${amount} Music Box ${plural} worth a total of ${curses} Curses'),
                 array(
+                    'i18n' => ['plural'],
                     'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
                     'amount' => count($cardsToDispel),
                     'plural' => count($cardsToDispel) == 1 ? clienttranslate('card') : clienttranslate('cards'),
@@ -644,6 +647,7 @@ class DontGoInThereCardManager extends APP_GameClass
                     DISPEL_CARDS,    
                     clienttranslate('${player_name} dispels ${amount} Portrait ${plural} worth a total of ${curses} Curses'),
                     array(
+                        'i18n' => ['plural'],
                         'player_name' => $this->game->playerManager->getPlayerNameColorDiv($player),
                         'amount' => count($cardsToDispel),
                         'plural' => count($cardsToDispel) == 1 ? clienttranslate('card') : clienttranslate('cards'),

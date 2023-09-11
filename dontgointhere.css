@@ -204,25 +204,25 @@ div.dgit-highlight-card:hover {
     position: relative;
     border: 5px solid;
     height: 160px;
-    max-width: 114px;
+    width: 160px;
     box-shadow: 5px 5px 5px 0 #000000a0;
+    background-size: cover;
     background-image: url('img/dgit_ghost_tray.png');
-    flex: 1;
 }
 
 #dgit_dice_tray {
     position: relative;
-    width: 520px;
     height: 120px;
-    padding: 20px 10px;
+    padding: 20px 0;
     border: 5px solid;
     flex: 1;
-    max-width: 618px;
+    min-width: 375px;
+    max-width: 400px;
     box-shadow: 5px 5px 5px 0 #000000a0;
     background-image: url('img/dgit_dice_tray.png');
     display: flex;
     flex-flow: row wrap;
-    gap: 30px;
+    gap: 15px;
     justify-content: center;
     align-items: center;
 }
@@ -507,9 +507,9 @@ div.dgit-curse-icon:hover {
     box-sizing: border-box;
     background-size: auto 100%;
     background-image: url('img/dgit_die_faces.png');
-    box-shadow: 0px 0px 10px 10px rgba(139, 201, 138, .9);
-    -webkit-box-shadow: 0px 0px 10px 10px rgba(139, 201, 138, .9);
-    -moz-box-shadow: 0px 0px 10px 10px rgba(139, 201, 138, .9);
+    box-shadow: 0px 0px 5px 5px rgba(139, 201, 138, .9);
+    -webkit-box-shadow: 0px 0px 5px 5px rgba(139, 201, 138, .9);
+    -moz-box-shadow: 0px 0px 5px 5px rgba(139, 201, 138, .9);
 }
 
 /***** GHOST TOKENS *****/
@@ -561,20 +561,28 @@ div.dgit-ghost-tracker-animate:hover {
 }
 
 @keyframes x {
-    0% {
-        left: 0;
-    }
-    50% {
-        left: calc(100% - 72px);
-    }
     100% {
-        left: 0;
+        transform: translateX(calc(10.023584905660377em - 4.375em));
     }
 }
 
 @keyframes y {
     100% {
-        transform: translateY(calc(7.5em - 1.531em));
+        transform: translateY(calc(10.023584905660377em - 4.531em));
+    }
+}
+
+@media only screen and (max-device-width: 480px) {
+    @keyframes x {
+        100% {
+            transform: translateX(calc(4.702830188679245em - 2.037em));
+        }
+    }
+
+    @keyframes y {
+        100% {
+            transform: translateY(calc(4.702830188679245em - 2.124em));
+        }
     }
 }
 

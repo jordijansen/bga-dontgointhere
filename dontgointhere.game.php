@@ -286,6 +286,7 @@ class DontGoInThere extends Table
             DISPEL_CARDS,    
             clienttranslate('${player_name} dispels ${amount} ${cardName} ${plural} worth a total of ${curses} Curses'),
             array(
+                'i18n' => ['cardName', 'plural'],
                 'player_name' => self::getActivePlayerName(),
                 'amount' => count($cards),
                 'cardName' => $cardName,
@@ -321,6 +322,7 @@ class DontGoInThere extends Table
             PLACE_MEEPLE,
             clienttranslate('${player_name} places a meeple in The ${roomName}'),
             array(
+                'i18n' => ['roomName'],
                 'player_name' => $this->getActivePlayerName(),
                 'roomName' => $room->getName(),
                 'player' => $player->getUiData(),
@@ -411,6 +413,7 @@ class DontGoInThere extends Table
             ROLL_DICE,    
             clienttranslate('${player_name} rolls ${ghostsRolled} ${plural} on ${diceToRoll} dice'),
             array(
+                'i18n' => ['plural'],
                 'player_name' => self::getActivePlayerName(),
                 'ghostsRolled' => $this->diceManager->getGhostsRolled(),
                 'plural' => $this->diceManager->getGhostsRolled() == 1 ? clienttranslate('Ghost') : clienttranslate('Ghosts'),
@@ -437,6 +440,7 @@ class DontGoInThere extends Table
             SKIP,
             clienttranslate('${player_name} ${skipText}'),
             array(
+                'i18n' => ['skipText'],
                 'player_name' => $this->getActivePlayerName(),
                 'skipText' => $room->getAbilitySkipText(),
             )
@@ -469,6 +473,7 @@ class DontGoInThere extends Table
             TAKE_CARD,    
             clienttranslate('${player_name} takes the ${cardName} and collects ${amount} ${plural}'),
             array(
+                'i18n' => ['cardName', 'plural'],
                 'player_name' => self::getActivePlayerName(),
                 'cardName' => $card->getName(),
                 'amount' => $card->getCurses(),
@@ -663,6 +668,7 @@ class DontGoInThere extends Table
                 ROLL_DICE,    
                 clienttranslate('${player_name} rolls ${ghostsRolled} ${plural} on ${diceToRoll} dice'),
                 array(
+                    'i18n' => ['plural'],
                     'player_name' => self::getActivePlayerName(),
                     'ghostsRolled' => $this->diceManager->getGhostsRolled(),
                     'plural' => $this->diceManager->getGhostsRolled() == 1 ? clienttranslate('Ghost') : clienttranslate('Ghosts'),
@@ -728,6 +734,7 @@ class DontGoInThere extends Table
                         FLIP_ROOM, 
                         clienttranslate('The ${currentName} flips over to The ${newName}'),
                         array(
+                            'i18n' => ['currentName', 'newRoom'],
                             'currentName' => $currentRoom->getName(),
                             'newName' => $newRoom->getName(),
                             'currentRoom' => $currentRoom->getUiData(),
@@ -741,6 +748,7 @@ class DontGoInThere extends Table
                         NEW_CARDS,
                         clienttranslate('Three new cards drawn for The ${roomName}'),
                         array(
+                            'i18n' => ['roomName'],
                             'roomName' => $newRoom->getName(),
                             'room' => $newRoom->getUiData(),
                             'cards' => $this->cardManager->getUiData(ROOM_PREPEND.$newRoom->getUiPosition()),

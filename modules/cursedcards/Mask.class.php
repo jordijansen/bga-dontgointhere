@@ -59,6 +59,7 @@ class Mask extends DontGoInThereCursedCard
             TRIGGER_MASK,    
             clienttranslate('${player_name} passes ${ghostAmount} ${plural} to ${other_player_name} from collecting a Mask'),
             array(
+                'i18n' => ['plural'],
                 'player_name' => $this->game->getActivePlayerName(),
                 'ghostAmount' => $ghostsToPass,
                 'plural' => $ghostsToPass == 1 ? clienttranslate('Ghost') : clienttranslate('Ghosts'),

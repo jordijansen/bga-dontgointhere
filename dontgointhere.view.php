@@ -88,7 +88,7 @@ require_once( APP_BASE_PATH."view/common/game.view.php" );
         array(
           'GHOST_NUM' => $ghostNumber,
           'GHOST_TYPE' => ceil($ghostNumber / 2),
-          'DELAY' => ($ghostNumber - 1) * 100,
+          'DELAY' => ($ghostNumber - 1) * 200,
           'X_TIME' => bga_rand(10, 20),
           'Y_TIME' => bga_rand(10, 20),
           'SPIN_TIME' => bga_rand(10, 20),

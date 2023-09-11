@@ -389,6 +389,7 @@ class DontGoInTherePlayerManager extends APP_GameClass
                 GAIN_CURSES,    
                 clienttranslate('${player_name} gains ${amount} ${plural} from having the most ghosts'),
                 array(
+                    'i18n' => ['plural'],
                     'player_name' => self::getPlayerNameColorDiv($player),
                     'amount' => $cursesToGain,
                     'plural' => $cursesToGain == 1 ? clienttranslate('Curse') : clienttranslate('Curses'),
