@@ -87,7 +87,6 @@ define([
                 case PLAYER_TURN:
                     if (this.isCurrentPlayerActive())
                     { 
-                        dojo.query('div[meeple="none"]').addClass('dgit-clickable');
                         dojo.query('div[meeple="none"]').addClass('dgit-highlight');
                         this.connectClass('dgit-room-space-highlight', 'onclick', 'onClickRoomSpace');
                     }
@@ -121,7 +120,7 @@ define([
                         var roomResolving = args.args.roomResolving;
                         dojo.query('div[roomnumber="'+ roomResolving + '"]').addClass('dgit-clickable');
                         dojo.query('div[roomnumber="'+ roomResolving + '"]').addClass('dgit-highlight-card');
-                        this.connectClass('dgit-clickable', 'onclick', 'onSelectCard');
+                        this.connectClass('.dgit-clickable', 'onclick', 'onSelectCard');
                     }
                     break;
                 case TRIGGER_CARD_EFFECT:
@@ -201,7 +200,7 @@ define([
         { 
             dojo.stopEvent(event);
 
-            if (event.target.attributes.meeple.value == 'none') {
+            if (event.target.attributes.meeple.value == 'none' && event.target.classList.contains('dgit-highlight')) {
                 var room = event.target.attributes.room.value;
                 var space = event.target.attributes.space.value;
 

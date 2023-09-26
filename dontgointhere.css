@@ -46,6 +46,7 @@ div.player-board {
 
 .dgit-highlight {
     border: 5px solid #8bc98a;
+    cursor: pointer;
 }
 
 div.dgit-highlight:hover {
