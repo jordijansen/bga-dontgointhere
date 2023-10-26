@@ -31,6 +31,7 @@ require_once('cursedcards/Twin.class.php');
 class DontGoInThereCardManager extends APP_GameClass
 {
     public $game;
+    public $cards;
 
     public function __construct($game)
     {
@@ -668,9 +669,14 @@ class DontGoInThereCardManager extends APP_GameClass
      */
     public function triggerTome($playerId)
     {
-        $tomeCards = self::getPlayerCardsOfType($playerId, TOME);
+        $playerCards = $this->cards->getCardsInLocation(HAND, $playerId);
+        $playerCards =  array_map(function($card) {
+            return $this->getCursedCard($card);
+        }, $playerCards);
+        $tomeCards = array_filter($playerCards, fn($card) => $card->getType() === TOME);
+        $otherCards = array_filter($playerCards, fn($card) => $card->getType() !== TOME);
         // If player has a number of tomes divisible by two and has other cards to dispel
-        if(count($tomeCards) % 2 == 0 && self::countCursedCards(HAND, $playerId) > count($tomeCards)) {
+        if(count($tomeCards) % 2 == 0 && count($otherCards) > 0) {
             return true;
         }
         return false;

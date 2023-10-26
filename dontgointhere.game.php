@@ -333,12 +333,19 @@ class DontGoInThere extends Table
         // If the room is the secret passage let the player look at the facedown card
         if ($room->getType() == SECRET_PASSAGE)
         {
+            $cardToReveal = current($this->cardManager->cards->getCardsInLocation(ROOM_PREPEND . $roomPosition, 3));
+            $cardToReveal = $this->cardManager->getCursedCard($cardToReveal);
             self::notifyAllPlayers(
-                SECRET_PASSAGE_PEEK,
+                'gameLog',
                 clienttranslate('${player_name} can now see the hidden card in The Secret Passage'),
-                array(
-                    'player_name' => $this->getActivePlayerName(),
-                )
+                [ 'player_name' => $this->getActivePlayerName()]
+            );
+
+            self::notifyPlayer(
+                $this->getActivePlayerId(),
+                SECRET_PASSAGE_PEEK,
+                '',
+                [ "cardToReveal" => $cardToReveal->getUiData()]
             );
         }
 
@@ -651,10 +658,12 @@ class DontGoInThere extends Table
         if ($room->getType() == SECRET_PASSAGE && $this->roomManager->getSecretPassageRevealed() == DGIT_FALSE)
         {
             $this->roomManager->setSecretPassageRevealed(DGIT_TRUE);
+            $cardToReveal = current($this->cardManager->cards->getCardsInLocation(ROOM_PREPEND . $room->getUiPosition(), 3));
+            $cardToReveal = $this->cardManager->getCursedCard($cardToReveal);
             self::notifyAllPlayers(
                 SECRET_PASSAGE_REVEAL,
                 clienttranslate('All players can now see the hidden card in The Secret Passage'),
-                array()
+                [ "cardToReveal" => $cardToReveal->getUiData()]
             );
         }
 
@@ -665,7 +674,7 @@ class DontGoInThere extends Table
             $diceRolled = $this->diceManager->rollDice($diceToRoll);
 
             self::notifyAllPlayers(
-                ROLL_DICE,    
+                ROLL_DICE,
                 clienttranslate('${player_name} rolls ${ghostsRolled} ${plural} on ${diceToRoll} dice'),
                 array(
                     'i18n' => ['plural'],
@@ -860,6 +869,9 @@ class DontGoInThere extends Table
         throw new feException( "Zombie mode not supported at this game state: ".$statename );
     }
 
+    public static function totranslate($text) {
+        return self::_($text);
+    }
     
     /***********************************************************************************************
     *    DB UPGRADE::Functions to handle games with old DB schema                                  *

@@ -56,16 +56,17 @@ define([
                     var card = gamedatas.roomCards[room.uiPosition][roomCardsKey];
                     this.game.util.placeBlock(CURSED_CARD_TEMPLATE, 'dgit_room_' + room.uiPosition + '_card_slot_' + card.uiPosition,
                         { card_id: card.id, room_ui_position: room.uiPosition, curses: card.uiPosition, card_css_class: card.cssClass });
-                    
-                    // If card is faceup show tooltip
-                    if (card.tooltipText.length > 0) {
-                        this.addTooltip(`dgit_card_${card.id}`, _(card.tooltipText), '');
-                    }
-                    
+
                     if (room.type == SECRET_PASSAGE && card.uiPosition == 3 && gamedatas.secretPassageRevealed == DGIT_FALSE && !this.isPlayerPresentInRoom(gamedatas.meeplesInRooms[room.uiPosition], this.game.getCurrentPlayerId())) {
                         // If room is secret passage flip the 3rd card face down for everyone who has not placed a meeple here
                         dojo.addClass('dgit_card_' + card.id, 'dgit-card-back');
+                        dojo.removeClass('dgit_card_' + card.id, card.cssClass)
                         dojo.setAttr('dgit_card_' + card.id, 'special', 'secret-passage');
+                    } else {
+                        // If card is faceup show tooltip
+                        if (card.tooltipText.length > 0) {
+                            this.addTooltip(`dgit_card_${card.id}`, _(card.tooltipText), '');
+                        }
                     }
                 }
                 
@@ -99,6 +100,7 @@ define([
                 if (room.type == SECRET_PASSAGE && card.uiPosition == 3) {
                     // If room is secret passage flip the 3rd card face down for everyone who has not placed a meeple here
                     dojo.addClass('dgit_card_' + card.id, 'dgit-card-back');
+                    dojo.removeClass('dgit_card_' + card.id, card.cssClass)
                     dojo.setAttr('dgit_card_' + card.id, 'special', 'secret-passage');
                 } else {
                     // If card is faceup show tooltip
@@ -162,11 +164,15 @@ define([
         /**
          * Reveal the hidden card on the Secret Passage
          */
-        revealSecretPassageCard: function ()
+        revealSecretPassageCard: function (card)
         { 
-            var secretPassageHiddenCard = dojo.query('div[special="secret-passage"')[0];
+            var secretPassageHiddenCard = dojo.query('div[special="secret-passage"]')[0];
             if (secretPassageHiddenCard) {
                 dojo.removeClass(secretPassageHiddenCard.id, 'dgit-card-back');
+                dojo.addClass(secretPassageHiddenCard.id, card.cssClass)
+                if (card.tooltipText.length > 0) {
+                    this.addTooltip(`dgit_card_${card.id}`, _(card.tooltipText), '');
+                }
             }
         },
         

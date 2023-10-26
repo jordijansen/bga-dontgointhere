@@ -295,6 +295,7 @@ define([
             dojo.subscribe(REVEAL_PLAYER_ROW, this, 'notif_revealPlayerRow');
             dojo.subscribe(ROLL_DICE, this, 'notif_rollDice');
             dojo.subscribe(SECRET_PASSAGE_REVEAL, this, 'notif_secretPassageReveal');
+            dojo.subscribe(SECRET_PASSAGE_PEEK, this, 'notif_secretPassagePeek');
             dojo.subscribe(TAKE_CARD, this, 'notif_takeCard');
             dojo.subscribe(TRIGGER_MASK, this, 'notif_triggerMask');
 
@@ -464,12 +465,21 @@ define([
         },
 
         /**
+         * Handle secret passage card reveal peek
+         * @param {Object} notification notification object
+         */
+        notif_secretPassagePeek: function (notification)
+        {
+            this.roomManager.revealSecretPassageCard(notification.args.cardToReveal);
+        },
+
+        /**
          * Handle secret passage card reveal on room resolve
          * @param {Object} notification notification object
          */
         notif_secretPassageReveal: function (notification)
-        { 
-            this.roomManager.revealSecretPassageCard();
+        {
+            this.roomManager.revealSecretPassageCard(notification.args.cardToReveal);
         },
 
         /**

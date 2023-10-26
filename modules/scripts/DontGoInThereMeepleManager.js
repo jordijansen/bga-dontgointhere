@@ -73,10 +73,6 @@ define([
             this.game.attachToNewParent(meepleDiv, roomSpaceDiv);
             this.game.slideToObject(meepleDiv, roomSpaceDiv).play();
             dojo.setAttr(roomHighlightDiv, 'meeple', meeple.owner);
-
-            if (room.type == SECRET_PASSAGE && player.id == this.game.getCurrentPlayerId()) {
-                this.game.roomManager.revealSecretPassageCard()
-            }
         },
     });
 });
